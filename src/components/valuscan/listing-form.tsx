@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -21,6 +21,9 @@ import { collection, serverTimestamp } from 'firebase/firestore';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
+
 
 const listingSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
@@ -38,13 +41,11 @@ export function ListingForm() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSuggestingPrice, setIsSuggestingPrice] = useState(false);
   const [scanResult, setScanResult] = useState<ScanItemOutput | null>(null);
-  const [tagInput, setTagInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [listingAction, setListingAction] = useState<'SELL' | 'DONATE' | null>(null);
   const router = useRouter();
 
   const { toast } = useToast();
-  const firestore = useFirestore();
   const { user } = useUser();
 
   const form = useForm<ListingFormData>({
@@ -76,11 +77,9 @@ export function ListingForm() {
         return; 
       }
       
-      // Pre-fill the form with AI data
       form.setValue('title', output.itemName);
       form.setValue('description', output.appraisalNote);
       form.setValue('price', output.maxPrice); 
-      // Tags could be derived from category or other data in a future iteration
       form.setValue('tags', [output.categoryTag.replace(/_/g, ' ')]);
 
     } catch (error: any) {
@@ -90,8 +89,7 @@ export function ListingForm() {
             title: 'Scan Failed',
             description: 'AI could not process the image. Please try again or fill details manually.',
         });
-        // Allow manual entry if scan fails
-        setScanResult({ isConsignmentViable: true } as ScanItemOutput); // Mock result to show form
+        setScanResult({ isConsignmentViable: true } as ScanItemOutput);
     } finally {
       setIsGenerating(false);
     }
@@ -100,30 +98,11 @@ export function ListingForm() {
   const handlePriceSuggestion = async () => {
     if (!scanResult) return;
     setIsSuggestingPrice(true);
-    // In this new flow, price suggestion is part of the initial scan.
-    // We just show the existing data.
     setTimeout(() => {
       form.setValue('price', scanResult.maxPrice);
       toast({ title: 'Price Updated', description: 'Set to the suggested maximum resale value.' });
       setIsSuggestingPrice(false);
     }, 500);
-  };
-
-
-  const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && tagInput.trim()) {
-      e.preventDefault();
-      const currentTags = form.getValues('tags');
-      const newTag = tagInput.trim();
-      if (!currentTags.includes(newTag)) {
-        form.setValue('tags', [...currentTags, newTag]);
-      }
-      setTagInput('');
-    }
-  };
-
-  const handleRemoveTag = (tagToRemove: string) => {
-    form.setValue('tags', form.getValues('tags').filter(tag => tag !== tagToRemove));
   };
   
   const onSubmit = async (data: ListingFormData) => {
@@ -135,8 +114,6 @@ export function ListingForm() {
       });
       return;
     }
-    
-    // Instead of submitting, this now sets up the confirmation for next step
     setListingAction('SELL');
   };
   
@@ -256,26 +233,34 @@ export function ListingForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="tags"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>AI-Generated Tags</FormLabel>
+              <FormField
+                control={form.control}
+                name="tags"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>AI-Generated Tags</FormLabel>
+                     <div className="flex flex-wrap gap-2 p-3 border rounded-md min-h-[40px] bg-muted/50">
+                        {field.value?.map((tag: string) => (
+                            <Badge key={tag} variant="secondary">
+                                {tag}
+                            </Badge>
+                        ))}
+                    </div>
                     <FormControl>
-                      <Input 
-                        placeholder="e.g., vintage, furniture, mid-century"
-                        value={field.value?.join(', ') || ''} 
-                        onChange={(e) => field.onChange(e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0))}
-                      />
+                        <Input
+                          type="hidden"
+                          {...field}
+                          value={field.value?.join(', ') || ''}
+                          onChange={(e) => field.onChange(e.target.value.split(',').map(tag => tag.trim()).filter(Boolean))}
+                        />
                     </FormControl>
                     <FormDescription>
-                        Tags help us match your item with the right Ambassador specialist.
+                        Tags help us match your item with the right Ambassador specialist. You can edit them by typing, separated by commas.
                     </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
           </CardContent>
         </Card>
 
@@ -325,7 +310,7 @@ export function ListingForm() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2"><Heart className="size-5" /> Ethical Contribution</CardTitle>
             <CardDescription>Optionally, contribute a portion of your sale to fund industry change.</CardDescription>
-          </CardHeader>
+          </Header>
           <CardContent className="space-y-6">
              <FormField
                 control={form.control}
@@ -375,5 +360,3 @@ export function ListingForm() {
     </FormProvider>
   );
 }
-
-    
