@@ -1,7 +1,7 @@
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter } from '@/components/ui/sidebar';
-import { Home, ScanLine, PlusCircle, ShoppingCart, User, Bot, Wrench, Barcode, Heart } from 'lucide-react';
+import { Home, ScanLine, PlusCircle, ShoppingCart, User, Wrench, Barcode, Heart, Scan } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './header';
 
@@ -11,7 +11,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2 p-2">
-            <Bot className="size-8 text-primary" />
+            <Scan className="size-8 text-primary" />
             <h1 className="text-xl font-semibold">ReFurrm Scan</h1>
           </div>
         </SidebarHeader>
