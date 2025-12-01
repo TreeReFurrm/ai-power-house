@@ -15,11 +15,12 @@ import { Switch } from '../ui/switch';
 import { generateListingDetails } from '@/ai/flows/generate-listing-details';
 import { getPriceSuggestion, AiPriceSuggestionOutput } from '@/ai/flows/ai-price-suggestions';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Sparkles, DollarSign, Heart, Tag, Info, X } from 'lucide-react';
+import { Loader2, Sparkles, DollarSign, Heart, Tag, Info, X, AlertTriangle } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useFirestore, addDocumentNonBlocking, useUser } from '@/firebase';
 import { collection, serverTimestamp } from 'firebase/firestore';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 
 const listingSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
@@ -40,6 +41,8 @@ export function ListingForm() {
   const [priceSuggestion, setPriceSuggestion] = useState<AiPriceSuggestionOutput | null>(null);
   const [tagInput, setTagInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [rejectionInfo, setRejectionInfo] = useState<{ reason: string; retailValue?: number } | null>(null);
+
 
   const { toast } = useToast();
   const firestore = useFirestore();
@@ -63,19 +66,27 @@ export function ListingForm() {
     }
     setPhotoDataUri(dataUri);
     setIsGenerating(true);
+    setRejectionInfo(null);
     try {
       const output = await generateListingDetails({ photoDataUri: dataUri });
       form.setValue('title', output.title);
       form.setValue('description', output.description);
       form.setValue('tags', output.tags);
       setDetailsGenerated(true);
-    } catch (error) {
-      console.error(error);
-      toast({
-        variant: 'destructive',
-        title: 'Generation Failed',
-        description: 'AI could not generate details. Please fill them manually.',
-      });
+    } catch (error: any) {
+        if (error.message.includes("NO_RESALE_VALUE")) {
+            const parts = error.message.split('::');
+            const reason = parts[1] || "This item cannot be resold due to safety or hygiene reasons.";
+            const retailValue = parts[2] ? parseFloat(parts[2]) : undefined;
+            setRejectionInfo({ reason, retailValue });
+        } else {
+            console.error(error);
+            toast({
+                variant: 'destructive',
+                title: 'Generation Failed',
+                description: 'AI could not generate details. Please fill them manually.',
+            });
+        }
     } finally {
       setIsGenerating(false);
     }
@@ -168,6 +179,33 @@ export function ListingForm() {
       setIsSubmitting(false);
     }
   };
+  
+  const resetForm = () => {
+    setDetailsGenerated(false);
+    setPhotoDataUri(null);
+    setRejectionInfo(null);
+    form.reset();
+  }
+
+  if (rejectionInfo) {
+    return (
+        <Card>
+            <CardContent className="p-6 flex flex-col items-center gap-6">
+                 <Alert variant="destructive" className="text-center">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertTitle>Listing Rejected</AlertTitle>
+                    <AlertDescription>
+                        {rejectionInfo.reason}
+                        {rejectionInfo.retailValue && (
+                            <p className="mt-2 font-bold">Estimated Retail Value for reference: ${rejectionInfo.retailValue.toFixed(2)}</p>
+                        )}
+                    </AlertDescription>
+                </Alert>
+                <Button onClick={resetForm} variant="outline">Try Another Item</Button>
+            </CardContent>
+        </Card>
+    );
+  }
 
   if (!detailsGenerated) {
     return (

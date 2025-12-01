@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -92,13 +93,21 @@ const generateListingDetailsFlow = ai.defineFlow(
         description: input.additionalDetails || "No additional details provided.",
     });
 
-    // 2. Run Authenticity Check
+    // 2. GATEKEEPER: Check for No Resale Value
+    if (priceSuggestion.price_type === 'Retail Value' && (priceSuggestion.minPrice > 0 || priceSuggestion.maxPrice > 0)) {
+        // The double check of min/max > 0 is to ensure we are not rejecting items that have a legitimate retail value but no resale value
+        // We construct a specific error message format that the frontend can parse.
+        throw new Error(`NO_RESALE_VALUE::${priceSuggestion.justification}::${priceSuggestion.maxPrice}`);
+    }
+
+
+    // 3. Run Authenticity Check
     const authenticityCheck = await scoutFakes({
         itemName: priceSuggestion.itemName,
         checkLocation: "In-Hand Scan"
     });
 
-    // 3. Generate the final package
+    // 4. Generate the final package
     const {output} = await prompt({
         priceSuggestion,
         authenticityCheck,
