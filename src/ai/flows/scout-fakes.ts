@@ -48,7 +48,7 @@ export type ScoutFakesInput = z.infer<typeof ScoutFakesInputSchema>;
 
 export const ScoutFakesOutputSchema = z.object({
   itemName: z.string(),
-  verdict: z.enum(["AUTHENTIC", "POSSIBLE_FAKE", "NOT_APPLICABLE"]),
+  verdict: z.enum(["AUTHENTIC", "POSSIBLE_FAKE", "NOT_APPLICABLE", "LOW_RISK"]),
   confidenceScore: z.number().describe("A score from 0-100 indicating confidence in the verdict."),
   reasons: z.array(z.string()).describe("A list of reasons supporting the verdict."),
 });
@@ -66,7 +66,7 @@ export async function scoutFakes(input: ScoutFakesInput): Promise<ScoutFakesOutp
     if (!AUTHENTICITY_KNOWLEDGE_BASE[itemName]) {
         return {
             itemName: itemName,
-            verdict: "NOT_APPLICABLE",
+            verdict: "LOW_RISK",
             confidenceScore: 100,
             reasons: ["Item not typically targeted by high-end counterfeiters."],
         };

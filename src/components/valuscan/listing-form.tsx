@@ -12,8 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDes
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Switch } from '../ui/switch';
-import { generateListingDetails } from '@/ai/flows/generate-listing-details';
-import { getPriceSuggestion, AiPriceSuggestionOutput } from '@/ai/flows/ai-price-suggestions';
+import { scanItem, type ScanItemOutput } from '@/ai/flows/scan-item';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Sparkles, DollarSign, Heart, Tag, Info, X, AlertTriangle } from 'lucide-react';
 import { Badge } from '../ui/badge';
@@ -37,12 +36,9 @@ export function ListingForm() {
   const [photoDataUri, setPhotoDataUri] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSuggestingPrice, setIsSuggestingPrice] = useState(false);
-  const [detailsGenerated, setDetailsGenerated] = useState(false);
-  const [priceSuggestion, setPriceSuggestion] = useState<AiPriceSuggestionOutput | null>(null);
+  const [scanResult, setScanResult] = useState<ScanItemOutput | null>(null);
   const [tagInput, setTagInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [rejectionInfo, setRejectionInfo] = useState<{ reason: string; retailValue?: number } | null>(null);
-
 
   const { toast } = useToast();
   const firestore = useFirestore();
@@ -59,53 +55,57 @@ export function ListingForm() {
     },
   });
 
-  const handleGenerateDetails = async (dataUri: string) => {
+  const handleInitialScan = async (dataUri: string) => {
     if (!user) {
       toast({ variant: 'destructive', title: 'Please sign in to create a listing.'});
       return;
     }
     setPhotoDataUri(dataUri);
     setIsGenerating(true);
-    setRejectionInfo(null);
+    setScanResult(null);
+
     try {
-      const output = await generateListingDetails({ photoDataUri: dataUri });
-      form.setValue('title', output.title);
-      form.setValue('description', output.description);
-      form.setValue('tags', output.tags);
-      setDetailsGenerated(true);
+      const output = await scanItem({ photoDataUri: dataUri });
+      setScanResult(output);
+
+      if (!output.isConsignmentViable) {
+        // Gatekeeper stops the flow here
+        return; 
+      }
+      
+      // Pre-fill the form with AI data
+      form.setValue('title', output.itemName);
+      form.setValue('description', output.appraisalNote);
+      form.setValue('price', output.maxPrice); 
+      // Tags could be derived from category or other data in a future iteration
+      form.setValue('tags', [output.categoryTag.replace(/_/g, ' ')]);
+
     } catch (error: any) {
-        if (error.message.includes("NO_RESALE_VALUE")) {
-            const parts = error.message.split('::');
-            const reason = parts[1] || "This item cannot be resold due to safety or hygiene reasons.";
-            const retailValue = parts[2] ? parseFloat(parts[2]) : undefined;
-            setRejectionInfo({ reason, retailValue });
-        } else {
-            console.error(error);
-            toast({
-                variant: 'destructive',
-                title: 'Generation Failed',
-                description: 'AI could not generate details. Please fill them manually.',
-            });
-        }
+        console.error(error);
+        toast({
+            variant: 'destructive',
+            title: 'Scan Failed',
+            description: 'AI could not process the image. Please try again or fill details manually.',
+        });
+        // Allow manual entry if scan fails
+        setScanResult({ isConsignmentViable: true } as ScanItemOutput); // Mock result to show form
     } finally {
       setIsGenerating(false);
     }
   };
 
   const handlePriceSuggestion = async () => {
-    if (!photoDataUri) return;
+    if (!scanResult) return;
     setIsSuggestingPrice(true);
-    try {
-      const description = form.getValues('description');
-      const output = await getPriceSuggestion({ photoDataUri, description });
-      setPriceSuggestion(output);
-      form.setValue('price', output.maxPrice); // Default to max price
-    } catch (error) {
-      toast({ variant: 'destructive', title: 'Could not get price suggestion.' });
-    } finally {
+    // In this new flow, price suggestion is part of the initial scan.
+    // We just show the existing data.
+    setTimeout(() => {
+      form.setValue('price', scanResult.maxPrice);
+      toast({ title: 'Price Updated', description: 'Set to the suggested maximum resale value.' });
       setIsSuggestingPrice(false);
-    }
+    }, 500);
   };
+
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagInput.trim()) {
@@ -123,15 +123,7 @@ export function ListingForm() {
   };
   
   const onSubmit = async (data: ListingFormData) => {
-    if (!firestore) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Firestore is not available. Please try again later.',
-      });
-      return;
-    }
-    if (!user) {
+    if (!firestore || !user) {
        toast({
         variant: 'destructive',
         title: 'Authentication Error',
@@ -163,10 +155,7 @@ export function ListingForm() {
       });
 
       // Reset form state
-      form.reset();
-      setDetailsGenerated(false);
-      setPhotoDataUri(null);
-      setPriceSuggestion(null);
+      handleReset();
 
     } catch (error) {
       console.error('Error creating listing:', error);
@@ -180,14 +169,31 @@ export function ListingForm() {
     }
   };
   
-  const resetForm = () => {
-    setDetailsGenerated(false);
-    setPhotoDataUri(null);
-    setRejectionInfo(null);
+  const handleReset = () => {
     form.reset();
+    setScanResult(null);
+    setPhotoDataUri(null);
+    setIsGenerating(false);
+    setIsSubmitting(false);
   }
 
-  if (rejectionInfo) {
+  if (!scanResult) {
+    return (
+      <Card>
+        <CardContent className="p-6 flex flex-col items-center gap-6">
+          <ImageUploader onImageUpload={(uri) => uri && handleInitialScan(uri)} disabled={isGenerating} />
+          {isGenerating && (
+            <div className="flex items-center text-muted-foreground">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <span>AI is analyzing your item...</span>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!scanResult.isConsignmentViable) {
     return (
         <Card>
             <CardContent className="p-6 flex flex-col items-center gap-6">
@@ -195,31 +201,15 @@ export function ListingForm() {
                     <AlertTriangle className="h-4 w-4" />
                     <AlertTitle>Listing Rejected</AlertTitle>
                     <AlertDescription>
-                        {rejectionInfo.reason}
-                        {rejectionInfo.retailValue && (
-                            <p className="mt-2 font-bold">Estimated Retail Value for reference: ${rejectionInfo.retailValue.toFixed(2)}</p>
+                        {scanResult.appraisalNote}
+                        {scanResult.priceType === 'RETAIL' && (
+                            <p className="mt-2 font-bold">Estimated Retail Value for reference: ${scanResult.maxPrice.toFixed(2)}</p>
                         )}
                     </AlertDescription>
                 </Alert>
-                <Button onClick={resetForm} variant="outline">Try Another Item</Button>
+                <Button onClick={handleReset} variant="outline">Try Another Item</Button>
             </CardContent>
         </Card>
-    );
-  }
-
-  if (!detailsGenerated) {
-    return (
-      <Card>
-        <CardContent className="p-6 flex flex-col items-center gap-6">
-          <ImageUploader onImageUpload={(uri) => uri && handleGenerateDetails(uri)} disabled={isGenerating} />
-          {isGenerating && (
-            <div className="flex items-center text-muted-foreground">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              <span>AI is generating your listing details...</span>
-            </div>
-          )}
-        </CardContent>
-      </Card>
     );
   }
 
@@ -294,7 +284,7 @@ export function ListingForm() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2"><DollarSign className="size-5"/> Pricing</CardTitle>
-            <CardDescription>Set your price. Not sure? Let our AI suggest one.</CardDescription>
+            <CardDescription>Set your price. Our AI has already provided a suggestion.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <FormField
@@ -316,19 +306,17 @@ export function ListingForm() {
             <div>
               <Button type="button" variant="outline" onClick={handlePriceSuggestion} disabled={isSuggestingPrice}>
                 {isSuggestingPrice ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
-                AI Price Suggestion
+                Reset to AI Suggestion
               </Button>
-              {priceSuggestion && (
                 <div className="mt-4 p-4 bg-accent/50 rounded-lg flex gap-3">
                   <Info className="size-5 text-primary shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-medium text-accent-foreground">
-                      Suggested Range: ${priceSuggestion.minPrice.toFixed(2)} - ${priceSuggestion.maxPrice.toFixed(2)}
+                      Suggested Range: ${scanResult.minPrice.toFixed(2)} - ${scanResult.maxPrice.toFixed(2)}
                     </p>
-                    <p className="text-sm text-muted-foreground mt-1">{priceSuggestion.justification}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{scanResult.appraisalNote}</p>
                   </div>
                 </div>
-              )}
             </div>
           </CardContent>
         </Card>
