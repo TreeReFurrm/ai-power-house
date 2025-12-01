@@ -1,8 +1,10 @@
+
 'use server';
 
 /**
  * @fileOverview Defines a Genkit flow for requesting a secondary service (Cleanout, Organize, etc.)
- * and matching it with a local Ambassador.
+ * and matching it with a local Ambassador. This is the "Service Pipeline" that can include
+ * an inventory estimate.
  *
  * - requestSecondaryService - The main function to call the flow.
  * - SecondaryServiceInput - The input type for the flow.
@@ -36,6 +38,13 @@ const AMBASSADOR_NETWORK = [
         location_zip: "90210",
         services: ["pickup"],
         rating: 4.5,
+        is_active: false,
+    },
+     {
+        id: "AMB004",
+        name: "Josh Smith",
+        location_zip: "90210", 
+        services: ["cleanout"],
         is_active: true,
     },
 ];
@@ -64,7 +73,7 @@ export const SecondaryServiceInputSchema = z.object({
   userId: z.string().describe("The ID of the user requesting the service."),
   zipCode: z.string().describe("The ZIP code where the service is needed."),
   serviceType: z.enum(['cleanout', 'organize', 'downsize']).describe("The type of service requested."),
-  notes: z.string().optional().describe("Additional notes about the request."),
+  notes: z.string().optional().describe("Additional notes, can include inventory scan results as a string."),
 });
 export type SecondaryServiceInput = z.infer<typeof SecondaryServiceInputSchema>;
 
@@ -118,13 +127,13 @@ const requestSecondaryServiceFlow = ai.defineFlow(
             status: "MATCHED",
             assignedAmbassadorId: assignedAmbassador.id,
             assignedAmbassadorName: assignedAmbassador.name,
-            message: `Contact Ambassador ${assignedAmbassador.name} to schedule.`
+            message: `Contact Ambassador ${assignedAmbassador.name} to schedule. Fee will be determined after on-site review.`
         };
     } else {
         requestRecord = {
             ...requestRecord,
             status: "NO_MATCH_FOUND",
-            message: "No active ambassador available for this service in your area. Request waitlisted."
+            message: "No active ambassador available for this service in your area. We will notify you when an Ambassador becomes available in your area."
         };
     }
     
@@ -137,5 +146,3 @@ const requestSecondaryServiceFlow = ai.defineFlow(
     return response.output!;
   }
 );
-
-    

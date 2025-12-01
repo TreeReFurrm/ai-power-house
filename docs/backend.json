@@ -268,7 +268,7 @@
         },
         "notes": {
           "type": "string",
-          "description": "Additional notes from the user about the service request."
+          "description": "Additional notes from the user about the service request, can include inventory scan results."
         },
         "status": {
           "type": "string",
@@ -365,7 +365,7 @@
         "definition": {
           "entityName": "EthicalContribution",
           "schema": {
-            "$ref": "#/backend/entities/EthicalContribution"
+            "$ref": "##backend/entities/EthicalContribution"
           },
           "description": "A ledger for all ethical contributions made from sales.",
           "params": [
@@ -396,5 +396,3 @@
     "reasoning": "The Firestore structure has been updated to support the core business logic. The User entity now includes 'tier', 'subscriptionStatus', and 'stripeCustomerId' to manage user roles and billing. The Item entity has a 'status' to track its lifecycle (listed, sold, shipped) and 'aiEstimatedValue'. The Sale entity now more clearly separates seller and buyer IDs and links to an EthicalContribution, which is its own top-level collection to serve as a proper ledger for the LEAN Foundation. A new 'ServiceRequest' entity and collection have been added to handle specialized service requests, linking users to Ambassadors. This denormalized, segregated structure simplifies security rules and supports efficient queries for marketplace, user-specific, and administrative functions."
   }
 }
-
-    
