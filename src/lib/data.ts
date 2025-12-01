@@ -11,4 +11,7 @@ export type Item = {
   tags: string[];
   createdAt: Timestamp;
   userId: string;
+  status: 'listed' | 'sold' | 'shipped';
+  enableEthicalContribution?: boolean;
+  contributionPercentage?: number;
 };

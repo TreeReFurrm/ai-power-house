@@ -1,21 +1,28 @@
+
 'use client';
 
 import Image from 'next/image';
-import { useParams, notFound } from 'next/navigation';
+import { useParams, notFound, useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tag, Package, Truck, ArrowLeft, Loader2 } from 'lucide-react';
+import { Tag, Package, Truck, ArrowLeft, Loader2, Heart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { useDoc } from '@/firebase';
-import { doc } from 'firebase/firestore';
-import { useFirestore, useMemoFirebase } from '@/firebase/provider';
+import { useDoc, useUser, useFirestore, addDocumentNonBlocking, updateDocumentNonBlocking } from '@/firebase';
+import { doc, collection, serverTimestamp } from 'firebase/firestore';
+import { useMemoFirebase } from '@/firebase/provider';
 import type { Item } from '@/lib/data';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 export default function ItemDetailPage() {
   const params = useParams();
   const itemId = params.itemId as string;
   const firestore = useFirestore();
+  const { user } = useUser();
+  const { toast } = useToast();
+  const router = useRouter();
+  const [isBuying, setIsBuying] = useState(false);
 
   const itemRef = useMemoFirebase(() => {
     if (!firestore || !itemId) return null;
@@ -23,6 +30,88 @@ export default function ItemDetailPage() {
   }, [firestore, itemId]);
 
   const { data: item, isLoading } = useDoc<Item>(itemRef);
+
+  const handleBuyNow = async () => {
+    if (!user) {
+      toast({
+        variant: 'destructive',
+        title: 'Please log in',
+        description: 'You need to be logged in to purchase an item.',
+      });
+      router.push('/login');
+      return;
+    }
+
+    if (!firestore || !item) return;
+
+    if (user.uid === item.userId) {
+      toast({
+        variant: 'destructive',
+        title: 'Cannot buy your own item',
+        description: 'You cannot purchase an item you have listed.',
+      });
+      return;
+    }
+
+    setIsBuying(true);
+
+    try {
+      // 1. Create Sale Document
+      const salesCollection = collection(firestore, 'sales');
+      const saleData = {
+        itemId: item.id,
+        buyerId: user.uid,
+        sellerId: item.userId,
+        saleDate: serverTimestamp(),
+        salePrice: item.price,
+        ethicalContributionId: null, // Will be updated if contribution is made
+      };
+      
+      const saleDocRef = await addDocumentNonBlocking(salesCollection, saleData);
+      
+      // 2. Create Ethical Contribution if applicable
+      if (item.enableEthicalContribution && item.contributionPercentage && saleDocRef) {
+        const contributionAmount = (item.price * item.contributionPercentage) / 100;
+        const contributionsCollection = collection(firestore, 'ethical_contributions');
+        const contributionData = {
+          saleId: saleDocRef.id,
+          amount: contributionAmount,
+          contributionDate: serverTimestamp(),
+        };
+        const contributionDocRef = await addDocumentNonBlocking(contributionsCollection, contributionData);
+        
+        // Link contribution to sale
+        if(contributionDocRef) {
+            updateDocumentNonBlocking(saleDocRef, { ethicalContributionId: contributionDocRef.id });
+        }
+      }
+
+      // 3. Update Item Status
+      if(itemRef){
+        updateDocumentNonBlocking(itemRef, { status: 'sold' });
+      }
+
+
+      toast({
+        title: 'Purchase Successful!',
+        description: `You have purchased ${item.title}.`,
+      });
+
+      // Redirect or update UI
+      router.push('/account');
+
+    } catch (error) {
+      console.error('Purchase failed:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Purchase Failed',
+        description: 'There was an error processing your purchase.',
+      });
+    } finally {
+      setIsBuying(false);
+    }
+  };
+
 
   if (isLoading) {
     return (
@@ -58,7 +147,10 @@ export default function ItemDetailPage() {
         <div className="flex flex-col gap-6">
           <div className="space-y-2">
             <h1 className="text-3xl lg:text-4xl font-bold">{item.title}</h1>
-            <p className="text-3xl font-bold text-primary">${item.price.toFixed(2)}</p>
+            <div className="flex items-baseline gap-4">
+              <p className="text-3xl font-bold text-primary">${item.price.toFixed(2)}</p>
+              {item.status === 'sold' && <Badge variant="destructive">Sold</Badge>}
+            </div>
           </div>
 
           <Card>
@@ -72,11 +164,23 @@ export default function ItemDetailPage() {
                   </div>
                 </div>
               )}
+               {item.enableEthicalContribution && (
+                <div className="flex items-center gap-2 pt-2 text-sm text-primary">
+                  <Heart className="h-5 w-5" />
+                  <span>A portion of this sale supports the LEAN Foundation.</span>
+                </div>
+              )}
             </CardContent>
           </Card>
 
           <div className="flex flex-col gap-4">
-            <Button size="lg" className="w-full">Buy Now</Button>
+            <Button size="lg" className="w-full" onClick={handleBuyNow} disabled={isBuying || item.status === 'sold'}>
+              {isBuying ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                'Buy Now'
+              )}
+            </Button>
             <Card className="bg-secondary/50">
               <CardContent className="p-4 flex flex-col gap-4">
                 <div className="flex items-center gap-3">
