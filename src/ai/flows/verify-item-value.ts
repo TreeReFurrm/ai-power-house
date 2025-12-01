@@ -20,9 +20,11 @@ import { scoutFakes } from './scout-fakes';
 const VerifyItemValueInputSchema = z.object({
   photoDataUri: z
     .string()
+    .optional()
     .describe(
       "A photo of the item to be valued, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
+  itemName: z.string().optional().describe("The name/description of the item if no photo is provided."),
     condition: z.enum([
         "New (Sealed)",
         "Excellent (Like New)",
@@ -83,7 +85,8 @@ export async function verifyItemValue(
 const verifyItemValuePrompt = ai.definePrompt({
   name: 'verifyItemValuePrompt',
   input: {schema: z.object({
-    photoDataUri: z.string(),
+    photoDataUri: z.string().optional(),
+    itemName: z.string().optional(),
     condition: z.string(),
     source: z.string(),
     askingPrice: z.number().optional(),
@@ -97,7 +100,7 @@ const verifyItemValuePrompt = ai.definePrompt({
   })},
   prompt: `You are an expert appraiser, skilled at determining the true market value of items and identifying profit opportunities, while also flagging non-resellable items.
 
-First, identify the item in the photo.
+First, identify the item. If a photo is provided, use it. If not, use the provided item name.
 
 Then, use the following data and multipliers to calculate a realistic resale value range.
 
@@ -108,6 +111,7 @@ CORE_MARKET_DATA = {
     "Unopened Lego Set (Current)": { avg_resale: 80.00, is_high_risk: false },
     "Proenza Schouler PS1 Tiny Bag": { avg_resale: 450.00, is_high_risk: false },
     "iPhone 14 Plus (Used)": { avg_resale: 341.00, is_high_risk: false },
+    "iPhone 13 pro max": { avg_resale: 300.00, is_high_risk: false },
     "Hermes Birkin Bag": { avg_resale: 9000.00, is_high_risk: false },
     "Rolex Submariner Watch": { avg_resale: 12000.00, is_high_risk: false },
     "Used Bike Helmet": { avg_resale: 0, is_high_risk: true, retail: 100.00 },
@@ -160,8 +164,13 @@ If the identified item has 'is_high_risk: true' and the condition is not 'New (S
 {{/if}}
 
 
-Analyze the following photo and user inputs:
+Analyze the following user inputs. Use the photo if available, otherwise use the item name.
+{{#if photoDataUri}}
 Photo: {{media url=photoDataUri}}
+{{/if}}
+{{#if itemName}}
+Item Name: {{{itemName}}}
+{{/if}}
 Condition: {{{condition}}}
 Source: {{{source}}}
 {{#if askingPrice}}
@@ -183,7 +192,7 @@ const verifyItemValueFlow = ai.defineFlow(
     const [valueResult, authenticityResult] = await Promise.all([
       verifyItemValuePrompt(input),
       scoutFakes({
-        itemName: "Item from photo", // The LLM will identify the true name
+        itemName: input.itemName || "Item from photo", // The LLM will identify the true name
         checkLocation: input.source.includes("Market") ? "Auction Photo" : "In-Hand Scan"
       })
     ]);
@@ -205,3 +214,4 @@ const verifyItemValueFlow = ai.defineFlow(
     };
   }
 );
+

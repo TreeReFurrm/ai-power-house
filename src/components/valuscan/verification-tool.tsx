@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
 import { verifyItemValue, type VerifyItemValueOutput } from '@/ai/flows/verify-item-value';
 import { Loader2, Sparkles, DollarSign, TrendingUp, AlertCircle, BadgeCheck, ShoppingCart, ShieldCheck, ShieldAlert, FileQuestion } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -33,10 +34,14 @@ const sources = [
 ] as const;
 
 const verificationSchema = z.object({
-  photoDataUri: z.string().min(1, 'Please upload a photo.'),
+  photoDataUri: z.string().optional(),
+  itemName: z.string().optional(),
   condition: z.enum(conditions),
   source: z.enum(sources),
   askingPrice: z.coerce.number().optional(),
+}).refine(data => !!data.photoDataUri || !!data.itemName, {
+    message: "Please upload a photo or enter an item description.",
+    path: ["itemName"],
 });
 
 type VerificationFormData = z.infer<typeof verificationSchema>;
@@ -50,6 +55,7 @@ export function VerificationTool() {
     resolver: zodResolver(verificationSchema),
     defaultValues: {
       photoDataUri: '',
+      itemName: '',
       condition: "Good (Used, Working)",
       source: "Yard Sale/Flea Market (Buying)",
       askingPrice: undefined,
@@ -79,6 +85,7 @@ export function VerificationTool() {
     setIsLoading(false);
     form.reset({
         photoDataUri: '',
+        itemName: '',
         condition: "Good (Used, Working)",
         source: "Yard Sale/Flea Market (Buying)",
         askingPrice: undefined,
@@ -86,6 +93,7 @@ export function VerificationTool() {
   };
   
   const photoDataUri = form.watch('photoDataUri');
+  const itemName = form.watch('itemName');
 
   const getVerdictIcon = (verdict: string) => {
     if (verdict.includes("BUY NOW")) return <BadgeCheck className="text-green-500" />;
@@ -198,7 +206,33 @@ export function VerificationTool() {
                     </FormItem>
                   )}
                 />
+
+                <div className="flex items-center w-full max-w-md gap-4">
+                  <Separator className="flex-1" />
+                  <span className="text-xs text-muted-foreground">OR</span>
+                  <Separator className="flex-1" />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="itemName"
+                  render={({ field }) => (
+                    <FormItem className="w-full max-w-md">
+                      <FormLabel>Item Name / Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="e.g., 'iPhone 13 Pro Max 256GB' or 'Vintage wooden rocking chair'"
+                          {...field}
+                          disabled={isLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 
+                <Separator className="w-full max-w-md"/>
+
                 <FormField
                   control={form.control}
                   name="condition"
@@ -262,7 +296,7 @@ export function VerificationTool() {
                   )}
                 />
 
-                <Button type="submit" disabled={isLoading || !photoDataUri} className="w-full max-w-xs">
+                <Button type="submit" disabled={isLoading || (!photoDataUri && !itemName)} className="w-full max-w-xs">
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
