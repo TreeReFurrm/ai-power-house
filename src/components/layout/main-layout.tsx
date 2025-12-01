@@ -1,3 +1,4 @@
+
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter } from '@/components/ui/sidebar';
 import { Home, ScanLine, PlusCircle, ShoppingCart, User, Bot } from 'lucide-react';
@@ -53,9 +54,11 @@ export function MainLayout({ children }: { children: ReactNode }) {
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Account">
-                <User />
-                <span>Account</span>
+              <SidebarMenuButton asChild tooltip="Account">
+                <Link href="/account">
+                  <User />
+                  <span>Account</span>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

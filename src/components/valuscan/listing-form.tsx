@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -16,7 +17,7 @@ import { getPriceSuggestion } from '@/ai/flows/ai-price-suggestions';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Sparkles, DollarSign, Heart, Tag, Info, X } from 'lucide-react';
 import { Badge } from '../ui/badge';
-import { useFirestore, addDocumentNonBlocking } from '@/firebase';
+import { useFirestore, addDocumentNonBlocking, useUser } from '@/firebase';
 import { collection, serverTimestamp } from 'firebase/firestore';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -42,6 +43,8 @@ export function ListingForm() {
 
   const { toast } = useToast();
   const firestore = useFirestore();
+  const { user } = useUser();
+
   const form = useForm<ListingFormData>({
     resolver: zodResolver(listingSchema),
     defaultValues: {
@@ -54,6 +57,10 @@ export function ListingForm() {
   });
 
   const handleGenerateDetails = async (dataUri: string) => {
+    if (!user) {
+      toast({ variant: 'destructive', title: 'Please sign in to create a listing.'});
+      return;
+    }
     setPhotoDataUri(dataUri);
     setIsGenerating(true);
     try {
@@ -112,6 +119,14 @@ export function ListingForm() {
       });
       return;
     }
+    if (!user) {
+       toast({
+        variant: 'destructive',
+        title: 'Authentication Error',
+        description: 'You must be logged in to create a listing.',
+      });
+      return;
+    }
     
     setIsSubmitting(true);
     
@@ -124,7 +139,8 @@ export function ListingForm() {
         imageUrl: photoDataUri || randomImage.imageUrl, // In a real app, upload to storage and get URL
         imageHint: "custom item",
         createdAt: serverTimestamp(),
-        userId: 'anonymous-user', // Placeholder, replace with actual user ID
+        userId: user.uid,
+        status: 'listed'
       };
       
       addDocumentNonBlocking(itemsCollection, newItem);
