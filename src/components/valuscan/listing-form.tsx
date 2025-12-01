@@ -195,7 +195,7 @@ export function ListingForm() {
   }
 
   return (
-    <FormProvider {...form}>
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <Card>
           <CardHeader>
@@ -353,6 +353,6 @@ export function ListingForm() {
             </Button>
         </div>
       </form>
-    </FormProvider>
+    </Form>
   );
 }

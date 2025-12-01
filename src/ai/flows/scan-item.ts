@@ -11,7 +11,7 @@ const ScanItemInputSchema = z.object({
       "A photo of the item, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
 });
-export type ScanItemInput = z.infer<typeof ScanItemInputSchema>;
+type ScanItemInput = z.infer<typeof ScanItemInputSchema>;
 
 
 const ScanItemOutputSchema = z.object({
@@ -99,3 +99,4 @@ ai.defineFlow(
   },
   scanItem
 );
+
