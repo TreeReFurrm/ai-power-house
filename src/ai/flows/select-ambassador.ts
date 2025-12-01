@@ -14,22 +14,21 @@ import { z } from 'zod';
 import {
   AmbassadorListSchema,
   type AmbassadorListOutput,
-  type Ambassador,
 } from '@/ai/schemas/ambassador-schema';
 import { ListingDetailsSchema } from '@/ai/schemas/listing-details';
 
-// The input combines listing details with the user's chosen action.
+// The input combines listing details with the user's chosen action and location.
 export const AmbassadorFlowInputSchema = ListingDetailsSchema.extend({
   action: z
     .enum(['SELL', 'DONATE'])
     .describe('The user’s chosen action: SELL (Consignment) or DONATE.'),
-  zipCode: z.string().describe('The user\'s ZIP code for location-based search.'),
+  zipCode: z.string().describe("The user's ZIP code for location-based search."),
   service: z.enum(['pickup', 'cleanout', 'organize', 'downsize']).describe('The specific service required.'),
 });
 export type AmbassadorFlowInput = z.infer<typeof AmbassadorFlowInputSchema>;
 
 
-const VALID_SERVICES = {
+const VALID_SERVICES: Record<string, string> = {
     "pickup": "Item Pickup/Shipping Drop-off",
     "cleanout": "Full Home/Storage Unit Clean-out Services",
     "organize": "Organizational Services (e.g., Garage Facelift)",
@@ -71,7 +70,7 @@ const AMBASSADOR_NETWORK = [
  * In a real app, this would query a database/CRM.
  * This function finds active ambassadors in a given ZIP code who offer a required service.
  */
-async function findLocalAmbassadors(zipCode: string, requiredService: keyof typeof VALID_SERVICES): Promise<any[]> {
+async function findLocalAmbassadors(zipCode: string, requiredService: string): Promise<any[]> {
     console.log(`--- 📍 Searching for '${VALID_SERVICES[requiredService]}' Ambassadors in ZIP ${zipCode} ---`);
 
     const localAmbassadors = AMBASSADOR_NETWORK.filter(ambassador => {
