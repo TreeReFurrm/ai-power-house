@@ -1,7 +1,7 @@
 
 'use client';
 
-import { DollarSign, Gift, ArrowRight, UserPlus, Heart, Info } from 'lucide-react';
+import { DollarSign, Gift, ArrowRight, UserPlus, Heart, Info, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -10,11 +10,14 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { useUser } from '@/firebase';
 
 export default function DonationPage() {
   const router = useRouter();
   const [amount, setAmount] = useState(50); // Default donation amount
   const { toast } = useToast();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { user } = useUser();
 
   // Define the impact tiers for transparency
   const impactTiers = [
@@ -24,21 +27,46 @@ export default function DonationPage() {
     { amount: 250, label: '$250', description: 'Funds a full-scale community education seminar on ethical estate liquidation.' },
   ];
 
-  // Handler for Monetary Donation (Placeholder for Stripe)
-  const handleMonetaryDonate = () => {
-    // **TODO: INTEGRATE STRIPE CHECKOUT HERE**
-    // This function must call an API route to securely create a Stripe Checkout Session
-    console.log(`Initiating donation for $${amount}. (Stripe integration needed)`);
-    
+  // Handler for Monetary Donation
+  const handleMonetaryDonate = async () => {
+    setIsProcessing(true);
     toast({
-        title: 'Thank You!',
-        description: `Your $${amount} donation is greatly appreciated. We are redirecting you to checkout...`
-    })
-    
-    // In a real implementation:
-    // fetch('/api/stripe/create-checkout', { method: 'POST', body: JSON.stringify({ amount: amount * 100 }) })
-    //   .then(res => res.json())
-    //   .then(data => router.push(data.url)); 
+        title: 'Processing Donation...',
+        description: `We are redirecting you to our secure payment processor.`
+    });
+
+    try {
+      const response = await fetch('/api/stripe/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+              amount: amount,
+              donorEmail: user?.email,
+              donorName: user?.displayName || 'Anonymous Supporter'
+          }),
+      });
+
+      const { url, error } = await response.json();
+
+      if (error) {
+        throw new Error(error);
+      }
+
+      if (url) {
+        // Redirect to Stripe's checkout page
+        router.push(url);
+      } else {
+        throw new Error('Could not initiate donation. Please try again.');
+      }
+    } catch (err: any) {
+        console.error(err);
+        toast({
+            variant: 'destructive',
+            title: 'Donation Failed',
+            description: err.message || 'An unexpected error occurred. Please try again later.'
+        });
+        setIsProcessing(false);
+    }
   };
 
   // Handler for Item Donation - Reroutes to the item scanning/listing flow
@@ -107,6 +135,7 @@ export default function DonationPage() {
                     variant={amount === tier.amount ? 'default' : 'outline'}
                     onClick={() => setAmount(tier.amount)}
                     className="flex flex-col h-auto py-4 text-center justify-center items-center"
+                    disabled={isProcessing}
                   >
                     <span className="text-lg font-bold">{tier.label}</span>
                     <span className="text-xs text-muted-foreground/90 mt-1 block max-w-[90px] mx-auto text-balance">
@@ -127,14 +156,16 @@ export default function DonationPage() {
                   step="5"
                   className="text-lg py-6"
                   placeholder="50"
+                  disabled={isProcessing}
                 />
               </div>
               <Button 
                 onClick={handleMonetaryDonate} 
                 className="w-full h-12 text-lg"
-                disabled={amount <= 0}
+                disabled={isProcessing || amount <= 0}
               >
-                Donate ${amount.toFixed(2)} Now
+                {isProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                {isProcessing ? 'Processing...' : `Donate $${amount.toFixed(2)} Now`}
               </Button>
             </div>
           </CardContent>
@@ -159,7 +190,7 @@ export default function DonationPage() {
                     <li>**Fulfillment Coordination:** Local pickup is arranged by a verified **Ambassador** (where available).</li>
                     <li>**100% Mission Funding:** All net proceeds from the sale are directed to the Big Mission Fund.</li>
                   </ul>
-                  <Button onClick={handleItemDonate} className="w-full mt-auto">
+                  <Button onClick={handleItemDonate} className="w-full mt-auto" disabled={isProcessing}>
                     Submit Item for Assessment <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
               </CardContent>
@@ -180,6 +211,7 @@ export default function DonationPage() {
                     variant="secondary" 
                     onClick={handleAmbassadorInterest} 
                     className="w-full text-primary"
+                    disabled={isProcessing}
                 >
                   Apply to Lead
                 </Button>
