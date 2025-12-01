@@ -180,14 +180,14 @@ export function ListingForm() {
   if (!scanResult) {
     return (
       <Card>
-        <CardContent className="p-6 flex flex-col items-center gap-6">
-          <ImageUploader onImageUpload={(uri) => uri && handleInitialScan(uri)} disabled={isGenerating} />
-          {isGenerating && (
-            <div className="flex items-center text-muted-foreground">
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              <span>AI is analyzing your item...</span>
-            </div>
-          )}
+        <CardContent className="p-6">
+          <ImageUploader onImageUpload={(uri) => {
+            if(uri) {
+                handleInitialScan(uri)
+            } else {
+                setPhotoDataUri(null);
+            }
+          }} disabled={isGenerating} />
         </CardContent>
       </Card>
     );

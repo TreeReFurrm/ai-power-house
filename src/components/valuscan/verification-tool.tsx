@@ -77,7 +77,12 @@ export function VerificationTool() {
   const handleReset = () => {
     setResult(null);
     setIsLoading(false);
-    form.reset();
+    form.reset({
+        photoDataUri: '',
+        condition: "Good (Used, Working)",
+        source: "Yard Sale/Flea Market (Buying)",
+        askingPrice: undefined,
+    });
   };
   
   const photoDataUri = form.watch('photoDataUri');
@@ -275,5 +280,3 @@ export function VerificationTool() {
     </Card>
   );
 }
-
-    
