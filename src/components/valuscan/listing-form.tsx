@@ -1,8 +1,8 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { ImageUploader } from './image-uploader';
@@ -14,15 +14,11 @@ import { Textarea } from '../ui/textarea';
 import { Switch } from '../ui/switch';
 import { scanItem, type ScanItemOutput } from '@/ai/flows/scan-item';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Sparkles, DollarSign, Heart, Tag, Info, X, AlertTriangle } from 'lucide-react';
+import { Loader2, Sparkles, DollarSign, Heart, Info, AlertTriangle } from 'lucide-react';
 import { Badge } from '../ui/badge';
-import { useFirestore, addDocumentNonBlocking, useUser } from '@/firebase';
-import { collection, serverTimestamp } from 'firebase/firestore';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
+import { useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 
 
 const listingSchema = z.object({
@@ -199,7 +195,7 @@ export function ListingForm() {
   }
 
   return (
-    <FormProvider {...form}>
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <Card>
           <CardHeader>
@@ -357,6 +353,8 @@ export function ListingForm() {
             </Button>
         </div>
       </form>
-    </FormProvider>
+    </Form>
   );
 }
+
+    
