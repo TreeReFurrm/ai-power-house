@@ -67,7 +67,7 @@ const VerifyItemValueOutputSchema = z.object({
   justification: z
     .string()
     .describe(
-      'A brief justification for the estimated market value, including the multipliers used.'
+      'A brief justification for the estimated market value, or a disclaimer if not resellable.'
     ),
   profitAnalysis: ProfitAnalysisSchema.optional().describe("An analysis of the profit opportunity if an asking price is provided."),
   authenticity: AuthenticitySchema.describe("The result of the authenticity check."),
@@ -95,21 +95,23 @@ const verifyItemValuePrompt = ai.definePrompt({
     justification: z.string(),
     profitAnalysis: ProfitAnalysisSchema.optional(),
   })},
-  prompt: `You are an expert appraiser, skilled at determining the true market value of items and identifying profit opportunities.
+  prompt: `You are an expert appraiser, skilled at determining the true market value of items and identifying profit opportunities, while also flagging non-resellable items.
 
 First, identify the item in the photo.
 
 Then, use the following data and multipliers to calculate a realistic resale value range.
 
 CORE_MARKET_DATA = {
-    "Gaming Laptop (Mid-Tier)": { avg_resale: 650.00 },
-    "KitchenAid Stand Mixer (Used)": { avg_resale: 150.00 },
-    "Vintage Vinyl Record (Specific Title)": { avg_resale: 15.00 },
-    "Unopened Lego Set (Current)": { avg_resale: 80.00 },
-    "Proenza Schouler PS1 Tiny Bag": { avg_resale: 450.00 },
-    "iPhone 14 Plus (Used)": { avg_resale: 341.00 },
-    "Hermes Birkin Bag": { avg_resale: 9000.00 },
-    "Rolex Submariner Watch": { avg_resale: 12000.00 },
+    "Gaming Laptop (Mid-Tier)": { avg_resale: 650.00, is_high_risk: false },
+    "KitchenAid Stand Mixer (Used)": { avg_resale: 150.00, is_high_risk: false },
+    "Vintage Vinyl Record (Specific Title)": { avg_resale: 15.00, is_high_risk: false },
+    "Unopened Lego Set (Current)": { avg_resale: 80.00, is_high_risk: false },
+    "Proenza Schouler PS1 Tiny Bag": { avg_resale: 450.00, is_high_risk: false },
+    "iPhone 14 Plus (Used)": { avg_resale: 341.00, is_high_risk: false },
+    "Hermes Birkin Bag": { avg_resale: 9000.00, is_high_risk: false },
+    "Rolex Submariner Watch": { avg_resale: 12000.00, is_high_risk: false },
+    "Used Bike Helmet": { avg_resale: 0, is_high_risk: true, retail: 100.00 },
+    "Opened Vitamin Supplements": { avg_resale: 0, is_high_risk: true, retail: 45.00 }
 }
 
 CONDITION_MULTIPLIERS = {
@@ -126,7 +128,13 @@ SOURCE_MULTIPLIERS = {
     "Online Marketplace (eBay/Poshmark)": 1.00,
 }
 
-VALUE CALCULATION STEPS:
+**REAL HUMAN LOGIC CHECK:**
+If the identified item has 'is_high_risk: true' and the condition is not 'New (Sealed)':
+1. Set 'minResaleValue' and 'maxResaleValue' to 0.
+2. Create a 'justification' that starts with "***NO RESALE VALUE.***" and explains that hygiene/safety rules prevent resale. Mention the estimated RETAIL price if available.
+3. If profit analysis is requested, set the verdict to "DO NOT BUY".
+
+**STANDARD VALUE CALCULATION STEPS:**
 1. Find the 'avg_resale' price for the identified item from CORE_MARKET_DATA. If not found, use a reasonable estimate.
 2. Get the 'condition_multiplier' for the user's input: {{{condition}}}.
 3. Get the 'source_multiplier' for the user's input: {{{source}}}.
@@ -137,17 +145,18 @@ VALUE CALCULATION STEPS:
 8. Create a 'justification' string explaining how the base price was adjusted by the multipliers.
 
 {{#if askingPrice}}
-PROFIT ANALYSIS STEPS:
-1. Use the 'max_resale_value' calculated above.
-2. Assume a standard 15% marketplace fee. Calculate 'net_resale_value' = max_resale_value * (1 - 0.15).
-3. Calculate 'potential_gross_profit' = net_resale_value - {{{askingPrice}}}.
-4. If potential_gross_profit > 0, calculate 'roi_percentage' = (potential_gross_profit / {{{askingPrice}}}) * 100. Otherwise, ROI is 0.
-5. Determine the 'verdict':
+**PROFIT ANALYSIS STEPS (only for standard items):**
+1. If the item is high-risk, set verdict to "DO NOT BUY" and all financial values to 0.
+2. Otherwise, use the 'max_resale_value' calculated above.
+3. Assume a standard 15% marketplace fee. Calculate 'net_resale_value' = max_resale_value * (1 - 0.15).
+4. Calculate 'potential_gross_profit' = net_resale_value - {{{askingPrice}}}.
+5. If potential_gross_profit > 0, calculate 'roi_percentage' = (potential_gross_profit / {{{askingPrice}}}) * 100. Otherwise, ROI is 0.
+6. Determine the 'verdict':
    - If roi_percentage > 50, "BUY NOW! Major Profit Opportunity."
    - If roi_percentage > 0, "Good Deal, worth the flip."
    - If potential_gross_profit >= -10, "Break-even risk. Only buy if condition is perfect."
    - Otherwise, "NO DEAL. Asking price is too high."
-6. Populate the 'profitAnalysis' object in the output.
+7. Populate the 'profitAnalysis' object in the output.
 {{/if}}
 
 
@@ -196,5 +205,3 @@ const verifyItemValueFlow = ai.defineFlow(
     };
   }
 );
-
-    
