@@ -241,6 +241,51 @@
         "amount",
         "contributionDate"
       ]
+    },
+    "ServiceRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ServiceRequest",
+      "type": "object",
+      "description": "Represents a user's request for a specialized Ambassador service.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the service request.",
+          "format": "uuid"
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user making the request."
+        },
+        "serviceType": {
+          "type": "string",
+          "description": "The type of service requested.",
+          "enum": ["cleanout", "organize", "downsize"]
+        },
+        "zipCode": {
+          "type": "string",
+          "description": "The ZIP code where the service is needed."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes from the user about the service request."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the request.",
+          "enum": ["PENDING_MATCH", "MATCHED", "NO_MATCH_FOUND", "COMPLETED"]
+        },
+        "assignedAmbassadorId": {
+          "type": "string",
+          "description": "The ID of the matched Ambassador, if any."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of when the request was created.",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "userId", "serviceType", "zipCode", "status", "createdAt"]
     }
   },
   "auth": {
@@ -330,8 +375,26 @@
             }
           ]
         }
+      },
+      {
+        "path": "/service_requests/{requestId}",
+        "definition": {
+          "entityName": "ServiceRequest",
+          "schema": {
+            "$ref": "#/backend/entities/ServiceRequest"
+          },
+          "description": "A collection of user requests for specialized Ambassador services.",
+          "params": [
+            {
+              "name": "requestId",
+              "description": "The unique identifier for the service request."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "The Firestore structure has been updated to support the core business logic. The User entity now includes 'tier', 'subscriptionStatus', and 'stripeCustomerId' to manage user roles and billing. The Item entity has a 'status' to track its lifecycle (listed, sold, shipped) and 'aiEstimatedValue'. The Sale entity now more clearly separates seller and buyer IDs and links to an EthicalContribution, which is its own top-level collection to serve as a proper ledger for the LEAN Foundation. This denormalized, segregated structure simplifies security rules and supports efficient queries for marketplace, user-specific, and administrative functions."
+    "reasoning": "The Firestore structure has been updated to support the core business logic. The User entity now includes 'tier', 'subscriptionStatus', and 'stripeCustomerId' to manage user roles and billing. The Item entity has a 'status' to track its lifecycle (listed, sold, shipped) and 'aiEstimatedValue'. The Sale entity now more clearly separates seller and buyer IDs and links to an EthicalContribution, which is its own top-level collection to serve as a proper ledger for the LEAN Foundation. A new 'ServiceRequest' entity and collection have been added to handle specialized service requests, linking users to Ambassadors. This denormalized, segregated structure simplifies security rules and supports efficient queries for marketplace, user-specific, and administrative functions."
   }
 }
+
+    
