@@ -1,14 +1,36 @@
-import { dummyMarketplaceItems } from '@/lib/data';
+'use client';
+
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import { useParams, notFound } from 'next/navigation';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tag, Package, Truck, ArrowLeft } from 'lucide-react';
+import { Tag, Package, Truck, ArrowLeft, Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { useDoc } from '@/firebase';
+import { doc } from 'firebase/firestore';
+import { useFirestore, useMemoFirebase } from '@/firebase/provider';
+import type { Item } from '@/lib/data';
 
-export default function ItemDetailPage({ params }: { params: { itemId: string } }) {
-  const item = dummyMarketplaceItems.find((i) => i.id === params.itemId);
+export default function ItemDetailPage() {
+  const params = useParams();
+  const itemId = params.itemId as string;
+  const firestore = useFirestore();
+
+  const itemRef = useMemoFirebase(() => {
+    if (!firestore || !itemId) return null;
+    return doc(firestore, 'items', itemId);
+  }, [firestore, itemId]);
+
+  const { data: item, isLoading } = useDoc<Item>(itemRef);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   if (!item) {
     notFound();
@@ -25,12 +47,12 @@ export default function ItemDetailPage({ params }: { params: { itemId: string } 
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
         <Card className="aspect-square relative overflow-hidden rounded-lg shadow-md">
           <Image
-            src={item.image.imageUrl}
+            src={item.imageUrl}
             alt={item.title}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
-            data-ai-hint={item.image.imageHint}
+            data-ai-hint={item.imageHint}
           />
         </Card>
         <div className="flex flex-col gap-6">
@@ -42,14 +64,14 @@ export default function ItemDetailPage({ params }: { params: { itemId: string } 
           <Card>
             <CardContent className="p-6 space-y-4">
               <p className="text-muted-foreground">{item.description}</p>
-              <div className="flex items-center gap-2">
-                <Tag className="text-muted-foreground" />
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">Vintage</Badge>
-                  <Badge variant="secondary">Furniture</Badge>
-                  <Badge variant="secondary">Leather</Badge>
+              {item.tags && item.tags.length > 0 && (
+                <div className="flex items-center gap-2">
+                  <Tag className="text-muted-foreground" />
+                  <div className="flex flex-wrap gap-2">
+                    {item.tags.map(tag => <Badge key={tag} variant="secondary">{tag}</Badge>)}
+                  </div>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
 

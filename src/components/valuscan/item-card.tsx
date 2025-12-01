@@ -1,11 +1,11 @@
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { MarketplaceItem } from '@/lib/data';
+import type { Item, WithId } from '@/lib/data';
 import { Button } from '../ui/button';
 
 interface ItemCardProps {
-  item: MarketplaceItem;
+  item: WithId<Item>;
 }
 
 export function ItemCard({ item }: ItemCardProps) {
@@ -15,12 +15,12 @@ export function ItemCard({ item }: ItemCardProps) {
         <CardHeader className="p-0">
           <div className="aspect-square relative">
             <Image
-              src={item.image.imageUrl}
+              src={item.imageUrl}
               alt={item.title}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              data-ai-hint={item.image.imageHint}
+              data-ai-hint={item.imageHint}
             />
           </div>
         </CardHeader>

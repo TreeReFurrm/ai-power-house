@@ -16,6 +16,9 @@ import { getPriceSuggestion } from '@/ai/flows/ai-price-suggestions';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Sparkles, DollarSign, Heart, Tag, Info, X } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import { useFirestore, addDocumentNonBlocking } from '@/firebase';
+import { collection, serverTimestamp } from 'firebase/firestore';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const listingSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
@@ -35,8 +38,10 @@ export function ListingForm() {
   const [detailsGenerated, setDetailsGenerated] = useState(false);
   const [priceSuggestion, setPriceSuggestion] = useState<string | null>(null);
   const [tagInput, setTagInput] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { toast } = useToast();
+  const firestore = useFirestore();
   const form = useForm<ListingFormData>({
     resolver: zodResolver(listingSchema),
     defaultValues: {
@@ -98,12 +103,53 @@ export function ListingForm() {
     form.setValue('tags', form.getValues('tags').filter(tag => tag !== tagToRemove));
   };
   
-  const onSubmit = (data: ListingFormData) => {
-    console.log(data);
-    toast({
-      title: "Listing Created! (Simulated)",
-      description: "Your item would now be live on the marketplace.",
-    });
+  const onSubmit = async (data: ListingFormData) => {
+    if (!firestore) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Firestore is not available. Please try again later.',
+      });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      const itemsCollection = collection(firestore, 'items');
+      const randomImage = PlaceHolderImages[Math.floor(Math.random() * PlaceHolderImages.length)];
+      
+      const newItem = {
+        ...data,
+        imageUrl: photoDataUri || randomImage.imageUrl, // In a real app, upload to storage and get URL
+        imageHint: "custom item",
+        createdAt: serverTimestamp(),
+        userId: 'anonymous-user', // Placeholder, replace with actual user ID
+      };
+      
+      addDocumentNonBlocking(itemsCollection, newItem);
+
+      toast({
+        title: "Listing Created!",
+        description: "Your item is now live on the marketplace.",
+      });
+
+      // Reset form state
+      form.reset();
+      setDetailsGenerated(false);
+      setPhotoDataUri(null);
+      setPriceSuggestion(null);
+
+    } catch (error) {
+      console.error('Error creating listing:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Submission Failed',
+        description: 'There was an error creating your listing.',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!detailsGenerated) {
@@ -269,7 +315,10 @@ export function ListingForm() {
           </CardContent>
         </Card>
 
-        <Button type="submit" className="w-full" size="lg">Create Listing</Button>
+        <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Create Listing
+        </Button>
       </form>
     </FormProvider>
   );
