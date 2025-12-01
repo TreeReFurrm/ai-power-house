@@ -6,5 +6,6 @@ import {requestSecondaryServiceFlow} from '@/ai/flows/request-secondary-service'
 import {scoutFakesFlow} from '@/ai/flows/scout-fakes'
 import {selectAmbassadorFlow} from '@/ai/flows/select-ambassador'
 import {verifyItemValueFlow} from '@/ai/flows/verify-item-value'
+import {upcDealCheckerFlow} from '@/ai/flows/upc-deal-checker'
 
 export const POST = nextHandler();
