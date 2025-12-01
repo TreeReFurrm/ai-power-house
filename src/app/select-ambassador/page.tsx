@@ -4,7 +4,7 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, UserCheck, MapPin, Clock, Briefcase, Star, Handshake } from 'lucide-react';
+import { Loader2, UserCheck, MapPin, Clock, Briefcase, Star, Handshake, Sparkles, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -22,6 +22,12 @@ interface ListingData {
   img?: string; // Base64 Data URI
   service: 'pickup' | 'cleanout' | 'organize' | 'downsize';
   zipCode: string;
+}
+
+interface FulfillmentViability {
+  isProfitable: boolean;
+  ambassadorsAvailable: boolean;
+  suggestedAmbassadors: Ambassador[];
 }
 
 // Ambassador Card Component (Re-using the structure we planned)
@@ -65,7 +71,7 @@ export default function AmbassadorSelectionPage() {
   const { toast } = useToast();
 
   const [listingData, setListingData] = useState<ListingData | null>(null);
-  const [ambassadors, setAmbassadors] = useState<Ambassador[]>([]);
+  const [viability, setViability] = useState<FulfillmentViability | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // 1. Data Parsing from URL
@@ -96,11 +102,25 @@ export default function AmbassadorSelectionPage() {
   useEffect(() => {
     if (!listingData) return;
 
-    async function getAmbassadors() {
+    async function getFulfillmentViability() {
       setIsLoading(true);
       try {
         const suggestions: AmbassadorListOutput = await selectAmbassador(listingData as AmbassadorFlowInput);
-        setAmbassadors(suggestions.ambassadors);
+        
+        // Mocking the viability logic for now
+        const tags = listingData.tags;
+        let isProfitable = true;
+
+        if (tags.includes('small') || tags.includes('low-value') || listingData.price < 20) {
+            isProfitable = Math.random() > 0.3; // 70% chance of being deemed not viable
+        }
+
+        setViability({
+            isProfitable: isProfitable,
+            ambassadorsAvailable: isProfitable && suggestions.ambassadors.length > 0,
+            suggestedAmbassadors: suggestions.ambassadors
+        });
+
       } catch (error) {
         console.error('Failed to fetch ambassadors:', error);
         toast({
@@ -113,12 +133,12 @@ export default function AmbassadorSelectionPage() {
       }
     }
 
-    getAmbassadors();
+    getFulfillmentViability();
   }, [listingData, toast]);
 
   // 3. Final Selection Handler
   const handleAmbassadorSelect = useCallback((ambassadorId: string) => {
-    const selectedAmbassador = ambassadors.find(a => a.id === ambassadorId);
+    const selectedAmbassador = viability?.suggestedAmbassadors.find(a => a.id === ambassadorId);
     if (selectedAmbassador) {
       toast({
         title: 'Ambassador Selected!',
@@ -127,7 +147,15 @@ export default function AmbassadorSelectionPage() {
       // Final step: Send data to a fulfillment service/database
       router.push('/confirmation'); 
     }
-  }, [ambassadors, toast, router]);
+  }, [viability, toast, router]);
+  
+  const handleFlexibleFulfillment = () => {
+      toast({
+        title: 'DIY Fulfillment Selected',
+        description: `Your item will be listed. You will be notified with a shipping label upon sale.`,
+      });
+      router.push('/marketplace');
+  }
 
 
   if (!listingData) {
@@ -172,7 +200,7 @@ export default function AmbassadorSelectionPage() {
       </Card>
 
       {/* Ambassador Selection Section */}
-      <h2 className="text-2xl font-semibold pt-4">Suggested Local Ambassadors</h2>
+      <h2 className="text-2xl font-semibold pt-4">Fulfillment Options</h2>
       <Card>
         <CardContent className="p-4 space-y-4">
           {isLoading ? (
@@ -180,17 +208,35 @@ export default function AmbassadorSelectionPage() {
               <Loader2 className="w-6 h-6 animate-spin text-primary mx-auto" />
               <p className="mt-2 text-muted-foreground">Searching network for best matches...</p>
             </div>
-          ) : ambassadors.length > 0 ? (
+          ) : !viability?.isProfitable ? (
+             <div className="p-8 text-center bg-yellow-50 rounded-lg border border-yellow-200 space-y-3">
+              <Sparkles className="w-8 h-8 text-yellow-600 mx-auto" />
+              <p className="font-medium text-lg text-yellow-800">
+                Managed Fulfillment Not Currently Viable
+              </p>
+              <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+                Based on current market data and your item's size, the expected resale <strong>contribution value</strong> does not cover the cost of our managed pickup or shipping logistics.
+              </p>
+              <p className="text-sm font-semibold">
+                <strong>Solution:</strong> We will finalize the listing. You hold the item, and when it sells, we provide the shipping label. Your contribution to the Mission is determined after the sale.
+              </p>
+              <Button onClick={() => handleFlexibleFulfillment()} className="mt-4">
+                List for DIY Sale & Mission Contribution <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          ) : viability.suggestedAmbassadors.length > 0 ? (
             <div className="grid grid-cols-1 gap-4">
-              {ambassadors.map((ambassador) => (
+              {viability.suggestedAmbassadors.map((ambassador) => (
                 <AmbassadorCard key={ambassador.id} ambassador={ambassador} onSelect={handleAmbassadorSelect} />
               ))}
             </div>
           ) : (
-            <div className="p-8 text-center bg-muted/50 rounded-lg">
-              <p className="font-medium">No Ambassadors found nearby.</p>
-              <p className="text-sm text-muted-foreground">We will notify you when a match is available.</p>
-              <Button variant="link" className="mt-2">Contact Support</Button>
+            <div className="p-8 text-center bg-gray-50 rounded-lg">
+                <p className="font-medium">Item has high Mission Contribution Value, but no Ambassador is currently available.</p>
+                <p className="text-sm text-muted-foreground">We will notify you when a match is available, or you can opt for the flexible DIY fulfillment option now.</p>
+                <Button variant="link" className="mt-2" onClick={() => handleFlexibleFulfillment()}>
+                    Opt for Flexible DIY Fulfillment Now
+                </Button>
             </div>
           )}
         </CardContent>
@@ -198,3 +244,4 @@ export default function AmbassadorSelectionPage() {
     </div>
   );
 }
+
