@@ -4,8 +4,9 @@
 /**
  * @fileOverview This file defines a Genkit flow for verifying the value of an item using AI.
  *
- * The flow takes an image of an item, its condition, and the source context as input,
- * and returns its estimated "min" and "max" resale value.
+ * The flow takes an image of an item, its condition, the source context, and an optional asking price.
+ * It returns its estimated "min" and "max" resale value, and if an asking price is provided,
+ * it also calculates the potential profit opportunity.
  *
  * @exported verifyItemValue - An async function that initiates the item value verification flow.
  * @exported VerifyItemValueInput - The input type for the verifyItemValue function.
@@ -32,9 +33,17 @@ const VerifyItemValueInputSchema = z.object({
         "Yard Sale/Flea Market (Buying)",
         "Retail Store (Walmart/Target)",
         "Online Marketplace (eBay/Poshmark)",
-    ]).describe("The context of the valuation (e.g., where the user is).")
+    ]).describe("The context of the valuation (e.g., where the user is)."),
+    askingPrice: z.number().optional().describe("The price the user is seeing for the item.")
 });
 export type VerifyItemValueInput = z.infer<typeof VerifyItemValueInputSchema>;
+
+const ProfitAnalysisSchema = z.object({
+    estimatedNetResale: z.number().describe("The estimated resale value after a 15% marketplace fee."),
+    potentialGrossProfit: z.number().describe("The potential gross profit if sold at max resale value."),
+    potentialRoiPercent: z.number().describe("The potential return on investment percentage."),
+    verdict: z.string().describe("A short verdict on whether it's a good deal.")
+});
 
 const VerifyItemValueOutputSchema = z.object({
   minResaleValue: z
@@ -52,6 +61,7 @@ const VerifyItemValueOutputSchema = z.object({
     .describe(
       'A brief justification for the estimated market value, including the multipliers used.'
     ),
+  profitAnalysis: ProfitAnalysisSchema.optional().describe("An analysis of the profit opportunity if an asking price is provided.")
 });
 export type VerifyItemValueOutput = z.infer<typeof VerifyItemValueOutputSchema>;
 
@@ -65,7 +75,7 @@ const verifyItemValuePrompt = ai.definePrompt({
   name: 'verifyItemValuePrompt',
   input: {schema: VerifyItemValueInputSchema},
   output: {schema: VerifyItemValueOutputSchema},
-  prompt: `You are an expert appraiser, skilled at determining the true market value of items based on their image, condition, and source.
+  prompt: `You are an expert appraiser, skilled at determining the true market value of items and identifying profit opportunities.
 
 First, identify the item in the photo.
 
@@ -76,6 +86,8 @@ CORE_MARKET_DATA = {
     "KitchenAid Stand Mixer (Used)": { avg_resale: 150.00 },
     "Vintage Vinyl Record (Specific Title)": { avg_resale: 15.00 },
     "Unopened Lego Set (Current)": { avg_resale: 80.00 },
+    "Proenza Schouler PS1 Tiny Bag": { avg_resale: 450.00 },
+    "iPhone 14 Plus (Used)": { avg_resale: 341.00 },
 }
 
 CONDITION_MULTIPLIERS = {
@@ -92,7 +104,7 @@ SOURCE_MULTIPLIERS = {
     "Online Marketplace (eBay/Poshmark)": 1.00,
 }
 
-Calculation Steps:
+VALUE CALCULATION STEPS:
 1. Find the 'avg_resale' price for the identified item from CORE_MARKET_DATA. If not found, use a reasonable estimate.
 2. Get the 'condition_multiplier' for the user's input: {{{condition}}}.
 3. Get the 'source_multiplier' for the user's input: {{{source}}}.
@@ -102,12 +114,30 @@ Calculation Steps:
 7. Ensure min_resale_value is not greater than max_resale_value. If it is, set min_resale_value = max_resale_value * 0.9.
 8. Create a 'justification' string explaining how the base price was adjusted by the multipliers.
 
+{{#if askingPrice}}
+PROFIT ANALYSIS STEPS:
+1. Use the 'max_resale_value' calculated above.
+2. Assume a standard 15% marketplace fee. Calculate 'net_resale_value' = max_resale_value * (1 - 0.15).
+3. Calculate 'potential_gross_profit' = net_resale_value - {{{askingPrice}}}.
+4. If potential_gross_profit > 0, calculate 'roi_percentage' = (potential_gross_profit / {{{askingPrice}}}) * 100. Otherwise, ROI is 0.
+5. Determine the 'verdict':
+   - If roi_percentage > 50, "BUY NOW! Major Profit Opportunity."
+   - If roi_percentage > 0, "Good Deal, worth the flip."
+   - If potential_gross_profit >= -10, "Break-even risk. Only buy if condition is perfect."
+   - Otherwise, "NO DEAL. Asking price is too high."
+6. Populate the 'profitAnalysis' object in the output.
+{{/if}}
+
+
 Analyze the following photo and user inputs:
 Photo: {{media url=photoDataUri}}
 Condition: {{{condition}}}
 Source: {{{source}}}
+{{#if askingPrice}}
+Asking Price: {{{askingPrice}}}
+{{/if}}
 
-Respond with the min/max resale values and a justification.
+Respond with the min/max resale values, a justification, and the profit analysis if an asking price was provided.
   `,
 });
 

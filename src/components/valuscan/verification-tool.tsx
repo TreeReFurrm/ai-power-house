@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -6,12 +7,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { ImageUploader } from './image-uploader';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '../ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Input } from '../ui/input';
 import { verifyItemValue, type VerifyItemValueOutput } from '@/ai/flows/verify-item-value';
-import { Loader2, Sparkles } from 'lucide-react';
+import { Loader2, Sparkles, DollarSign, TrendingUp, AlertCircle, BadgeCheck, ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Separator } from '../ui/separator';
 
 const conditions = [
     "New (Sealed)",
@@ -31,6 +34,7 @@ const verificationSchema = z.object({
   photoDataUri: z.string().min(1, 'Please upload a photo.'),
   condition: z.enum(conditions),
   source: z.enum(sources),
+  askingPrice: z.coerce.number().optional(),
 });
 
 type VerificationFormData = z.infer<typeof verificationSchema>;
@@ -45,7 +49,8 @@ export function VerificationTool() {
     defaultValues: {
       photoDataUri: '',
       condition: "Good (Used, Working)",
-      source: "Personal Garage/Storage",
+      source: "Yard Sale/Flea Market (Buying)",
+      askingPrice: undefined,
     },
   });
 
@@ -74,6 +79,13 @@ export function VerificationTool() {
   };
   
   const photoDataUri = form.watch('photoDataUri');
+
+  const getVerdictIcon = (verdict: string) => {
+    if (verdict.includes("BUY NOW")) return <BadgeCheck className="text-green-500" />;
+    if (verdict.includes("Good Deal")) return <TrendingUp className="text-blue-500" />;
+    if (verdict.includes("Break-even")) return <AlertCircle className="text-yellow-500" />;
+    return <AlertCircle className="text-destructive" />;
+  }
 
   return (
     <Card>
@@ -130,7 +142,7 @@ export function VerificationTool() {
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select the valuation source/context" />
-                        </SelectTrigger>
+                        </Trigger>
                       </FormControl>
                       <SelectContent>
                          {sources.map((s) => (
@@ -138,6 +150,23 @@ export function VerificationTool() {
                         ))}
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="askingPrice"
+                render={({ field }) => (
+                  <FormItem className="w-full max-w-md">
+                    <FormLabel>Asking Price (Optional)</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input type="number" step="0.01" placeholder="Enter price to check profit" className="pl-8" {...field} disabled={isLoading} />
+                      </div>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -168,9 +197,32 @@ export function VerificationTool() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground">{result.justification}</p>
+                <p className="text-sm text-muted-foreground">{result.justification}</p>
               </CardContent>
             </Card>
+
+            {result.profitAnalysis && (
+                 <Card className="w-full">
+                    <CardHeader className="text-center">
+                        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                            {getVerdictIcon(result.profitAnalysis.verdict)}
+                        </div>
+                        <CardTitle className="text-2xl">{result.profitAnalysis.verdict}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid grid-cols-2 gap-4 text-sm">
+                        <div className="text-left"><ShoppingCart className="inline-block mr-2" />Asking Price</div>
+                        <div className="text-right font-medium">${result.profitAnalysis.potentialGrossProfit > 0 ? form.getValues('askingPrice')?.toFixed(2) : result.profitAnalysis.askingPrice?.toFixed(2) }</div>
+                        
+                        <div className="text-left"><DollarSign className="inline-block mr-2" />Potential Profit</div>
+                        <div className="text-right font-medium text-green-600">${result.profitAnalysis.potentialGrossProfit.toFixed(2)}</div>
+
+                        <div className="text-left"><TrendingUp className="inline-block mr-2" />Potential ROI</div>
+                        <div className="text-right font-medium text-green-600">{result.profitAnalysis.potentialRoiPercent.toFixed(1)}%</div>
+
+                    </CardContent>
+                 </Card>
+            )}
+
             <Button onClick={handleReset} variant="outline" className="w-full max-w-xs">
               Verify Another Item
             </Button>
