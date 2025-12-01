@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useSearchParams, useRouter } from 'next/navigation';
@@ -124,7 +125,7 @@ export default function AmbassadorSelectionPage() {
         description: `You have initiated pickup with ${selectedAmbassador.name}. They will contact you shortly.`,
       });
       // Final step: Send data to a fulfillment service/database
-      router.push('/account'); 
+      router.push('/confirmation'); 
     }
   }, [ambassadors, toast, router]);
 
