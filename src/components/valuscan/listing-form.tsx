@@ -13,7 +13,7 @@ import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Switch } from '../ui/switch';
 import { generateListingDetails } from '@/ai/flows/generate-listing-details';
-import { getPriceSuggestion } from '@/ai/flows/ai-price-suggestions';
+import { getPriceSuggestion, AiPriceSuggestionOutput } from '@/ai/flows/ai-price-suggestions';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Sparkles, DollarSign, Heart, Tag, Info, X } from 'lucide-react';
 import { Badge } from '../ui/badge';
@@ -37,7 +37,7 @@ export function ListingForm() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSuggestingPrice, setIsSuggestingPrice] = useState(false);
   const [detailsGenerated, setDetailsGenerated] = useState(false);
-  const [priceSuggestion, setPriceSuggestion] = useState<string | null>(null);
+  const [priceSuggestion, setPriceSuggestion] = useState<AiPriceSuggestionOutput | null>(null);
   const [tagInput, setTagInput] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -87,7 +87,8 @@ export function ListingForm() {
     try {
       const description = form.getValues('description');
       const output = await getPriceSuggestion({ photoDataUri, description });
-      setPriceSuggestion(output.suggestedPriceRange);
+      setPriceSuggestion(output);
+      form.setValue('price', output.maxPrice); // Default to max price
     } catch (error) {
       toast({ variant: 'destructive', title: 'Could not get price suggestion.' });
     } finally {
@@ -282,7 +283,12 @@ export function ListingForm() {
               {priceSuggestion && (
                 <div className="mt-4 p-4 bg-accent/50 rounded-lg flex gap-3">
                   <Info className="size-5 text-primary shrink-0 mt-0.5" />
-                  <p className="text-sm text-accent-foreground">{priceSuggestion}</p>
+                  <div>
+                    <p className="text-sm font-medium text-accent-foreground">
+                      Suggested Range: ${priceSuggestion.minPrice.toFixed(2)} - ${priceSuggestion.maxPrice.toFixed(2)}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">{priceSuggestion.justification}</p>
+                  </div>
                 </div>
               )}
             </div>
