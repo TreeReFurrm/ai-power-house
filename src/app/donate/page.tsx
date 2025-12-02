@@ -1,7 +1,7 @@
 
 'use client';
 
-import { DollarSign, Gift, ArrowRight, UserPlus, Heart, Info, Loader2 } from 'lucide-react';
+import { DollarSign, Gift, ArrowRight, UserPlus, Heart, Info, Loader2, BookCheck, ShieldCheck, LifeBuoy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useUser } from '@/firebase';
 import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
 
 export default function DonationPage() {
   const router = useRouter();
@@ -21,10 +22,9 @@ export default function DonationPage() {
 
   // Define the impact tiers for transparency
   const impactTiers = [
-    { amount: 25, label: '$25', description: 'Funds AI Validation & Human Review for one sensitive item.' },
-    { amount: 50, label: '$50', description: 'Supports the identity verification process for one former owner.' },
-    { amount: 100, label: '$100', description: 'Covers secure storage for a box of unclaimed Legacy Items.' },
-    { amount: 250, label: '$250', description: 'Funds responsible disposition of sensitive materials.' },
+    { amount: 25, label: '$25', description: 'Funds one Ethical Review by a Supervisor for a sensitive item.', pillar: 'Ethics', icon: ShieldCheck },
+    { amount: 50, label: '$50', description: 'Supports the full outreach and verification process for one Legacy Item.', pillar: 'Legacy', icon: BookCheck },
+    { amount: 100, label: '$100', description: 'Contributes directly to the emergency micro-fund for Auction Relief.', pillar: 'Auction Support', icon: LifeBuoy },
   ];
 
   // Handler for Monetary Donation
@@ -84,7 +84,7 @@ export default function DonationPage() {
       <header className="text-center space-y-3">
         <Heart className="w-12 h-12 text-primary mx-auto" />
         <h1 className="text-4xl font-extrabold tracking-tight">
-          The Legacy Preservation Fund
+          The L.E.A.N. Protocol Mission
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Your contributions power our ethical preservation efforts and community support network.
@@ -96,16 +96,27 @@ export default function DonationPage() {
         <CardHeader className="text-center">
             <CardTitle className="flex items-center gap-2 text-xl text-primary mx-auto">
                 <Info className="w-5 h-5" />
-                The Chain-of-Dignity Protocol
+                Our Mission: The L.E.A.N. Protocol
             </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-center">
             <p className="max-w-prose mx-auto">
-                The ReFURRM Legacy Preservation Fund guarantees that items of personal significance, designated as **Legacy Items** during our intake process, are treated with dignity. Funds are used to preserve, securely store, and return items to their rightful owners.
+               ReFURRM SmartScan's core mission is to uphold the L.E.A.N. Protocol across every step of the reverse logistics chain, ensuring that profit is balanced with responsibility.
             </p>
-            <p className="text-xs italic text-muted-foreground">
-                **Disclosure:** 100% of contributions are strictly reserved for mission-aligned activities, with all expenditures logged in an auditable record to demonstrate our commitment to procedural compassion.
-            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 text-left">
+                <div className="p-4 rounded-lg bg-background/50">
+                    <h3 className="font-bold">L: Legacy Preservation</h3>
+                    <p className="text-xs text-muted-foreground">Protecting items of significance and personal value flagged during the Chain-of-Custody process.</p>
+                </div>
+                 <div className="p-4 rounded-lg bg-background/50">
+                    <h3 className="font-bold">E: Ethical Standards</h3>
+                    <p className="text-xs text-muted-foreground">Enforcing the Privacy & Dignity Standard for all sensitive materials (e.g., documents, hard drives).</p>
+                </div>
+                 <div className="p-4 rounded-lg bg-background/50">
+                    <h3 className="font-bold">A: Auction Support</h3>
+                    <p className="text-xs text-muted-foreground">Providing rapid, compassionate support to individuals facing urgent situations related to storage unit loss.</p>
+                </div>
+            </div>
         </CardContent>
       </Card>
       {/* ------------------------------------- */}
@@ -120,28 +131,30 @@ export default function DonationPage() {
               Invest in Integrity
             </CardTitle>
             <CardDescription>
-              Your financial support directly fuels the systems and personnel required to enforce our Privacy & Dignity Standard.
+              Your financial support funds the specific tools and personnel required to execute the Legacy, Ethics, and Auction Support protocols.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {impactTiers.map((tier) => (
                   <Button 
                     key={tier.amount} 
                     variant={amount === tier.amount ? 'default' : 'outline'}
                     onClick={() => setAmount(tier.amount)}
-                    className="flex flex-col h-auto py-4 text-center justify-center items-center"
+                    className="flex flex-col h-auto py-4 text-center justify-center items-start text-left"
                     disabled={isProcessing}
                   >
-                    <span className="text-lg font-bold">{tier.label}</span>
-                    <span className="text-xs text-muted-foreground/90 mt-1 block max-w-[120px] mx-auto text-balance">
-                        {tier.description}
-                    </span>
+                    <div className="flex items-center gap-2">
+                        <tier.icon className="size-5 text-primary"/>
+                        <span className="text-lg font-bold">{tier.label}</span>
+                    </div>
+                     <p className="text-xs text-muted-foreground/90 mt-2 block whitespace-normal">{tier.description}</p>
+                     <p className="text-xs font-semibold mt-2">{tier.pillar}</p>
                   </Button>
                 ))}
               </div>
-
+                <Separator />
               <div className="space-y-4">
                 <Label htmlFor="amount-custom" className="font-semibold">Custom Amount (USD)</Label>
                 <Input
@@ -215,6 +228,14 @@ export default function DonationPage() {
             </Card>
         </div>
       </div>
+       <Card className="mt-8">
+            <CardHeader>
+                <CardTitle>Disclosure</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-xs text-muted-foreground">All "LEAN on ReFURRM" applications are reviewed according to strict ethical guidelines. Any unused funds are strictly reserved for future, approved needs within the same mission.</p>
+            </CardContent>
+       </Card>
     </div>
   );
 }

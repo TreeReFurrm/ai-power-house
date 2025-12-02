@@ -73,7 +73,7 @@ export default function SubscriptionPage() {
                     </div>
                     <CardTitle className="text-3xl font-bold tracking-tight">SmartScan Pro Tier</CardTitle>
                     <CardDescription className="text-lg text-muted-foreground">
-                        Powering the Chain-of-Dignity
+                        Supporting the L.E.A.N. Foundation
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
