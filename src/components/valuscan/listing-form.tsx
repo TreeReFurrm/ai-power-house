@@ -12,7 +12,7 @@ import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Switch } from '../ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Sparkles, DollarSign, Heart, Info, AlertTriangle, Gift } from 'lucide-react';
+import { Loader2, Sparkles, DollarSign, Heart, Info, AlertTriangle, Gift, Copy, Share2 } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useUser } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -136,6 +136,36 @@ export function ListingForm() {
     router.push(`/select-ambassador?${queryParams.toString()}`);
   };
 
+  const handleCopy = (textToCopy: string, fieldName: string) => {
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      toast({ title: 'Copied to Clipboard', description: `The ${fieldName} has been copied.` });
+    }).catch(err => {
+      toast({ variant: 'destructive', title: 'Copy Failed', description: `Could not copy the ${fieldName}.` });
+    });
+  };
+
+  const handleShare = () => {
+    const { title, description, price } = form.getValues();
+    const shareData = {
+      title: `Check out this item: ${title}`,
+      text: `Listing: ${title}\nPrice: $${price.toFixed(2)}\n\n${description}`,
+      url: window.location.href, // Or a link to a future public listing page
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch((err) => {
+        // Silently fail if user cancels share dialog
+        if (err.name !== 'AbortError') {
+          console.error("Share failed:", err);
+          toast({ variant: 'destructive', title: 'Share Failed', description: 'Could not share the listing.' });
+        }
+      });
+    } else {
+      // Fallback for browsers that don't support navigator.share
+      handleCopy(`${shareData.title}\n\n${shareData.text}`, 'listing details');
+    }
+  };
+
 
   if (!initialData) {
     return (
@@ -224,6 +254,24 @@ export function ListingForm() {
                   </FormItem>
                 )}
               />
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2"><Sparkles className="size-5" /> Export & Share</CardTitle>
+            <CardDescription>Use this AI-generated content on any other platform.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col sm:flex-row gap-2">
+            <Button type="button" variant="outline" onClick={() => handleCopy(form.getValues('title'), 'title')} className="w-full">
+              <Copy className="mr-2 h-4 w-4" /> Copy Title
+            </Button>
+            <Button type="button" variant="outline" onClick={() => handleCopy(form.getValues('description'), 'description')} className="w-full">
+              <Copy className="mr-2 h-4 w-4" /> Copy Description
+            </Button>
+            <Button type="button" variant="outline" onClick={handleShare} className="w-full">
+              <Share2 className="mr-2 h-4 w-4" /> Share Listing
+            </Button>
           </CardContent>
         </Card>
 
