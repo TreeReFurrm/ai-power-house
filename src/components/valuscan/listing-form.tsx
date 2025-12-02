@@ -10,9 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '../ui/form';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
-import { Switch } from '../ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Sparkles, DollarSign, Heart, Info, AlertTriangle, Gift, Copy, Share2 } from 'lucide-react';
+import { Loader2, Sparkles, DollarSign, Heart, AlertTriangle, Gift, Copy, Share2 } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useUser } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -328,5 +327,3 @@ export function ListingForm() {
     </FormProvider>
   );
 }
-
-    
