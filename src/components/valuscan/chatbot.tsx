@@ -36,9 +36,9 @@ const botIntents = {
     id: 'donation_help',
     message: "ReFURRM uses donations to fund the LEAN hardship fund and support item returns. You can donate through the app or an Ambassador visit.",
     options: [
-      { text: "How donations work", next: 'donation_how_it_works' },
-      { text: "What items you accept", next: 'donation_items' },
-      { text: "Where the money goes", next: 'donation_money' },
+      { text: "How do donations work?", next: 'donation_how_it_works' },
+      { text: "What items do you accept?", next: 'donation_items' },
+      { text: "Where does the money go?", next: 'donation_money' },
       { text: 'Back to main menu', next: 'initial' },
     ]
   },
