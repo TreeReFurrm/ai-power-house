@@ -86,8 +86,8 @@ export default function DonationPage() {
         <h1 className="text-4xl font-extrabold tracking-tight">
           Support ReFurrm SmartScan's Big Mission
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Your contributions power our rescue network and ethical resale initiatives.
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          Your contributions power our ethical preservation efforts and community support network, organized under the LEAN Foundation.
         </p>
       </header>
       
@@ -104,7 +104,7 @@ export default function DonationPage() {
                 ReFurrm SmartScan prevents valuable items from being lost in estate liquidations and storage auctions through ethical preservation and community support.
             </p>
             <p className="font-semibold text-balance">
-                Funds are primarily used for application-based emergency interventions for individuals in need, such as paying storage rent to prevent auction. <Button variant="link" asChild className="p-0 h-auto"><Link href="#">Learn More</Link></Button>
+                Our "LEAN on ReFurrm" program provides application-based emergency interventions, like paying storage rent to prevent auction. <Button variant="link" asChild className="p-0 h-auto"><Link href="#">Learn More</Link></Button>
             </p>
             <p className="text-xs italic text-muted-foreground">
                 **Disclosure:** We are committed to transparency. If funds are not available for an approved case, we will launch a dedicated fundraiser. Any unused funds are strictly reserved for future approved needs.
