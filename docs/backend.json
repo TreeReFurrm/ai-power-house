@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "User": {
@@ -305,6 +306,62 @@
         }
       },
       "required": ["id", "userId", "serviceType", "zipCode", "status", "createdAt"]
+    },
+    "AmbassadorApplication": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AmbassadorApplication",
+      "type": "object",
+      "description": "Represents an application to become a ReFurrm Ambassador.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the application."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user submitting the application."
+        },
+        "whyReFurrm": {
+          "type": "string",
+          "description": "The applicant's explanation for their interest in the mission."
+        },
+        "operationalExperience": {
+          "type": "string",
+          "description": "The applicant's self-reported operational or entrepreneurial experience."
+        },
+        "zipCode": {
+          "type": "string",
+          "description": "The primary ZIP code the applicant wishes to serve."
+        },
+        "transportation": {
+          "type": "string",
+          "description": "The type of transportation the applicant has available."
+        },
+        "weeklyHours": {
+          "type": "string",
+          "description": "The applicant's stated weekly availability."
+        },
+        "videoIntroUrl": {
+          "type": "string",
+          "description": "An optional URL to a video introduction.",
+          "format": "uri"
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the application.",
+          "enum": ["pending_ai_review", "pending_manual_review", "approved", "rejected", "waitlisted"]
+        },
+        "aiScore": {
+          "type": "number",
+          "description": "An AI-generated score indicating the applicant's fit."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of when the application was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "userId", "whyReFurrm", "zipCode", "status", "createdAt"]
     }
   },
   "auth": {
@@ -410,10 +467,24 @@
             }
           ]
         }
+      },
+      {
+        "path": "/ambassador_applications/{applicationId}",
+        "definition": {
+            "entityName": "AmbassadorApplication",
+            "schema": {
+                "$ref": "#/backend/entities/AmbassadorApplication"
+            },
+            "description": "A collection for storing all submitted Ambassador applications.",
+            "params": [
+                {
+                    "name": "applicationId",
+                    "description": "The unique identifier for the application."
+                }
+            ]
+        }
       }
     ],
-    "reasoning": "The Firestore structure has been updated to support the core business logic. The User entity now includes 'tier', 'subscriptionStatus', and 'stripeCustomerId' to manage user roles and billing. The Item entity has a 'status' to track its lifecycle (listed, sold, shipped) and 'aiEstimatedValue'. The Sale entity now more clearly separates seller and buyer IDs and links to an EthicalContribution, which is its own top-level collection to serve as a proper ledger for the LEAN Foundation. A new 'ServiceRequest' entity and collection have been added to handle specialized service requests, linking users to Ambassadors. This denormalized, segregated structure simplifies security rules and supports efficient queries for marketplace, user-specific, and administrative functions."
+    "reasoning": "The Firestore structure has been updated to support the core business logic. The User entity now includes 'tier', 'subscriptionStatus', and 'stripeCustomerId' to manage user roles and billing. The Item entity has a 'status' to track its lifecycle (listed, sold, shipped) and 'aiEstimatedValue'. The Sale entity now more clearly separates seller and buyer IDs and links to an EthicalContribution, which is its own top-level collection to serve as a proper ledger for the LEAN Foundation. A new 'ServiceRequest' entity and collection have been added to handle specialized service requests, linking users to Ambassadors. A new 'AmbassadorApplication' entity and collection have been added to manage the hiring pipeline for new Ambassadors, enabling AI-powered screening and manual review workflows."
   }
 }
-
-    
