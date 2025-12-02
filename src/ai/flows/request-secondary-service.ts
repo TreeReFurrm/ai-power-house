@@ -15,55 +15,68 @@ import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 
+
+const VALID_SERVICES = {
+    "pickup": "Item Pickup/Shipping Drop-off",
+    "cleanout": "Full Home/Storage Unit Clean-out Services",
+    "organize": "Organizational Services (e.g., Garage Facelift)",
+    "downsize": "Downsizing Consultation/Assistance",
+};
+
 const AMBASSADOR_NETWORK = [
     {
-        id: "AMB001",
-        name: "Alex Johnson",
-        location_zip: "90210",
-        services: ["pickup", "organize"],
-        rating: 4.8,
-        is_active: true,
+        "id": "AMB001",
+        "name": "Alex Johnson",
+        "location_zip": "90210", // Example: Beverly Hills, CA
+        "location_city": "Beverly Hills",
+        "services": ["pickup", "organize"],
+        "rating": 4.8,
+        "is_active": true,
     },
     {
-        id: "AMB002",
-        name: "Maria Rodriguez",
-        location_zip: "10001",
-        services: ["pickup", "cleanout", "downsize"],
-        rating: 4.9,
-        is_active: true,
+        "id": "AMB002",
+        "name": "Maria Rodriguez",
+        "location_zip": "10001", // Example: New York, NY
+        "location_city": "New York",
+        "services": ["pickup", "cleanout", "downsize"],
+        "rating": 4.9,
+        "is_active": true,
     },
     {
-        id: "AMB003",
-        name: "Thomas Lee",
-        location_zip: "90210",
-        services: ["pickup"],
-        rating: 4.5,
-        is_active: false,
+        "id": "AMB003",
+        "name": "Thomas Lee",
+        "location_zip": "90210", // Second worker in the same area
+        "location_city": "Beverly Hills",
+        "services": ["pickup"],
+        "rating": 4.5,
+        "is_active": false, // Currently inactive
     },
      {
         id: "AMB004",
         name: "Josh Smith",
         location_zip: "90210", 
         services: ["cleanout"],
+        rating: 4.6,
         is_active: true,
     },
 ];
 
-const VALID_SERVICES = {
-    "cleanout": "Full Home/Storage Unit Clean-out Services",
-    "organize": "Organizational Services (e.g., Garage Facelift)",
-    "downsize": "Downsizing Consultation/Assistance",
-};
 
 /**
  * Finds active ambassadors in a given ZIP code who offer a required service.
  */
 function findLocalAmbassadors(zipCode: string, requiredService: keyof typeof VALID_SERVICES) {
+    if (!VALID_SERVICES.hasOwnProperty(requiredService)) {
+        console.log(`Error: Service '${requiredService}' is not a valid service.`);
+        return [];
+    }
+
     const localAmbassadors = AMBASSADOR_NETWORK.filter(ambassador => 
         ambassador.location_zip === zipCode &&
         ambassador.services.includes(requiredService) &&
         ambassador.is_active
     );
+    
     return localAmbassadors;
 }
 

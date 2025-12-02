@@ -15,30 +15,53 @@ import { z } from 'zod';
 
 const AMBASSADOR_NETWORK = [
     {
-        id: "AMB001",
-        name: "Alex Johnson",
-        location_zip: "90210",
-        services: ["pickup", "organize"],
-        rating: 4.8,
-        is_active: true,
+        "id": "AMB001",
+        "name": "Alex Johnson",
+        "location_zip": "90210", // Example: Beverly Hills, CA
+        "location_city": "Beverly Hills",
+        "services": ["pickup", "organize"],
+        "rating": 4.8,
+        "is_active": true,
     },
     {
-        id: "AMB002",
-        name: "Maria Rodriguez",
-        location_zip: "10001",
-        services: ["pickup", "cleanout"],
-        rating: 4.9,
-        is_active: true,
+        "id": "AMB002",
+        "name": "Maria Rodriguez",
+        "location_zip": "10001", // Example: New York, NY
+        "location_city": "New York",
+        "services": ["pickup", "cleanout", "downsize"],
+        "rating": 4.9,
+        "is_active": true,
+    },
+    {
+        "id": "AMB003",
+        "name": "Thomas Lee",
+        "location_zip": "90210", // Second worker in the same area
+        "location_city": "Beverly Hills",
+        "services": ["pickup"],
+        "rating": 4.5,
+        "is_active": false, // Currently inactive
     },
 ];
 
+const VALID_SERVICES = {
+    "pickup": "Item Pickup/Shipping Drop-off",
+    "cleanout": "Full Home/Storage Unit Clean-out Services",
+    "organize": "Organizational Services (e.g., Garage Facelift)",
+    "downsize": "Downsizing Consultation/Assistance",
+};
+
 async function find_local_ambassadors(zip_code: string, required_service: string) {
-    console.log(`Searching for ambassadors in ZIP: ${zip_code} for service: ${required_service}`);
+    if (!VALID_SERVICES.hasOwnProperty(required_service)) {
+        console.log(`Error: Service '${required_service}' is not a valid service.`);
+        return [];
+    }
+
     const local_ambassadors = AMBASSADOR_NETWORK.filter(ambassador => 
         ambassador.location_zip === zip_code &&
         ambassador.services.includes(required_service) &&
         ambassador.is_active
     );
+    
     return local_ambassadors;
 }
 

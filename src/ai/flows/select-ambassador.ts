@@ -56,34 +56,34 @@ const VALID_SERVICES: Record<string, string> = {
 
 const AMBASSADOR_NETWORK = [
     {
-        id: "AMB001",
-        name: "Alex Johnson",
-        location_zip: "90210",
-        location_city: "Beverly Hills",
-        services: ["pickup", "organize"],
-        rating: 4.8,
-        is_active: true,
-        specialty: "Electronics & Media"
+        "id": "AMB001",
+        "name": "Alex Johnson",
+        "location_zip": "90210", // Example: Beverly Hills, CA
+        "location_city": "Beverly Hills",
+        "services": ["pickup", "organize"],
+        "rating": 4.8,
+        "is_active": true,
+        "specialty": "Electronics & Media"
     },
     {
-        id: "AMB002",
-        name: "Maria Rodriguez",
-        location_zip: "10001",
-        location_city: "New York",
-        services: ["pickup", "cleanout", "downsize"],
-        rating: 4.9,
-        is_active: true,
-        specialty: "Furniture & Decor"
+        "id": "AMB002",
+        "name": "Maria Rodriguez",
+        "location_zip": "10001", // Example: New York, NY
+        "location_city": "New York",
+        "services": ["pickup", "cleanout", "downsize"],
+        "rating": 4.9,
+        "is_active": true,
+        "specialty": "Furniture & Decor"
     },
     {
-        id: "AMB003",
-        name: "Thomas Lee",
-        location_zip: "90210",
-        location_city: "Beverly Hills",
-        services: ["pickup"],
-        rating: 4.5,
-        is_active: false,
-        specialty: "General Goods"
+        "id": "AMB003",
+        "name": "Thomas Lee",
+        "location_zip": "90210", // Second worker in the same area
+        "location_city": "Beverly Hills",
+        "services": ["pickup"],
+        "rating": 4.5,
+        "is_active": false, // Currently inactive
+        "specialty": "General Goods"
     },
 ];
 
@@ -94,6 +94,11 @@ const AMBASSADOR_NETWORK = [
  */
 async function findLocalAmbassadors(zipCode: string, requiredService: string): Promise<any[]> {
     console.log(`--- 📍 Searching for '${VALID_SERVICES[requiredService]}' Ambassadors in ZIP ${zipCode} ---`);
+
+    if (!VALID_SERVICES.hasOwnProperty(requiredService)) {
+        console.log(`Error: Service '${requiredService}' is not a valid service.`);
+        return [];
+    }
 
     const localAmbassadors = AMBASSADOR_NETWORK.filter(ambassador => {
         const isLocal = ambassador.location_zip === zipCode;
