@@ -1,3 +1,4 @@
+
 'use client';
 
 import { DollarSign, Gift, ArrowRight, UserPlus, Heart, Info, Loader2 } from 'lucide-react';
@@ -197,6 +198,9 @@ export default function DonationPage() {
                   <UserPlus className="w-6 h-6" />
                   Become an Ambassador
                 </CardTitle>
+                <CardDescription className="text-primary-foreground/80">
+                  Lead local efforts, coordinate pickups, and be a core part of our mission. <Button variant="link" asChild className="p-0 h-auto text-primary-foreground/80"><Link href="/ambassadors/details">Learn More</Link></Button>
+                </CardDescription>
               </CardHeader>
               <CardContent className="flex-grow flex items-end">
                 <Button 
