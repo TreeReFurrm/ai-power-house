@@ -1,7 +1,8 @@
+
 'use client';
 import { useState, useRef, ChangeEvent, useCallback, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Camera, X, Upload, Loader2, RefreshCw, SwitchCamera } from 'lucide-react';
+import { Camera, Upload, Loader2, RefreshCw, SwitchCamera } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';

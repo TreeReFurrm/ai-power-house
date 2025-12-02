@@ -49,14 +49,14 @@ const scanItemPrompt = ai.definePrompt({
 
 **Primary Task:**
 1.  **Identify** the item and assign a **categoryTag**.
-2.  Determine a realistic price range based on **completed sales data**, like a professional auctioneer would.
+2.  Determine a realistic price range based on **completed sales data**, like a professional auctioneer would. Do not use prices from unsold or active listings. The value is what people have actually paid.
 3.  Assess the item's **authenticity** (if applicable) and set the **authenticityVerdict**.
 4.  **CRITICAL: Write a great listing.**
     - Generate a **suggestedTitle** that is clear, descriptive, and includes keywords a buyer would search for.
     - Write a **suggestedDescription** that is compelling and informative, mentioning key features and condition from an expert's perspective.
 
 **CRITICAL PRICING RULE (The "Real Human Logic"):**
--   If the item is suitable for resale (i.e., not a hygiene, safety, or opened consumable risk), set **priceType** to **RESALE**.
+-   If the item is suitable for resale (i.e., not a hygiene, safety, or opened consumable risk), set **priceType** to **RESALE**. The price must be based on what the item actually sells for.
 -   If the item has **no resale value** (due to safety, hygiene, or being an opened consumable), set **priceType** to **RETAIL**. The prices you provide must then be the estimated **original retail value**.
 
 **CRITICAL BUSINESS RULE:**
