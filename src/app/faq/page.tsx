@@ -27,15 +27,15 @@ const faqSections = {
   "Listing And Marketplace": [
     {
       question: "How do I list an item?",
-      answer: "Select “List an Item,” upload a photo, confirm condition, edit any AI generated details, and publish to the ReFURRM Exchange."
+      answer: "Select “List an Item,” upload a photo, confirm condition, edit any AI generated details, and publish to the ReFurrm Ethical Resale."
     },
     {
       question: "Can I edit a listing after it is posted?",
       answer: "Yes. You can update price, description, and photos as long as the item has not sold."
     },
     {
-      question: "What is the ReFURRM Exchange?",
-      answer: "The Exchange is the marketplace where you can buy items from other users and browse ReFURRBISHED inventory."
+      question: "What is the ReFurrm Ethical Resale?",
+      answer: "The ReFurrm Ethical Resale is the marketplace where you can buy items from other users and browse ReFURRBISHED inventory."
     },
     {
         question: "Why is an item marked “Sentimental Hold”?",

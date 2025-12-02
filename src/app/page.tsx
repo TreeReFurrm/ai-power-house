@@ -43,12 +43,12 @@ export default function Home() {
             <Card className="flex flex-col w-full rounded-lg shadow-sm hover:shadow-lg transition-shadow hover:bg-card/95 cursor-pointer">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between text-primary">
-                  <span>Marketplace</span>
+                  <span>ReFurrm Ethical Resale</span>
                    <LayoutGrid className="h-5 w-5 text-muted-foreground" />
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex-grow">
-                <p className="text-sm text-muted-foreground">Browse curated listings or sell your own items on our ethical exchange.</p>
+                <p className="text-sm text-muted-foreground">Browse curated listings from the community on our ethical resale platform.</p>
               </CardContent>
             </Card>
         </Link>
