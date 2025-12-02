@@ -5,8 +5,10 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Cpu, User } from 'lucide-react';
+import { Cpu, User, LogIn, UserPlus } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { useUser } from '@/firebase';
+import { useRouter } from 'next/navigation';
 
 const botIntents = {
   initial: {
@@ -19,6 +21,15 @@ const botIntents = {
       { text: "SmartScan or value questions", next: 'smartscan_help' },
       { text: "Marketplace and listings", next: 'marketplace_help' },
       { text: "Account or app issues", next: 'account_tech_help' },
+    ]
+  },
+  auth_required: {
+    id: 'auth_required',
+    message: "This action requires an account. Please sign up or log in to continue.",
+    options: [
+        { text: "Log In", next: '/login', isExternal: true },
+        { text: "Sign Up", next: '/signup', isExternal: true },
+        { text: "Go back", next: 'initial' },
     ]
   },
   donation_help: {
@@ -178,6 +189,8 @@ const botIntents = {
   }
 };
 
+const PROTECTED_INTENTS = ['escalate', 'escalate_lean'];
+
 type ConversationTurn = {
   speaker: 'bot' | 'user';
   text: string;
@@ -186,13 +199,33 @@ type ConversationTurn = {
 export function Chatbot() {
   const [currentIntent, setCurrentIntent] = useState('initial');
   const [history, setHistory] = useState<ConversationTurn[]>([]);
+  const { user } = useUser();
+  const router = useRouter();
 
-  const handleOptionClick = (nextIntent: string, userText: string) => {
+  const handleOptionClick = (nextIntent: string, userText: string, isExternal?: boolean) => {
+    if (isExternal) {
+        router.push(nextIntent);
+        return;
+    }
+    
+    // Check for protected intents if user is not logged in
+    if (!user && PROTECTED_INTENTS.includes(nextIntent)) {
+      setHistory([...history, { speaker: 'user', text: userText }]);
+      setCurrentIntent('auth_required');
+      return;
+    }
+
     setHistory([...history, { speaker: 'user', text: userText }]);
     setCurrentIntent(nextIntent);
   };
 
   const intent = botIntents[currentIntent as keyof typeof botIntents] || botIntents.initial;
+
+  const getButtonIcon = (text: string) => {
+    if (text.toLowerCase().includes('log in')) return <LogIn className="mr-2 h-4 w-4" />;
+    if (text.toLowerCase().includes('sign up')) return <UserPlus className="mr-2 h-4 w-4" />;
+    return null;
+  }
 
   return (
     <Card className="w-full shadow-2xl">
@@ -245,8 +278,9 @@ export function Chatbot() {
             <Button
               key={option.next}
               variant="outline"
-              onClick={() => handleOptionClick(option.next, option.text)}
+              onClick={() => handleOptionClick(option.next, option.text, (option as any).isExternal)}
             >
+              {getButtonIcon(option.text)}
               {option.text}
             </Button>
           ))}
@@ -255,3 +289,5 @@ export function Chatbot() {
     </Card>
   );
 }
+
+    
