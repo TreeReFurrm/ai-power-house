@@ -362,6 +362,48 @@
         }
       },
       "required": ["id", "userId", "whyReFurrm", "zipCode", "status", "createdAt"]
+    },
+     "PrivateAppraisal": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "PrivateAppraisal",
+      "type": "object",
+      "description": "Represents a private item appraisal saved by a user, not for public listing.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the private appraisal."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who saved the appraisal."
+        },
+        "itemName": {
+          "type": "string",
+          "description": "The name of the item as entered by the user or AI."
+        },
+        "aiSuggestedTitle": {
+            "type": "string"
+        },
+        "aiSuggestedDescription": {
+            "type": "string"
+        },
+        "minPrice": { "type": "number" },
+        "maxPrice": { "type": "number" },
+        "appraisalNote": { "type": "string" },
+        "categoryTag": { "type": "string" },
+        "authenticityVerdict": { "type": "string" },
+        "imageUrl": {
+          "type": "string",
+          "description": "A data URI or URL of the item's image.",
+          "format": "uri"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of when the appraisal was saved.",
+          "format": "date-time"
+        }
+      },
+      "required": ["id", "userId", "itemName", "createdAt"]
     }
   },
   "auth": {
@@ -386,7 +428,17 @@
               "description": "The unique identifier for the user."
             }
           ]
-        }
+        },
+        "subcollections": [
+            {
+                "path": "private_appraisals/{appraisalId}",
+                "definition": {
+                    "entityName": "PrivateAppraisal",
+                    "schema": { "$ref": "#/backend/entities/PrivateAppraisal" },
+                    "description": "A user's private log of saved appraisals, not for public sale."
+                }
+            }
+        ]
       },
       {
         "path": "/items/{itemId}",
@@ -488,3 +540,5 @@
     "reasoning": "The Firestore structure has been updated to support the core business logic. The User entity now includes 'tier', 'subscriptionStatus', and 'stripeCustomerId' to manage user roles and billing. The Item entity has a 'status' to track its lifecycle (listed, sold, shipped) and 'aiEstimatedValue'. The Sale entity now more clearly separates seller and buyer IDs and links to an EthicalContribution, which is its own top-level collection to serve as a proper ledger for the LEAN Foundation. A new 'ServiceRequest' entity and collection have been added to handle specialized service requests, linking users to Ambassadors. A new 'AmbassadorApplication' entity and collection have been added to manage the hiring pipeline for new Ambassadors, enabling AI-powered screening and manual review workflows."
   }
 }
+
+    

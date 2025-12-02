@@ -1,3 +1,4 @@
+
 rules_version = '2';
 
 /**
@@ -173,6 +174,18 @@ service cloud.firestore {
       allow create: if isOwner(userId) && hasValidNewUserData(userId);
       allow update: if isExistingOwner(userId) && hasImmutableUserData();
       allow delete: if isExistingOwner(userId);
+
+        /**
+         * @description Private collection of appraisals saved by a user. Only the owner
+         *              can perform any action on these documents.
+         * @path /users/{userId}/private_appraisals/{appraisalId}
+         * @allow (read/write) The owner (USER_123) accesses /users/USER_123/private_appraisals/APPRAISAL_ABC.
+         * @deny (read/write) Another user (USER_456) tries to access the same path.
+         * @principle Restricts a user's private appraisal log to themselves.
+         */
+        match /private_appraisals/{appraisalId} {
+            allow read, write: if isOwner(userId);
+        }
     }
 
     /**
@@ -257,3 +270,5 @@ service cloud.firestore {
     }
   }
 }
+
+    

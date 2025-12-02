@@ -11,9 +11,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Sparkles, DollarSign, ArrowRight, Pencil, Info } from 'lucide-react';
+import { Loader2, Sparkles, DollarSign, ArrowRight, Pencil, Info, Save } from 'lucide-react';
 import { Badge } from '../ui/badge';
-import { useUser, useFirestore, addDocumentNonBlocking } from '@/firebase';
+import { useUser, useFirestore, addDocumentNonBlocking, useDoc, useMemoFirebase } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { ImageUploader } from './image-uploader';
@@ -21,7 +21,7 @@ import { scanItem, type ScanItemOutput } from '@/ai/flows/scan-item';
 import { Progress } from '../ui/progress';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Switch } from '../ui/switch';
-import { collection, serverTimestamp } from 'firebase/firestore';
+import { collection, serverTimestamp, doc } from 'firebase/firestore';
 
 const listingSchema = z.object({
   title: z.string().min(5, 'Title must be at least 5 characters.'),
@@ -47,6 +47,15 @@ export function InstantListingGenerator() {
   const { user } = useUser();
   const firestore = useFirestore();
 
+  const userProfileRef = useMemoFirebase(() => {
+    if (!firestore || !user) return null;
+    return doc(firestore, 'users', user.uid);
+  }, [firestore, user]);
+  const { data: userProfile } = useDoc(userProfileRef);
+
+  // For this prototype, we'll consider anyone who isn't an Ambassador a "General User"
+  const isGeneralUser = userProfile?.tier !== 'Ambassador';
+
   const form = useForm<ListingFormData>({
     resolver: zodResolver(listingSchema),
     defaultValues: {
@@ -66,15 +75,6 @@ export function InstantListingGenerator() {
         if(imgUri) {
             prefillData.image = imgUri;
         }
-
-        // You can also retrieve your new analytics-related params here
-        const suggestedPrice = searchParams.get('suggestedPrice');
-        const userTier = searchParams.get('userTier');
-        const zipCode = searchParams.get('zipCode');
-
-        // You would now pass these to your analytics tracking function
-        console.log('Received for analytics:', { suggestedPrice, userTier, zipCode });
-
 
         form.reset(prefillData);
         if(imgUri) {
@@ -120,6 +120,46 @@ export function InstantListingGenerator() {
         form.setValue('image', undefined);
     }
   };
+
+  const handleKeepForMyself = async () => {
+    if (!user || !firestore || !aiResult) {
+      toast({ title: 'An error occurred. Please log in and try again.', variant: 'destructive' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    const data = form.getValues();
+
+    try {
+        const appraisalRef = collection(firestore, 'users', user.uid, 'private_appraisals');
+        const privateAppraisal = {
+            userId: user.uid,
+            itemName: data.title,
+            aiSuggestedTitle: aiResult.suggestedTitle,
+            aiSuggestedDescription: aiResult.suggestedDescription,
+            minPrice: aiResult.minPrice,
+            maxPrice: aiResult.maxPrice,
+            appraisalNote: aiResult.appraisalNote,
+            categoryTag: aiResult.categoryTag,
+            authenticityVerdict: aiResult.authenticityVerdict,
+            imageUrl: data.image, // In a real app, upload this to storage first
+            createdAt: serverTimestamp(),
+        };
+        await addDocumentNonBlocking(appraisalRef, privateAppraisal);
+        toast({
+            title: "Appraisal Saved!",
+            description: "Your private appraisal has been saved to your account.",
+        });
+        // Redirect to a new "Appraisal Saved" confirmation page or account page
+        router.push('/account'); 
+    } catch (error) {
+         console.error("Saving appraisal failed:", error);
+        toast({ title: 'Save Failed', description: 'Could not save your private appraisal. Please try again.', variant: 'destructive' });
+    } finally {
+        setIsSubmitting(false);
+    }
+  };
+
 
   const onSubmit = async (data: ListingFormData) => {
     if (!user || !firestore) {
@@ -284,7 +324,7 @@ export function InstantListingGenerator() {
             </CardContent>
             <CardFooter>
                  <Button onClick={() => setCurrentStep(3)} className="w-full">
-                    Continue to Publish <ArrowRight className="ml-2 h-4 w-4" />
+                    Continue to Disposition <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
             </CardFooter>
           </Card>
@@ -293,41 +333,43 @@ export function InstantListingGenerator() {
         return (
           <Card>
             <CardHeader>
-              <CardTitle>Step 3: Publish and Cross-post</CardTitle>
-              <CardDescription>Finalize your listing and choose where to post it.</CardDescription>
+              <CardTitle>Step 3: Choose Action</CardTitle>
+              <CardDescription>What would you like to do with this item?</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
+                 {isGeneralUser && (
+                    <Button onClick={handleKeepForMyself} disabled={isSubmitting} variant="outline" className="w-full h-auto py-4 flex-col items-start text-left">
+                        <div className="flex items-center font-bold text-base"><Save className="mr-2"/> Keep for Myself</div>
+                        <p className="font-normal text-sm text-muted-foreground pl-7">Save this appraisal to your private log. No listing will be created.</p>
+                    </Button>
+                 )}
+
                 <FormField
                     control={form.control}
                     name="publishToRefurrm"
                     render={({ field }) => (
-                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                            <div className="space-y-0.5">
-                                <FormLabel className="text-base">Publish to ReFurrm Ethical Resale</FormLabel>
-                                <FormDescription>Your item will be live on our marketplace.</FormDescription>
-                            </div>
-                            <FormControl>
-                                <Switch checked={field.value} onCheckedChange={field.onChange} />
-                            </FormControl>
-                        </FormItem>
+                        <div className="rounded-lg border p-4 hover:bg-accent has-[[data-state=checked]]:bg-secondary/50">
+                            <FormItem className="flex flex-row items-center justify-between">
+                                <div className="space-y-0.5">
+                                    <FormLabel className="text-base font-bold flex items-center">
+                                        <Sparkles className="mr-2" /> Consignment Sale (Make Money)
+                                    </FormLabel>
+                                    <FormDescription>Publish to ReFurrm Ethical Resale. You handle fulfillment.</FormDescription>
+                                </div>
+                                <FormControl>
+                                    <Switch checked={field.value} onCheckedChange={field.onChange} />
+                                </FormControl>
+                            </FormItem>
+                        </div>
                     )}
                 />
-                <div>
-                    <Label>Cross-post to other marketplaces (optional)</Label>
-                    <div className="flex items-center gap-4 mt-2 p-4 border rounded-lg bg-muted/50">
-                        {/* Marketplace icons would go here */}
-                        <p className="text-sm text-muted-foreground">eBay, Poshmark, and other integrations are coming soon.</p>
-                    </div>
-                     <p className="text-xs text-muted-foreground mt-2">Cross-posting may require marketplace credentials.</p>
-                </div>
-
             </CardContent>
-            <CardFooter className="flex-col gap-4">
-                <Button onClick={form.handleSubmit(onSubmit)} disabled={isSubmitting} className="w-full">
-                     {isSubmitting ? <Loader2 className="animate-spin mr-2"/> : <Sparkles className="mr-2" />}
-                    Publish Listing
+            <CardFooter className="flex flex-col gap-4">
+                <Button onClick={form.handleSubmit(onSubmit)} disabled={isSubmitting || !form.getValues('publishToRefurrm')} className="w-full">
+                     {isSubmitting ? <Loader2 className="animate-spin mr-2"/> : <ArrowRight className="mr-2" />}
+                    Proceed to Listing
                 </Button>
-                 <Button variant="outline" onClick={() => setCurrentStep(2)} className="w-full">Go Back</Button>
+                <Button variant="outline" onClick={() => setCurrentStep(2)} className="w-full">Go Back</Button>
             </CardFooter>
           </Card>
         );
@@ -348,10 +390,12 @@ export function InstantListingGenerator() {
         <Progress value={progress} className="w-full"/>
       </div>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-8">
             {renderStep()}
         </form>
       </FormProvider>
     </div>
   );
 }
+
+    
