@@ -76,35 +76,8 @@ const VerifyItemValueOutputSchema = z.object({
 });
 export type VerifyItemValueOutput = z.infer<typeof VerifyItemValueOutputSchema>;
 
-export async function verifyItemValue(
-  input: VerifyItemValueInput
-): Promise<VerifyItemValueOutput> {
-  return verifyItemValueFlow(input);
-}
 
-const verifyItemValuePrompt = ai.definePrompt({
-  name: 'verifyItemValuePrompt',
-  input: {schema: z.object({
-    photoDataUri: z.string().optional(),
-    itemName: z.string().optional(),
-    condition: z.string(),
-    source: z.string(),
-    askingPrice: z.number().optional(),
-  })},
-  output: {schema: z.object({
-    itemName: z.string(),
-    minResaleValue: z.number(),
-    maxResaleValue: z.number(),
-    justification: z.string(),
-    profitAnalysis: ProfitAnalysisSchema.optional(),
-  })},
-  prompt: `You are an expert pricing analyst and auctioneer, skilled at determining the true market value of items and identifying profit opportunities. Your job is to think like a human reseller, flagging non-resellable items and giving realistic price ranges.
-
-First, identify the item. If a photo is provided, use it. If not, use the provided item name.
-
-Then, use the following data and multipliers to calculate a realistic resale value range, as if you were pricing it for a real auction.
-
-CORE_MARKET_DATA = {
+const CORE_MARKET_DATA: Record<string, { avg_resale: number; is_high_risk: boolean; retail?: number }> = {
     "Gaming Laptop (Mid-Tier)": { avg_resale: 650.00, is_high_risk: false },
     "KitchenAid Stand Mixer (Used)": { avg_resale: 150.00, is_high_risk: false },
     "Vintage Vinyl Record (Specific Title)": { avg_resale: 15.00, is_high_risk: false },
@@ -116,70 +89,74 @@ CORE_MARKET_DATA = {
     "Rolex Submariner Watch": { avg_resale: 12000.00, is_high_risk: false },
     "Used Bike Helmet": { avg_resale: 0, is_high_risk: true, retail: 100.00 },
     "Opened Vitamin Supplements": { avg_resale: 0, is_high_risk: true, retail: 45.00 }
-}
+};
 
-CONDITION_MULTIPLIERS = {
+const CONDITION_MULTIPLIERS: Record<string, number> = {
     "New (Sealed)": 1.25,
     "Excellent (Like New)": 1.05,
     "Good (Used, Working)": 0.90,
     "Fair (Scratches/Minor Issue)": 0.70,
-}
+};
 
-SOURCE_MULTIPLIERS = {
+const SOURCE_MULTIPLIERS: Record<string, number> = {
     "Personal Garage/Storage": 0.95,
     "Yard Sale/Flea Market (Buying)": 0.65,
     "Retail Store (Walmart/Target)": 1.20,
     "Online Marketplace (eBay/Poshmark)": 1.00,
+};
+
+
+export async function verifyItemValue(
+  input: VerifyItemValueInput
+): Promise<VerifyItemValueOutput> {
+  return verifyItemValueFlow(input);
 }
 
-**REAL HUMAN LOGIC CHECK:**
-If the identified item has 'is_high_risk: true' and the condition is not 'New (Sealed)':
-1.  Set both 'minResaleValue' and 'maxResaleValue' to the item's 'retail' price.
-2.  Create a 'justification' that starts with "***NO RESALE VALUE.***" and explains that hygiene/safety rules prevent resale, and clearly state that the price shown is the estimated original RETAIL price.
-3.  If profit analysis is requested, set the verdict to "DO NOT BUY".
 
-**STANDARD VALUE CALCULATION STEPS:**
-1. Find the 'avg_resale' price for the identified item from CORE_MARKET_DATA. If not found, use a reasonable estimate.
-2. Get the 'condition_multiplier' for the user's input: {{{condition}}}.
-3. Get the 'source_multiplier' for the user's input: {{{source}}}.
-4. Calculate 'base_rsp' = avg_resale * condition_multiplier.
-5. Calculate 'min_resale_value' = base_rsp * 0.85.
-6. Calculate 'max_resale_value' = base_rsp * 1.15 * source_multiplier.
-7. Ensure min_resale_value is not greater than max_resale_value. If it is, set min_resale_value = max_resale_value * 0.9.
-8. Create a 'justification' string explaining how the base price was adjusted by the multipliers.
+const identifyItemPrompt = ai.definePrompt({
+    name: 'identifyItemPrompt',
+    input: { schema: z.object({
+        photoDataUri: z.string().optional(),
+        itemName: z.string().optional(),
+        marketDataKeys: z.array(z.string()),
+    })},
+    output: { schema: z.object({
+        identifiedItemName: z.string().describe('The name of the item that is the best match from the provided market data keys.')
+    })},
+    prompt: `You are an expert at identifying items from images or text descriptions. Based on the user's input, identify the single best matching item from the following list of known items.
 
-{{#if askingPrice}}
-**PROFIT ANALYSIS STEPS (only for standard items):**
-1. If the item is high-risk, set verdict to "DO NOT BUY" and all financial values to 0.
-2. Otherwise, use the 'max_resale_value' calculated above.
-3. Assume a standard 15% marketplace fee. Calculate 'net_resale_value' = max_resale_value * (1 - 0.15).
-4. Calculate 'potential_gross_profit' = net_resale_value - {{{askingPrice}}}.
-5. If potential_gross_profit > 0, calculate 'roi_percentage' = (potential_gross_profit / {{{askingPrice}}}) * 100. Otherwise, ROI is 0.
-6. Determine the 'verdict':
-   - If roi_percentage > 50, "BUY NOW! Major Profit Opportunity."
-   - If roi_percentage > 0, "Good Deal, worth the flip."
-   - If potential_gross_profit >= -10, "Break-even risk. Only buy if condition is perfect."
-   - Otherwise, "NO DEAL. Asking price is too high."
-7. Populate the 'profitAnalysis' object in the output.
-{{/if}}
+Known Items:
+{{#each marketDataKeys}}- {{{this}}}
+{{/each}}
 
-
-Analyze the following user inputs. Use the photo if available, otherwise use the item name.
+User Input:
 {{#if photoDataUri}}
 Photo: {{media url=photoDataUri}}
 {{/if}}
 {{#if itemName}}
 Item Name: {{{itemName}}}
 {{/if}}
-Condition: {{{condition}}}
-Source: {{{source}}}
-{{#if askingPrice}}
-Asking Price: {{{askingPrice}}}
-{{/if}}
 
-Respond with the identified item name, min/max resale values, a justification, and the profit analysis if an asking price was provided.
-  `,
+Respond with the identified item name in the requested JSON format.
+`,
 });
+
+
+const justifyValuePrompt = ai.definePrompt({
+    name: 'justifyValuePrompt',
+    input: { schema: z.any() },
+    output: { schema: z.object({ justification: z.string() }) },
+    prompt: `You are a pricing analyst. Given the following data, write a brief, human-like justification for the final price. If the price is based on retail, state that clearly.
+
+Data: {{{jsonString}}}
+
+Example justification: "Based on a market average of $150.00 for this item, we've adjusted for its 'Good' condition. The price range reflects what you could realistically get in today's market."
+Example justification for retail: "***NO RESALE VALUE.*** Due to hygiene/safety rules, this item cannot be resold. The price shown is the estimated original retail value."
+
+Provide only the justification string in the requested JSON format.`
+});
+
+
 
 const verifyItemValueFlow = ai.defineFlow(
   {
@@ -187,30 +164,104 @@ const verifyItemValueFlow = ai.defineFlow(
     inputSchema: VerifyItemValueInputSchema,
     outputSchema: VerifyItemValueOutputSchema,
   },
-  async input => {
-    // Run value verification and fake scouting in parallel
-    const [valueResult, authenticityResult] = await Promise.all([
-      verifyItemValuePrompt(input),
-      scoutFakes({
-        itemName: input.itemName || "Item from photo", // The LLM will identify the true name
-        checkLocation: input.source.includes("Market") ? "Auction Photo" : "In-Hand Scan"
-      })
-    ]);
-    
-    if (!valueResult.output) {
-      throw new Error("Value verification failed to produce an output.");
+  async (input) => {
+    // 1. Use AI to identify the item from the image/text against our market data keys.
+    const identificationResponse = await identifyItemPrompt({
+        photoDataUri: input.photoDataUri,
+        itemName: input.itemName,
+        marketDataKeys: Object.keys(CORE_MARKET_DATA),
+    });
+
+    const identifiedItemName = identificationResponse.output!.identifiedItemName;
+    const itemMarketData = CORE_MARKET_DATA[identifiedItemName];
+
+    if (!itemMarketData) {
+        throw new Error(`Could not find market data for identified item: ${identifiedItemName}`);
     }
 
-    // The fake scouter needs the *actual* item name identified by the value promp.
-    // So we run it again with the correct name.
-    const finalAuthenticityResult = await scoutFakes({
-        itemName: valueResult.output.itemName,
+    let minResaleValue: number;
+    let maxResaleValue: number;
+    let isRetailFallback = false;
+
+    // 2. Perform calculations directly in code
+    if (itemMarketData.is_high_risk && input.condition !== 'New (Sealed)') {
+        minResaleValue = itemMarketData.retail || 0;
+        maxResaleValue = itemMarketData.retail || 0;
+        isRetailFallback = true;
+    } else {
+        const conditionMultiplier = CONDITION_MULTIPLIERS[input.condition] || 1.0;
+        const sourceMultiplier = SOURCE_MULTIPLIERS[input.source] || 1.0;
+        
+        const baseRsp = itemMarketData.avg_resale * conditionMultiplier;
+        
+        minResaleValue = baseRsp * 0.85;
+        maxResaleValue = baseRsp * 1.15 * sourceMultiplier;
+        
+        if (minResaleValue > maxResaleValue) {
+            minResaleValue = maxResaleValue * 0.9;
+        }
+    }
+    
+    // 3. Perform profit analysis if asking price is provided
+    let profitAnalysis: z.infer<typeof ProfitAnalysisSchema> | undefined = undefined;
+    if (input.askingPrice !== undefined && input.askingPrice > 0) {
+        if (isRetailFallback) {
+             profitAnalysis = {
+                estimatedNetResale: 0,
+                potentialGrossProfit: -input.askingPrice,
+                potentialRoiPercent: -100,
+                verdict: "DO NOT BUY. This item is not resellable."
+            };
+        } else {
+            const estimatedNetResale = maxResaleValue * (1 - 0.15); // Assume 15% fee
+            const potentialGrossProfit = estimatedNetResale - input.askingPrice;
+            const potentialRoiPercent = (potentialGrossProfit / input.askingPrice) * 100;
+            
+            let verdict = "NO DEAL. Asking price is too high.";
+            if (potentialRoiPercent > 50) {
+                verdict = "BUY NOW! Major Profit Opportunity.";
+            } else if (potentialRoiPercent > 0) {
+                verdict = "Good Deal, worth the flip.";
+            } else if (potentialGrossProfit >= -10) {
+                verdict = "Break-even risk. Only buy if condition is perfect.";
+            }
+
+            profitAnalysis = {
+                estimatedNetResale,
+                potentialGrossProfit,
+                potentialRoiPercent,
+                verdict
+            };
+        }
+    }
+    
+    // 4. Run Fake Scouter in parallel
+    const authenticityResult = await scoutFakes({
+        itemName: identifiedItemName,
         checkLocation: input.source.includes("Market") ? "Auction Photo" : "In-Hand Scan"
     });
 
+    // 5. Generate final justification with AI
+    const justificationResponse = await justifyValuePrompt({
+        jsonString: JSON.stringify({
+            identifiedItemName,
+            condition: input.condition,
+            source: input.source,
+            minResaleValue: minResaleValue,
+            maxResaleValue: maxResaleValue,
+            isRetailFallback,
+        })
+    });
+    
     return {
-        ...valueResult.output,
-        authenticity: finalAuthenticityResult,
+        itemName: identifiedItemName,
+        minResaleValue: parseFloat(minResaleValue.toFixed(2)),
+        maxResaleValue: parseFloat(maxResaleValue.toFixed(2)),
+        justification: justificationResponse.output!.justification,
+        profitAnalysis: profitAnalysis,
+        authenticity: authenticityResult,
     };
   }
 );
+
+    

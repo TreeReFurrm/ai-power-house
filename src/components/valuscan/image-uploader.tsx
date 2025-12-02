@@ -239,10 +239,16 @@ export function ImageUploader({ onImageUpload, disabled = false }: ImageUploader
     <Card className="w-full max-w-md mx-auto">
         <canvas ref={canvasRef} className="hidden" />
         <Tabs defaultValue="upload" value={mode} onValueChange={(v) => setMode(v as any)} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="upload" disabled={disabled}> <Upload className="mr-2 h-4 w-4"/> Upload File</TabsTrigger>
-                <TabsTrigger value="camera" disabled={disabled}><Camera className="mr-2 h-4 w-4"/>Use Camera</TabsTrigger>
-            </TabsList>
+        <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="upload" disabled={disabled} className="data-[state=active]:bg-accent">
+                <Upload className="mr-2 h-4 w-4" />
+                Upload File
+            </TabsTrigger>
+            <TabsTrigger value="camera" disabled={disabled} className="data-[state=active]:bg-accent">
+                <Camera className="mr-2 h-4 w-4" />
+                Use Camera
+            </TabsTrigger>
+        </TabsList>
             <TabsContent value="upload">
                 <div
                     className={dropZoneClasses}
