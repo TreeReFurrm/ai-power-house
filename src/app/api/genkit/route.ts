@@ -7,5 +7,6 @@ import '@/ai/flows/scout-fakes';
 import '@/ai/flows/select-ambassador';
 import '@/ai/flows/verify-item-value';
 import '@/ai/flows/upc-deal-checker';
+import '@/ai/flows/appraise-lot-flow';
 
 export const POST = nextHandler();

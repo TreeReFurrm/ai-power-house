@@ -1,7 +1,7 @@
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter } from '@/components/ui/sidebar';
-import { Home, ScanLine, PlusCircle, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase } from 'lucide-react';
+import { Home, ScanLine, PlusCircle, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './header';
 
@@ -30,6 +30,14 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 <Link href="/verify">
                   <ScanLine />
                   <span>Ethical Pricing Tool</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+             <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Appraise Lot">
+                <Link href="/appraise-lot">
+                  <Boxes />
+                  <span>Appraise Lot</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
