@@ -17,15 +17,15 @@ export default function Home() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <PlusCircle className="text-primary" />
-              <span>List an Item</span>
+              <span>Ready to Declutter & Sell?</span>
             </CardTitle>
             <CardDescription>
-              Use our AI to generate a listing in seconds. Just snap a photo.
+              Let our AI create your first listing and turn your items into assets. Use our Instant Listing Generator to begin. Just upload a photo and let our AI do the heavy lifting, from writing an SEO-optimized title to suggesting a fair price.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex-grow flex items-end">
             <Button asChild className="w-full">
-              <Link href="/list">Start Listing <ArrowRight className="ml-2" /></Link>
+              <Link href="/list">Create Your First Listing <ArrowRight className="ml-2" /></Link>
             </Button>
           </CardContent>
         </Card>
