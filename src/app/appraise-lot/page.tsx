@@ -74,7 +74,7 @@ function MultiImageUploader({ onUpload, disabled }: { onUpload: (dataUris: strin
 }
 
 
-export default function AppraiseLotPage() {
+export default function BiddingToolPage() {
   const [photoDataUris, setPhotoDataUris] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<AppraiseLotOutput | null>(null);
@@ -114,7 +114,7 @@ export default function AppraiseLotPage() {
         <>
             <Card className="border-none shadow-none bg-transparent mb-6">
                 <CardHeader className="text-center">
-                <CardTitle className="text-3xl font-bold tracking-tight">Auction Lot Appraiser</CardTitle>
+                <CardTitle className="text-3xl font-bold tracking-tight">Bidding Tool</CardTitle>
                 <CardDescription className="text-lg text-muted-foreground">
                     Upload photos of a storage unit to get an AI-powered valuation.
                 </CardDescription>

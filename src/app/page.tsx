@@ -21,7 +21,7 @@ export default function Home() {
              </Button>
              <div className="text-sm">
                 <Button asChild variant="link">
-                    <Link href="/verify">Try the Ethical Pricing Tool</Link>
+                    <Link href="/verify">Try the Pricing Tool</Link>
                 </Button>
              </div>
              <p className="text-xs text-muted-foreground pt-2">Trusted by hundreds of sellers • Average time to sale: 4 days</p>
@@ -32,7 +32,7 @@ export default function Home() {
         <Card className="flex flex-col w-full rounded-lg shadow-sm hover:shadow-lg transition-shadow hover:bg-card/95">
           <CardHeader>
             <CardTitle className="flex items-center justify-between text-primary">
-              <span>Ethical Pricing Tool</span>
+              <span>Pricing Tool</span>
               <BadgePercent className="h-5 w-5 text-muted-foreground" />
             </CardTitle>
              <CardDescription>Get a fair price range based on real sales data so you list competitively and sell faster.</CardDescription>
