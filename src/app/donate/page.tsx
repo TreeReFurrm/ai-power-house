@@ -186,27 +186,27 @@ export default function DonationPage() {
                     <li>We handle the assessment and ethical resale to maximize the contribution.</li>
                     <li>All net proceeds from the sale are directed to the LEAN Foundation.</li>
                   </ul>
-                  <Button onClick={handleItemDonate} className="w-full mt-auto" disabled={isProcessing}>
+                  <Button onClick={handleItemDonate} className="w-full mt-auto">
                     ReFurrbish an Item <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
               </CardContent>
             </Card>
 
-            <Card className="h-full bg-primary text-primary-foreground flex flex-col">
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-2xl">
                   <UserPlus className="w-6 h-6" />
                   Become an Ambassador
                 </CardTitle>
-                <CardDescription className="text-primary-foreground/80">
-                  Lead local efforts, coordinate pickups, and be a core part of our mission. <Button variant="link" asChild className="p-0 h-auto text-primary-foreground/80"><Link href="/ambassadors/details">Learn More</Link></Button>
+                <CardDescription>
+                  Lead local efforts, coordinate pickups, and be a core part of our mission. <Button variant="link" asChild className="p-0 h-auto"><Link href="/ambassadors/details">Learn More</Link></Button>
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow flex items-end">
+              <CardContent>
                 <Button 
-                    variant="secondary" 
+                    variant="default" 
                     onClick={handleAmbassadorInterest} 
-                    className="w-full text-primary"
+                    className="w-full"
                     disabled={isProcessing}
                 >
                   Apply Now
