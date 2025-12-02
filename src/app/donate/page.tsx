@@ -84,10 +84,10 @@ export default function DonationPage() {
       <header className="text-center space-y-3">
         <Heart className="w-12 h-12 text-primary mx-auto" />
         <h1 className="text-4xl font-extrabold tracking-tight">
-          Support ReFurrm SmartScan's Big Mission
+          Donate to the LEAN Foundation
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Your contributions power our ethical preservation efforts and community support network, organized under the LEAN Foundation.
+          Your contributions power our ethical preservation efforts and community support network.
         </p>
       </header>
       

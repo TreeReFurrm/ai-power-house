@@ -26,7 +26,7 @@ export default function RefurrbishGuidePage() {
         </CardHeader>
         <CardContent className="space-y-4 text-muted-foreground">
           <p>
-            ReFURRBISH is our ethical resale process. When you donate an item, we clean it, evaluate it using SmartScan AI, prepare it for resale, and list it in the ReFurrm Ethical Resale.
+            ReFURRBISH is our ethical resale process. When you donate an item, we clean it, evaluate it using SmartScan AI, prepare it for resale, and list it in the Marketplace.
           </p>
           <p className="font-semibold text-foreground">
             Proceeds directly support the LEAN Foundation hardship fund.
@@ -77,13 +77,13 @@ export default function RefurrbishGuidePage() {
           <div>
             <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">3</Badge> SmartScan Valuation</h3>
             <p className="text-muted-foreground border-l-2 ml-4 pl-6 mt-2">
-              Market data is used to estimate a fair resale price. Items are tagged as ReFURRBISHED and assigned to the ReFurrm Ethical Resale.
+              Market data is used to estimate a fair resale price. Items are tagged as ReFURRBISHED and assigned to the Marketplace.
             </p>
           </div>
           <div>
             <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">4</Badge> Listing And Sale</h3>
             <p className="text-muted-foreground border-l-2 ml-4 pl-6 mt-2">
-              Items are photographed and listed in the ReFurrm Ethical Resale. Most donations are listed within 72 hours of processing.
+              Items are photographed and listed in the Marketplace. Most donations are listed within 72 hours of processing.
             </p>
           </div>
            <div>

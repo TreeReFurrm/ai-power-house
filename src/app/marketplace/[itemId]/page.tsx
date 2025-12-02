@@ -130,7 +130,7 @@ export default function ItemDetailPage() {
       <Button asChild variant="outline" className="mb-6">
         <Link href="/marketplace">
           <ArrowLeft className="mr-2" />
-          Back to ReFurrm Ethical Resale
+          Back to Marketplace
         </Link>
       </Button>
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12">

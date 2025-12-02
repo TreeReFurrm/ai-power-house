@@ -50,10 +50,10 @@ export function MainLayout({ children }: { children: ReactNode }) {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="ReFurrm Ethical Resale">
+              <SidebarMenuButton asChild tooltip="Marketplace">
                 <Link href="/marketplace">
                   <ShoppingCart />
-                  <span>ReFurrm Ethical Resale</span>
+                  <span>Marketplace</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

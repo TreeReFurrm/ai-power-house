@@ -192,7 +192,7 @@ export function InstantListingGenerator() {
 
         toast({
         title: "Listing Published!",
-        description: `${data.title} is now live on the ReFurrm Ethical Resale.`,
+        description: `${data.title} is now live on the Marketplace.`,
         });
         router.push('/marketplace');
 
@@ -354,7 +354,7 @@ export function InstantListingGenerator() {
                                     <FormLabel className="text-base font-bold flex items-center">
                                         <Sparkles className="mr-2" /> Consignment Sale (Make Money)
                                     </FormLabel>
-                                    <FormDescription>Publish to ReFurrm Ethical Resale. You handle fulfillment.</FormDescription>
+                                    <FormDescription>Publish to Marketplace. You handle fulfillment.</FormDescription>
                                 </div>
                                 <FormControl>
                                     <Switch checked={field.value} onCheckedChange={field.onChange} />
