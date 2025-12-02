@@ -26,8 +26,7 @@ export function ImageUploader({ onImageUpload, disabled = false }: ImageUploader
   const [mode, setMode] = useState<'upload' | 'camera'>('upload');
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
-  const [activeDeviceId, setActiveDeviceId] = useState<string | undefined>(undefined);
+  const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
 
   const stopStream = useCallback(() => {
@@ -37,13 +36,12 @@ export function ImageUploader({ onImageUpload, disabled = false }: ImageUploader
     }
   }, [stream]);
 
-  const startStream = useCallback(async (deviceId?: string) => {
+  const startStream = useCallback(async (mode: 'environment' | 'user') => {
     stopStream();
     try {
       const newStream = await navigator.mediaDevices.getUserMedia({
         video: {
-          deviceId: deviceId ? { exact: deviceId } : undefined,
-          facingMode: deviceId ? undefined : 'environment', // Prefer rear camera by default
+          facingMode: { exact: mode }
         }
       });
       setStream(newStream);
@@ -53,38 +51,36 @@ export function ImageUploader({ onImageUpload, disabled = false }: ImageUploader
       }
     } catch (err) {
       console.error("Camera error:", err);
-      setHasCameraPermission(false);
-      toast({
-        variant: "destructive",
-        title: "Camera Access Denied",
-        description: "Please enable camera permissions in your browser settings."
-      });
+      // If exact mode fails, try without it
+      if ((err as Error).name === 'OverconstrainedError' && mode === 'environment') {
+        startStream('user'); // Fallback to user camera
+      } else {
+        setHasCameraPermission(false);
+        toast({
+          variant: "destructive",
+          title: "Camera Access Denied",
+          description: "Please enable camera permissions in your browser settings."
+        });
+      }
     }
   }, [stopStream, toast]);
 
   useEffect(() => {
     if (mode === 'camera' && !isCameraOpen) {
-      navigator.mediaDevices.enumerateDevices().then(allDevices => {
-        const videoDevices = allDevices.filter(device => device.kind === 'videoinput');
-        setDevices(videoDevices);
-        const initialDeviceId = videoDevices.find(d => d.label.toLowerCase().includes('back'))?.deviceId || videoDevices[0]?.deviceId;
-        setActiveDeviceId(initialDeviceId);
-        setIsCameraOpen(true);
-        startStream(initialDeviceId);
-      });
+      setIsCameraOpen(true);
+      startStream(facingMode);
     } else if (mode !== 'camera' && isCameraOpen) {
       stopStream();
       setIsCameraOpen(false);
     }
 
     return () => {
-      // Ensure stream is stopped on component unmount
       if(isCameraOpen) {
         stopStream();
       }
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+  }, [mode, facingMode]);
 
   const handleFileProcessing = useCallback(async (file: File) => {
     if (file.type && !file.type.startsWith('image/')) {
@@ -142,7 +138,7 @@ export function ImageUploader({ onImageUpload, disabled = false }: ImageUploader
       fileInputRef.current.value = '';
     }
     if(mode === 'camera' && !stream) {
-      startStream(activeDeviceId);
+      startStream(facingMode);
     }
   };
 
@@ -205,12 +201,7 @@ export function ImageUploader({ onImageUpload, disabled = false }: ImageUploader
   };
   
   const handleSwitchCamera = () => {
-    if(devices.length < 2) return;
-    const currentDeviceIndex = devices.findIndex(device => device.deviceId === activeDeviceId);
-    const nextDeviceIndex = (currentDeviceIndex + 1) % devices.length;
-    const nextDeviceId = devices[nextDeviceIndex]?.deviceId;
-    setActiveDeviceId(nextDeviceId);
-    startStream(nextDeviceId);
+    setFacingMode(prev => prev === 'environment' ? 'user' : 'environment');
   };
 
   if (preview) {
@@ -306,11 +297,9 @@ export function ImageUploader({ onImageUpload, disabled = false }: ImageUploader
                         <Button onClick={handleSnap} disabled={!stream || disabled} size="lg">
                             <Camera className="mr-2"/> Snap Photo
                         </Button>
-                        {devices.length > 1 && (
-                            <Button onClick={handleSwitchCamera} disabled={!stream || disabled} variant="outline" size="icon" aria-label="Switch Camera">
-                                <SwitchCamera />
-                            </Button>
-                        )}
+                        <Button onClick={handleSwitchCamera} disabled={!stream || disabled} variant="outline" size="icon" aria-label="Switch Camera">
+                            <SwitchCamera />
+                        </Button>
                     </div>
                 </div>
             </TabsContent>
