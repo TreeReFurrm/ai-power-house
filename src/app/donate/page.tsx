@@ -21,10 +21,10 @@ export default function DonationPage() {
 
   // Define the impact tiers for transparency
   const impactTiers = [
-    { amount: 25, label: '$25', description: 'Supports one application review.' },
-    { amount: 50, label: '$50', description: 'Covers Ambassador equipment.' },
-    { amount: 100, label: '$100', description: 'Funds emergency storage rent.' },
-    { amount: 250, label: '$250', description: 'Funds a community seminar.' },
+    { amount: 25, label: '$25', description: 'Funds AI Validation & Human Review for one sensitive item.' },
+    { amount: 50, label: '$50', description: 'Supports the identity verification process for one former owner.' },
+    { amount: 100, label: '$100', description: 'Covers secure storage for a box of unclaimed Legacy Items.' },
+    { amount: 250, label: '$250', description: 'Funds responsible disposition of sensitive materials.' },
   ];
 
   // Handler for Monetary Donation
@@ -84,7 +84,7 @@ export default function DonationPage() {
       <header className="text-center space-y-3">
         <Heart className="w-12 h-12 text-primary mx-auto" />
         <h1 className="text-4xl font-extrabold tracking-tight">
-          Donate to the LEAN Foundation
+          The Legacy Preservation Fund
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Your contributions power our ethical preservation efforts and community support network.
@@ -96,15 +96,15 @@ export default function DonationPage() {
         <CardHeader className="text-center">
             <CardTitle className="flex items-center gap-2 text-xl text-primary mx-auto">
                 <Info className="w-5 h-5" />
-                Our Big Mission & Transparency
+                The Chain-of-Dignity Protocol
             </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2 text-sm">
-            <p>
-                ReFurrm SmartScan's core goal is to prevent valuable items from being lost by providing emergency, ethical support through our "LEAN on ReFurrm" program. <Button variant="link" asChild className="p-0 h-auto"><Link href="#">Learn More</Link></Button>
+        <CardContent className="space-y-2 text-sm text-center">
+            <p className="max-w-prose mx-auto">
+                The ReFURRM Legacy Preservation Fund guarantees that items of personal significance, designated as **Legacy Items** during our intake process, are treated with dignity. Funds are used to preserve, securely store, and return items to their rightful owners.
             </p>
             <p className="text-xs italic text-muted-foreground">
-                **Disclosure:** All applications are reviewed based on the highest ethical standards. If funds are not available for an approved case, we will launch a dedicated fundraiser. Any unused funds are strictly reserved for future approved needs.
+                **Disclosure:** 100% of contributions are strictly reserved for mission-aligned activities, with all expenditures logged in an auditable record to demonstrate our commitment to procedural compassion.
             </p>
         </CardContent>
       </Card>
@@ -117,10 +117,10 @@ export default function DonationPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl">
               <DollarSign className="w-6 h-6" />
-              Fund the Mission
+              Invest in Integrity
             </CardTitle>
             <CardDescription>
-              Your financial donation fuels direct action and supports our network.
+              Your financial support directly fuels the systems and personnel required to enforce our Privacy & Dignity Standard.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -135,7 +135,7 @@ export default function DonationPage() {
                     disabled={isProcessing}
                   >
                     <span className="text-lg font-bold">{tier.label}</span>
-                    <span className="text-xs text-muted-foreground/90 mt-1 block max-w-[90px] mx-auto text-balance">
+                    <span className="text-xs text-muted-foreground/90 mt-1 block max-w-[120px] mx-auto text-balance">
                         {tier.description}
                     </span>
                   </Button>
@@ -162,7 +162,7 @@ export default function DonationPage() {
                 disabled={isProcessing || amount <= 0}
               >
                 {isProcessing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                {isProcessing ? 'Processing...' : `Donate $${amount.toFixed(2)} Now`}
+                {isProcessing ? 'Processing...' : `Contribute $${amount.toFixed(2)} Now`}
               </Button>
             </div>
           </CardContent>

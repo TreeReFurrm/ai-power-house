@@ -71,14 +71,15 @@ export default function SubscriptionPage() {
                     <div className="mx-auto w-fit rounded-full bg-primary/10 p-3 mb-4">
                         <Star className="size-8 text-primary" />
                     </div>
-                    <CardTitle className="text-3xl font-bold tracking-tight">Pro Tier</CardTitle>
+                    <CardTitle className="text-3xl font-bold tracking-tight">SmartScan Pro Tier</CardTitle>
                     <CardDescription className="text-lg text-muted-foreground">
-                        Unlock the full power of ReFurrm SmartScan.
+                        Powering the Chain-of-Dignity
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="text-center">
                         <p className="text-4xl font-bold">$29<span className="text-lg font-normal text-muted-foreground">/month</span></p>
+                        <p className="text-sm text-muted-foreground mt-2">All Pro Tier fees are directed to the ReFURRM Legacy Preservation Fund.</p>
                     </div>
                     <ul className="space-y-3 text-sm">
                         {proFeatures.map((feature, index) => (
