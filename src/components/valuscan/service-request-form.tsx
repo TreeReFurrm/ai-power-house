@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -11,14 +12,25 @@ import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Sparkles, UserCheck, UserX, Send } from 'lucide-react';
+import { Loader2, UserCheck, UserX, Send } from 'lucide-react';
 import { useUser } from '@/firebase';
 import { requestSecondaryService, SecondaryServiceOutput } from '@/ai/flows/request-secondary-service';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
+import { Checkbox } from '../ui/checkbox';
 
 const serviceRequestSchema = z.object({
-  serviceType: z.enum(['cleanout', 'organize', 'downsize'], { required_error: 'Please select a service.'}),
+  serviceType: z.enum([
+      'Full-Service Inventory Clean-out', 
+      'Organizational/Staging Support', 
+      'Logistics/Pickup Request', 
+      'DIY Fulfillment Consultation'
+    ], { required_error: 'Please select a service.'}),
+  projectSize: z.enum(['Small (1-5 items)', 'Medium (6-15 items)', 'Large (15+ items)'], { required_error: 'Please estimate the project size.' }),
+  urgency: z.enum(['Within 48 hours', 'Within 1 week', 'Flexible'], { required_error: 'Please select a deadline.' }),
   zipCode: z.string().min(5, 'Please enter a valid 5-digit ZIP code.').max(5),
+  logisticsAcknowledged: z.boolean().refine(val => val === true, {
+    message: 'You must acknowledge item accessibility.',
+  }),
   notes: z.string().optional(),
 });
 
@@ -32,7 +44,12 @@ export function ServiceRequestForm() {
 
   const form = useForm<ServiceRequestFormData>({
     resolver: zodResolver(serviceRequestSchema),
+    defaultValues: {
+      logisticsAcknowledged: false,
+    }
   });
+  
+  const serviceType = form.watch('serviceType');
 
   const onSubmit = async (data: ServiceRequestFormData) => {
     if (!user) {
@@ -48,10 +65,24 @@ export function ServiceRequestForm() {
     setResult(null);
 
     try {
-      const output = await requestSecondaryService({
-        ...data,
-        userId: user.uid,
-      });
+        const serviceTypeMap = {
+            'Full-Service Inventory Clean-out': 'cleanout',
+            'Organizational/Staging Support': 'organize',
+            'Logistics/Pickup Request': 'pickup',
+            'DIY Fulfillment Consultation': 'downsize'
+        } as const;
+
+        const serviceTypeValue = serviceTypeMap[data.serviceType as keyof typeof serviceTypeMap] || 'cleanout';
+
+        const output = await requestSecondaryService({
+            serviceType: serviceTypeValue,
+            zipCode: data.zipCode,
+            notes: data.notes,
+            userId: user.uid,
+            projectSize: data.projectSize,
+            urgency: data.urgency,
+            logisticsAcknowledged: data.logisticsAcknowledged,
+        });
       setResult(output);
     } catch (error) {
       console.error('Service request failed:', error);
@@ -67,7 +98,7 @@ export function ServiceRequestForm() {
   
   const handleReset = () => {
     setResult(null);
-    form.reset();
+    form.reset({ logisticsAcknowledged: false });
   }
 
   if (result) {
@@ -109,7 +140,7 @@ export function ServiceRequestForm() {
               name="serviceType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>What service do you need?</FormLabel>
+                  <FormLabel>1. What service do you need?</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
                     <FormControl>
                       <SelectTrigger>
@@ -117,21 +148,74 @@ export function ServiceRequestForm() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="cleanout">Home or Storage Clean-out</SelectItem>
-                      <SelectItem value="organize">Organizational Services</SelectItem>
-                      <SelectItem value="downsize">Downsizing Assistance</SelectItem>
+                      <SelectItem value="Full-Service Inventory Clean-out">Full-Service Inventory Clean-out</SelectItem>
+                      <SelectItem value="Organizational/Staging Support">Organizational/Staging Support (Pro Tier Only)</SelectItem>
+                      <SelectItem value="Logistics/Pickup Request">Logistics/Pickup Request</SelectItem>
+                      <SelectItem value="DIY Fulfillment Consultation">DIY Fulfillment Consultation</SelectItem>
                     </SelectContent>
                   </Select>
+                  { (serviceType === 'Full-Service Inventory Clean-out' || serviceType === 'Organizational/Staging Support') &&
+                    <FormDescription className="text-xs text-primary/80">Note: This service requires a consultation. Commissions (10-15%) will apply to all items successfully listed and sold.</FormDescription>
+                  }
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <div className="grid md:grid-cols-2 gap-6">
+                <FormField
+                control={form.control}
+                name="projectSize"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>2. Estimated Project Size</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Estimate the project size" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                        <SelectItem value="Small (1-5 items)">Small (1-5 items)</SelectItem>
+                        <SelectItem value="Medium (6-15 items)">Medium (6-15 items)</SelectItem>
+                        <SelectItem value="Large (15+ items)">Large (15+ items)</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+
+                <FormField
+                control={form.control}
+                name="urgency"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>3. Required Deadline</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select a deadline" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                        <SelectItem value="Within 48 hours">Within 48 hours</SelectItem>
+                        <SelectItem value="Within 1 week">Within 1 week</SelectItem>
+                        <SelectItem value="Flexible">Flexible</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </div>
+            
             <FormField
               control={form.control}
               name="zipCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Project ZIP Code</FormLabel>
+                  <FormLabel>4. Project ZIP Code</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter your 5-digit ZIP code" {...field} disabled={isSubmitting} />
                   </FormControl>
@@ -139,16 +223,40 @@ export function ServiceRequestForm() {
                 </FormItem>
               )}
             />
+
+             <FormField
+                control={form.control}
+                name="logisticsAcknowledged"
+                render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormControl>
+                        <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            disabled={isSubmitting}
+                        />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                        <FormLabel>5. I confirm items are easily accessible.</FormLabel>
+                        <FormDescription>
+                            (e.g., ground floor, elevator access, or easy street parking).
+                        </FormDescription>
+                        <FormMessage />
+                        </div>
+                    </FormItem>
+                )}
+            />
+
             <FormField
               control={form.control}
               name="notes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Project Notes (Optional)</FormLabel>
+                  <FormLabel>6. Project Notes (Optional)</FormLabel>
                   <FormControl>
                     <Textarea 
-                        placeholder="e.g., 'Cleaning out a 10x20 storage unit. Contains mostly furniture and boxes of old electronics.' The more details, the better!" 
-                        rows={4} 
+                        placeholder="Include specific requirements or known challenges. e.g., 'Cleaning out a 10x20 storage unit...'" 
+                        rows={3} 
                         {...field} 
                         disabled={isSubmitting}
                     />

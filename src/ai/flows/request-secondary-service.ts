@@ -85,7 +85,10 @@ function findLocalAmbassadors(zipCode: string, requiredService: keyof typeof VAL
 const SecondaryServiceInputSchema = z.object({
   userId: z.string().describe("The ID of the user requesting the service."),
   zipCode: z.string().describe("The ZIP code where the service is needed."),
-  serviceType: z.enum(['cleanout', 'organize', 'downsize']).describe("The type of service requested."),
+  serviceType: z.enum(['cleanout', 'organize', 'downsize', 'pickup']).describe("The type of service requested."),
+  projectSize: z.string().describe("The estimated size of the project."),
+  urgency: z.string().describe("The required deadline for the service."),
+  logisticsAcknowledged: z.boolean().describe("Confirmation that items are accessible."),
   notes: z.string().optional().describe("Additional notes, can include inventory scan results as a string."),
 });
 export type SecondaryServiceInput = z.infer<typeof SecondaryServiceInputSchema>;
@@ -118,6 +121,8 @@ const requestSecondaryServiceFlow = ai.defineFlow(
   },
   async (input) => {
     const requestId = uuidv4().split('-')[0].toUpperCase();
+    
+    console.log("Service Request Input:", input); // Log the new detailed input
     
     let requestRecord: Partial<SecondaryServiceOutput> = {
         requestId: requestId,
