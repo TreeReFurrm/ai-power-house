@@ -16,7 +16,7 @@ export default function Home() {
         <Card className="md:col-span-2 flex flex-col w-full rounded-lg shadow-lg bg-primary/10 border-primary/20 hover:shadow-xl transition-shadow cursor-pointer">
             <Link href="/list" className="flex flex-col flex-grow">
               <CardHeader>
-                <CardTitle className="text-2xl">Ready to Declutter & Sell?</CardTitle>
+                <CardTitle className="text-2xl text-primary">Ready to Declutter & Sell?</CardTitle>
               </CardHeader>
               <CardContent className="flex-grow space-y-4">
                  <p className="text-muted-foreground">Let our AI create your first listing and turn your items into assets. Use our Instant Listing Generator to begin. Just upload a photo and let our AI do the heavy lifting, from writing an SEO-optimized title to suggesting a fair price.</p>
@@ -28,7 +28,7 @@ export default function Home() {
         <Link href="/verify" className="flex">
            <Card className="flex flex-col w-full rounded-lg shadow-sm hover:shadow-lg transition-shadow hover:bg-card/95 cursor-pointer">
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
+                <CardTitle className="flex items-center justify-between text-primary">
                   <span>Ethical Price Engine</span>
                   <BadgePercent className="h-5 w-5 text-muted-foreground" />
                 </CardTitle>
@@ -42,7 +42,7 @@ export default function Home() {
         <Link href="/marketplace" className="flex">
             <Card className="flex flex-col w-full rounded-lg shadow-sm hover:shadow-lg transition-shadow hover:bg-card/95 cursor-pointer">
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
+                <CardTitle className="flex items-center justify-between text-primary">
                   <span>Marketplace</span>
                    <LayoutGrid className="h-5 w-5 text-muted-foreground" />
                 </CardTitle>
@@ -56,7 +56,7 @@ export default function Home() {
          <Link href="/services" className="md:col-span-2 flex">
            <Card className="flex flex-col w-full rounded-lg shadow-sm hover:shadow-lg transition-shadow hover:bg-card/95 cursor-pointer">
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
+                <CardTitle className="flex items-center justify-between text-primary">
                   <span>Ambassador Services</span>
                   <Handshake className="h-5 w-5 text-muted-foreground" />
                 </CardTitle>
