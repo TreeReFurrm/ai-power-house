@@ -168,7 +168,7 @@ export function ProfileQuestionnaire() {
                       className="flex flex-col space-y-2"
                     >
                       {PROFILE_QUESTIONS[currentStep].options.map((option) => {
-                         const cleanOption = option.replace(/\[\d\]\s/, '');
+                         const cleanOption = option.replace(/\\[\\d\\]\\s/, '');
                          return (
                             <FormItem key={cleanOption} className="flex items-center space-x-3 space-y-0 rounded-md border p-4 hover:bg-accent has-[[data-state=checked]]:bg-secondary">
                                 <FormControl>
