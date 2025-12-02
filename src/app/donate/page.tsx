@@ -99,11 +99,11 @@ export default function DonationPage() {
                 Our Big Mission & Transparency
             </CardTitle>
         </CardHeader>
-        <CardContent className="text-sm">
+        <CardContent className="text-sm space-y-2">
             <p>
-                ReFurrm SmartScan's core goal is to prevent valuable items from being lost by providing emergency, ethical support through the LEAN Foundation. Our "LEAN on ReFurrm" program provides application-based emergency interventions, like paying storage rent to prevent auction. <Button variant="link" asChild className="p-0 h-auto"><Link href="#">Learn More</Link></Button>
+                ReFurrm SmartScan's core goal is to prevent valuable items from being lost by providing emergency, ethical support through our "LEAN on ReFurrm" program. <Button variant="link" asChild className="p-0 h-auto"><Link href="#">Learn More</Link></Button>
             </p>
-            <p className="text-xs italic text-muted-foreground mt-2">
+            <p className="text-xs italic text-muted-foreground">
                 **Disclosure:** All applications are reviewed based on the highest ethical standards. If funds are not available for an approved case, we will launch a dedicated fundraiser. Any unused funds are strictly reserved for future approved needs.
             </p>
         </CardContent>
@@ -174,7 +174,7 @@ export default function DonationPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-2xl">
                   <Gift className="w-6 h-6" />
-                  "ReFurrbish" an Item
+                  ReFurrbish an Item
                 </CardTitle>
                 <CardDescription>
                   "ReFurrbish" means to donate an item for ethical resale. 100% of net proceeds fund the LEAN Foundation.
@@ -185,7 +185,7 @@ export default function DonationPage() {
                     Our AI assesses your item's value and an Ambassador handles pickup. It's the easiest way to make a difference.
                   </p>
                   <Button onClick={handleItemDonate} className="w-full mt-auto" disabled={isProcessing}>
-                    Start Item Donation <ArrowRight className="w-4 h-4 ml-2" />
+                    ReFurrbish an Item <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
               </CardContent>
             </Card>
