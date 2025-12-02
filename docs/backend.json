@@ -421,6 +421,83 @@
         }
       },
       "required": ["id", "userId", "itemName", "createdAt"]
+    },
+    "CustodyUnit": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "CustodyUnit",
+      "type": "object",
+      "description": "A header record for a storage unit or job, establishing a chain of custody.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID for the unit/job (e.g., AUCT-2025-001)."
+        },
+        "facilityRef": {
+          "type": "string",
+          "description": "The originating facility or location reference."
+        },
+        "agentId": {
+          "type": "string",
+          "description": "The ID of the ReFURRM Agent performing the work."
+        },
+        "startTime": {
+          "type": "string",
+          "description": "Timestamp when the agent began the clean-out log.",
+          "format": "date-time"
+        },
+        "endTime": {
+          "type": "string",
+          "description": "Timestamp when the agent finalized the log.",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "description": "Current processing status of the unit.",
+          "enum": ["In Progress", "Review", "Complete"]
+        }
+      },
+      "required": ["id", "facilityRef", "agentId", "startTime", "status"]
+    },
+    "InventoryItem": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "InventoryItem",
+      "type": "object",
+      "description": "An individual item scanned as part of a unit clean-out.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID for the specific item, can be tied to a physical tag."
+        },
+        "unitId": {
+          "type": "string",
+          "description": "Foreign key linking to the parent CustodyUnit."
+        },
+        "scanTime": {
+          "type": "string",
+          "description": "Exact moment the item was scanned into the system.",
+          "format": "date-time"
+        },
+        "aiClassification": {
+          "type": "string",
+          "description": "The initial AI classification for sorting.",
+          "enum": ["Resale", "Sensitive", "Donate", "Recycle"]
+        },
+        "isSensitive": {
+          "type": "boolean",
+          "description": "Set to TRUE if flagged as Legacy/Private, triggering human review."
+        },
+        "agentDecision": {
+          "type": "string",
+          "description": "The final disposition decision made by the agent.",
+          "enum": ["Price", "Donate", "Destroy"]
+        },
+        "itemPhotoUrl": {
+          "type": "string",
+          "description": "Secure link to the captured photo for verification.",
+          "format": "uri"
+        }
+      },
+      "required": ["id", "unitId", "scanTime", "aiClassification", "isSensitive"]
     }
   },
   "auth": {
@@ -552,8 +629,40 @@
                 }
             ]
         }
+      },
+      {
+        "path": "/custody_units/{unitId}",
+        "definition": {
+          "entityName": "CustodyUnit",
+          "schema": { "$ref": "#/backend/entities/CustodyUnit" },
+          "description": "Top-level records for each unit clean-out job, establishing chain of custody.",
+          "params": [
+            {
+              "name": "unitId",
+              "description": "The unique ID for the clean-out job."
+            }
+          ]
+        },
+        "subcollections": [
+          {
+            "path": "inventory_items/{itemId}",
+            "definition": {
+              "entityName": "InventoryItem",
+              "schema": { "$ref": "#/backend/entities/InventoryItem" },
+              "description": "Individual items scanned within a specific unit, linked to the parent job.",
+              "params": [
+                {
+                  "name": "itemId",
+                  "description": "The unique ID for the scanned item."
+                }
+              ]
+            }
+          }
+        ]
       }
     ],
     "reasoning": "The Firestore structure has been updated to support the core business logic. The User entity now includes 'tier', 'subscriptionStatus', and 'stripeCustomerId' to manage user roles and billing. The Item entity has a 'status' to track its lifecycle (listed, sold, shipped) and 'aiEstimatedValue'. The Sale entity now more clearly separates seller and buyer IDs and links to an EthicalContribution, which is its own top-level collection to serve as a proper ledger for the LEAN Foundation. A new 'ServiceRequest' entity and collection have been added to handle specialized service requests, linking users to Ambassadors. A new 'AmbassadorApplication' entity and collection have been added to manage the hiring pipeline for new Ambassadors, enabling AI-powered screening and manual review workflows."
   }
 }
+
+    
