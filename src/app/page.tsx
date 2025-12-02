@@ -13,7 +13,7 @@ export default function Home() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
-        <Card className="flex flex-col rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+        <Card className="flex flex-col rounded-lg shadow-sm hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <PlusCircle className="text-primary" />
@@ -47,7 +47,7 @@ export default function Home() {
           </CardContent>
         </Card>
         
-        <Card className="flex flex-col rounded-lg shadow-sm hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-1">
+        <Card className="flex flex-col rounded-lg shadow-sm hover:shadow-lg transition-shadow">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <ShoppingCart className="text-primary" />
@@ -64,7 +64,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="flex flex-col rounded-lg shadow-sm hover:shadow-lg transition-shadow md:col-span-2 lg:col-span-1">
+        <Card className="flex flex-col rounded-lg shadow-sm hover:shadow-lg transition-shadow md:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Wrench className="text-primary" />
