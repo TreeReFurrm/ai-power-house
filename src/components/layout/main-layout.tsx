@@ -1,7 +1,7 @@
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter } from '@/components/ui/sidebar';
-import { Home, ScanLine, PlusCircle, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star } from 'lucide-react';
+import { Home, ScanLine, PlusCircle, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './header';
 
@@ -62,6 +62,14 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 <Link href="/services">
                   <Wrench />
                   <span>Services</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Agent Hub">
+                <Link href="/agent-hub">
+                  <Briefcase />
+                  <span>Agent Hub</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
