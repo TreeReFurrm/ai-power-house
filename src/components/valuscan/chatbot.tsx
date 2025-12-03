@@ -94,7 +94,7 @@ const botIntents = {
   },
   lean_foundation_info: {
     id: 'lean_foundation_info',
-    message: "The LEAN Foundation is our hardship branch. It offers small, targeted help in some cases where users are at risk of losing a unit to auction. Potentially eligible users are active ReFURRM users at real risk of a storage auction or loss of key belongings, who are able to provide basic proof of their situation. Funding is limited and not guaranteed, but every request is reviewed.",
+    message: "The LEAN Foundation is our hardship branch. It offers small, targeted help in some cases where users are at real risk of losing a unit to auction. Potentially eligible users are active ReFURRM users at real risk of a storage auction or loss of key belongings, who are able to provide basic proof of their situation. Funding is limited and not guaranteed, but every request is reviewed.",
     options: [ { text: "Send My Case to LEAN", next: 'escalate_lean' }, { text: 'Go back to the main menu', next: 'initial' } ]
   },
   hardship_request_form: {
@@ -289,5 +289,3 @@ export function Chatbot() {
     </Card>
   );
 }
-
-    
