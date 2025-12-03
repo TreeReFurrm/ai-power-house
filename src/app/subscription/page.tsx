@@ -24,6 +24,16 @@ export default function SubscriptionPage() {
     const [isProcessing, setIsProcessing] = useState(false);
 
     const handleUpgrade = async () => {
+        if (!user) {
+            toast({
+                title: 'Please log in',
+                description: 'You need to be logged in to subscribe.',
+                variant: 'destructive',
+            });
+            router.push('/login');
+            return;
+        }
+
         setIsProcessing(true);
         toast({
             title: 'Redirecting to checkout...',
@@ -35,10 +45,8 @@ export default function SubscriptionPage() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    // In a real app, this would be a specific price ID for the Pro Tier subscription
-                    amount: 29, 
-                    donorEmail: user?.email,
-                    donorName: user?.displayName || 'Pro User',
+                    priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID,
+                    userEmail: user.email,
                 }),
             });
 
@@ -49,7 +57,7 @@ export default function SubscriptionPage() {
             }
 
             if (url) {
-                router.push(url);
+                window.location.href = url; // Redirect the user to the Stripe checkout page
             } else {
                 throw new Error('Could not initiate subscription. Please try again.');
             }
