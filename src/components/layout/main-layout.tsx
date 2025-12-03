@@ -1,7 +1,7 @@
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar';
-import { Home, ScanLine, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes, Gavel, HelpCircle, Building, BookOpen, LayoutDashboard, ShoppingBag, MessageSquare, FileQuestion, ShieldCheck, HeartHandshake, Wand2, ShieldHeart } from 'lucide-react';
+import { User, Wrench, Barcode, HeartHandshake, Gavel, HelpCircle, LayoutDashboard, ShoppingBag, Briefcase, LifeBuoy, Star, Scan, MessagesSquare, FileQuestion, ShieldHeart } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './header';
 
@@ -88,7 +88,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <SidebarMenuItem>
               <SidebarMenuButton>
                 <LifeBuoy />
-                <span>LEAN + Help</span>
+                <span>Support</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
@@ -108,7 +108,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
-                    <Link href="/help">Help</Link>
+                    <Link href="/help">Help Center</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
