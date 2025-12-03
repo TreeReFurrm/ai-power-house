@@ -3,7 +3,7 @@
 
 import { DollarSign, Gift, ArrowRight, UserPlus, Heart, Info, Loader2, BookCheck, ShieldCheck, LifeBuoy, Package, Box, Sparkles, AlertCircle, HardHat } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
