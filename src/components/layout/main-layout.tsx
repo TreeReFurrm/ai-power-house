@@ -1,7 +1,7 @@
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar';
-import { Home, ScanLine, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes, Gavel, HelpCircle, Building, BookOpen } from 'lucide-react';
+import { Home, ScanLine, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes, Gavel, HelpCircle, Building, BookOpen, LayoutDashboard, ShoppingBag } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './header';
 
@@ -21,7 +21,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Dashboard">
                 <Link href="/">
-                  <Home />
+                  <LayoutDashboard />
                   <span>Dashboard</span>
                 </Link>
               </SidebarMenuButton>
@@ -29,7 +29,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Pricing Tool">
                 <Link href="/verify">
-                  <ScanLine />
+                  <Scan />
                   <span>Pricing Tool</span>
                 </Link>
               </SidebarMenuButton>
@@ -53,7 +53,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Marketplace">
                 <Link href="/marketplace">
-                  <ShoppingCart />
+                  <ShoppingBag />
                   <span>Marketplace</span>
                 </Link>
               </SidebarMenuButton>
