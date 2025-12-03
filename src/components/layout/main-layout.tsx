@@ -1,7 +1,7 @@
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar';
-import { User, Wrench, Barcode, HeartHandshake, Gavel, HelpCircle, LayoutDashboard, ShoppingBag, Briefcase, LifeBuoy, Star, Scan, MessagesSquare, FileQuestion, ShieldHeart } from 'lucide-react';
+import { User, Wrench, Barcode, Gavel, HelpCircle, LayoutDashboard, ShoppingBag, Briefcase, LifeBuoy, Star, Scan, ShieldHeart, GitFork, HeartHandshake, FileQuestion } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './header';
 
@@ -17,56 +17,66 @@ export function MainLayout({ children }: { children: ReactNode }) {
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
-            {/* Main Tools */}
-            <SidebarMenuItem>
+            {/* Main Hub */}
+             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Dashboard">
                 <Link href="/">
                   <LayoutDashboard />
-                  <span>Dashboard</span>
+                  <span>Main Hub</span>
                 </Link>
               </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Pricing Tool">
-                <Link href="/verify">
-                  <Scan />
-                  <span>Pricing Tool</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Bidding Tool">
-                <Link href="/appraise-lot">
-                  <Gavel />
-                  <span>Bidding Tool</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="UPC Checker">
-                <Link href="/upc-checker">
-                  <Barcode />
-                  <span>UPC Checker</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Marketplace">
-                <Link href="/marketplace">
-                  <ShoppingBag />
-                  <span>Marketplace</span>
-                </Link>
-              </SidebarMenuButton>
+              <SidebarMenuSub>
+                 <SidebarMenuSubItem>
+                  <SidebarMenuSubButton asChild>
+                    <Link href="/">Dashboard</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+                <SidebarMenuSubItem>
+                  <SidebarMenuSubButton asChild>
+                    <Link href="/marketplace">Marketplace</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              </SidebarMenuSub>
             </SidebarMenuItem>
 
-            {/* Services Offered */}
+            {/* Pro Tools */}
             <SidebarMenuItem>
-              <SidebarMenuButton>
+              <SidebarMenuButton tooltip="Pro Tools">
                 <Wrench />
-                <span>Services Offered</span>
+                <span>Pro Tools</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
+                  <SidebarMenuSubButton asChild>
+                    <Link href="/verify">SmartScan Pro</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+                <SidebarMenuSubItem>
+                  <SidebarMenuSubButton asChild>
+                    <Link href="/upc-checker">UPC Checker</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+                 <SidebarMenuSubItem>
+                  <SidebarMenuSubButton asChild>
+                    <Link href="/appraise-lot">Bidding Tool</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              </SidebarMenuSub>
+            </SidebarMenuItem>
+
+             {/* Services & Leadership */}
+            <SidebarMenuItem>
+              <SidebarMenuButton tooltip="Services">
+                <GitFork />
+                <span>Services & Leadership</span>
+              </SidebarMenuButton>
+              <SidebarMenuSub>
+                <SidebarMenuSubItem>
+                  <SidebarMenuSubButton asChild>
+                    <Link href="/services">Services Offered</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
                     <Link href="/ambassadors/how-it-works">Ambassador Hub</Link>
                   </SidebarMenuSubButton>
@@ -76,7 +86,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
                     <Link href="/agent-hub">Agent Hub</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
+                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
                     <Link href="/donate">Donate</Link>
                   </SidebarMenuSubButton>
@@ -84,31 +94,26 @@ export function MainLayout({ children }: { children: ReactNode }) {
               </SidebarMenuSub>
             </SidebarMenuItem>
 
-            {/* LEAN + Help */}
+            {/* Support & Mission */}
             <SidebarMenuItem>
-              <SidebarMenuButton>
+              <SidebarMenuButton tooltip="Support">
                 <LifeBuoy />
-                <span>Support</span>
+                <span>Support & Mission</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
-                    <Link href="/donate">LEAN Foundation</Link>
+                    <Link href="/donate">L.E.A.N. Foundation</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+                 <SidebarMenuSubItem>
+                  <SidebarMenuSubButton asChild>
+                    <Link href="/faq">General FAQs</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
                     <Link href="/donate/faq">Donation FAQ</Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href="/faq">App FAQ</Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href="/help">Help Center</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
