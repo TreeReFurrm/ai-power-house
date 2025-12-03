@@ -83,7 +83,7 @@ export default function DonationPage() {
       <header className="text-center space-y-3">
         <Heart className="w-12 h-12 text-primary mx-auto" />
         <h1 className="text-4xl font-extrabold tracking-tight">
-         The L.E.A.N. Protocol Mission
+         Donate to the LEAN Foundation
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Your contributions power our ethical preservation efforts and community support network.
@@ -127,7 +127,7 @@ export default function DonationPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl">
               <DollarSign className="w-6 h-6" />
-              Invest in Integrity: Fuel L.E.A.N. Action
+              Invest in Integrity
             </CardTitle>
             <CardDescription>
               Your financial support funds the specific tools and personnel required to execute the Legacy, Ethics, and Auction Support protocols.
