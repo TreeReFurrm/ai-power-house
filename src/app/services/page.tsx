@@ -8,7 +8,7 @@ export default function ServicesPage() {
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold tracking-tight">Request an Ambassador Service</CardTitle>
           <CardDescription className="text-lg text-muted-foreground">
-            Need help with a bigger project? Our Ambassadors are here to assist with clean-outs, organization, and more.
+            Request hands-on assistance for inventory, organization, or major clean-outs.
           </CardDescription>
         </CardHeader>
       </Card>

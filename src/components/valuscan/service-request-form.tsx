@@ -254,7 +254,7 @@ export function ServiceRequestForm() {
                   <FormLabel>6. Project Notes (Optional)</FormLabel>
                   <FormControl>
                     <Textarea 
-                        placeholder="Include specific requirements or known challenges. e.g., 'Cleaning out a 10x20 storage unit...'" 
+                        placeholder="Include urgency, size, or specific requirements. e.g., 'Cleaning out a 10x20 storage unit...'" 
                         rows={3} 
                         {...field} 
                         disabled={isSubmitting}
