@@ -1,7 +1,7 @@
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar';
-import { Home, ScanLine, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes, Gavel, HelpCircle } from 'lucide-react';
+import { Home, ScanLine, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes, Gavel, HelpCircle, Building, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './header';
 
@@ -17,6 +17,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
+            {/* Main Tools */}
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Dashboard">
                 <Link href="/">
@@ -57,64 +58,74 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+
+            {/* ReFURRM Services */}
              <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Services">
-                <Link href="/services">
+              <SidebarMenuButton>
                   <Wrench />
-                  <span>Services</span>
-                </Link>
+                  <span>ReFURRM Services</span>
               </SidebarMenuButton>
+              <SidebarMenuSub>
+                <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                        <Link href="/ambassadors/how-it-works">Ambassador Services</Link>
+                    </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+                <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                        <Link href="/agent-hub">Agent Hub</Link>
+                    </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+                 <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                        <Link href="/donate">Donate</Link>
+                    </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              </SidebarMenuSub>
             </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Agent Hub">
-                <Link href="/agent-hub">
-                  <Briefcase />
-                  <span>Agent Hub</span>
-                </Link>
+
+            {/* LEAN + Help */}
+             <SidebarMenuItem>
+              <SidebarMenuButton>
+                  <LifeBuoy />
+                  <span>LEAN + Help</span>
               </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Donate">
-                <Link href="/donate">
-                  <Heart />
-                  <span>Donate</span>
-                </Link>
-              </SidebarMenuButton>
-                 <SidebarMenuSub>
+              <SidebarMenuSub>
+                 <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                      <Link href="/donate">LEAN Foundation</Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
                   <SidebarMenuSubItem>
                     <SidebarMenuSubButton asChild>
                       <Link href="/donate/faq">Donation FAQ</Link>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
-                </SidebarMenuSub>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Help">
-                <Link href="/help">
-                  <LifeBuoy />
-                  <span>Help</span>
-                </Link>
-              </SidebarMenuButton>
-               <SidebarMenuSub>
                   <SidebarMenuSubItem>
                     <SidebarMenuSubButton asChild>
                       <Link href="/faq">App FAQ</Link>
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
-                </SidebarMenuSub>
+                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                      <Link href="/help">Help</Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+              </SidebarMenuSub>
             </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Subscription">
-                <Link href="/subscription">
-                  <Star />
-                  <span>Pro Tier</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
           <SidebarMenu>
+             <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Upgrade">
+                <Link href="/subscription">
+                  <Star />
+                  <span>Upgrade</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Account">
                 <Link href="/account">
