@@ -20,7 +20,7 @@ export default function DonationPage() {
          Donate to the L.E.A.N. Foundation
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-mono tracking-widest">
-          Legacy • Ethics • Auction • Needs
+          Legacy • Ethics • Assistance • Network
         </p>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto pt-2">
           Item donations are ethically processed, priced by SmartScan, and sold through the Marketplace. 100% of net proceeds fund the L.E.A.N. hardship assistance program to prevent auction loss.
