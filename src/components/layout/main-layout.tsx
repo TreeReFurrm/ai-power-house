@@ -1,7 +1,7 @@
 
 import type { ReactNode } from 'react';
-import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter } from '@/components/ui/sidebar';
-import { Home, ScanLine, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes, Gavel } from 'lucide-react';
+import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar';
+import { Home, ScanLine, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes, Gavel, HelpCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './header';
 
@@ -80,6 +80,13 @@ export function MainLayout({ children }: { children: ReactNode }) {
                   <span>Donate</span>
                 </Link>
               </SidebarMenuButton>
+                 <SidebarMenuSub>
+                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                      <Link href="/donate/faq">Donation FAQ</Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                </SidebarMenuSub>
             </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Help">
@@ -88,6 +95,13 @@ export function MainLayout({ children }: { children: ReactNode }) {
                   <span>Help</span>
                 </Link>
               </SidebarMenuButton>
+               <SidebarMenuSub>
+                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                      <Link href="/faq">App FAQ</Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                </SidebarMenuSub>
             </SidebarMenuItem>
              <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Subscription">

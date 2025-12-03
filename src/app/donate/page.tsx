@@ -20,11 +20,10 @@ export default function DonationPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const { user } = useUser();
 
-  // Define the impact tiers for transparency
   const impactTiers = [
-    { amount: 25, label: '$25', description: 'Funds one Ethical Review by a Supervisor for a sensitive item.', pillar: 'Ethics', icon: ShieldCheck },
-    { amount: 50, label: '$50', description: 'Supports the full outreach and verification process for one Legacy Item.', pillar: 'Legacy', icon: BookCheck },
-    { amount: 100, label: '$100', description: 'Contributes directly to the emergency micro-fund for Auction Relief.', pillar: 'Auction Support', icon: LifeBuoy },
+    { amount: 25, label: '$25', description: 'Supports the full labor cost of an Agent Supervisor performing the mandatory compliance review for one AI-flagged sensitive item.', pillar: 'Ethics', icon: ShieldCheck },
+    { amount: 50, label: '$50', description: 'Funds the certified search, identity verification, and initial outreach attempts to contact a former owner for item recovery.', pillar: 'Legacy', icon: BookCheck },
+    { amount: 100, label: '$100', description: 'Contributes directly to the "LEAN on ReFurrm" micro-fund for providing emergency assistance to individuals facing unit loss.', pillar: 'Auction Support', icon: LifeBuoy },
   ];
 
   // Handler for Monetary Donation
@@ -84,7 +83,7 @@ export default function DonationPage() {
       <header className="text-center space-y-3">
         <Heart className="w-12 h-12 text-primary mx-auto" />
         <h1 className="text-4xl font-extrabold tracking-tight">
-          The L.E.A.N. Protocol Mission
+         The L.E.A.N. Protocol Mission
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
           Your contributions power our ethical preservation efforts and community support network.
@@ -106,15 +105,15 @@ export default function DonationPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 text-left">
                 <div className="p-4 rounded-lg bg-background/50">
                     <h3 className="font-bold">L: Legacy Preservation</h3>
-                    <p className="text-xs text-muted-foreground">Protecting items of significance and personal value flagged during the Chain-of-Custody process.</p>
+                    <p className="text-xs text-muted-foreground">Focus: Protecting items of significance and personal value flagged during the Chain-of-Custody process.<br/><b>Action:</b> Funding secure, 30-day archival storage and the specialized outreach needed for former owner recovery.</p>
                 </div>
                  <div className="p-4 rounded-lg bg-background/50">
                     <h3 className="font-bold">E: Ethical Standards</h3>
-                    <p className="text-xs text-muted-foreground">Enforcing the Privacy & Dignity Standard for all sensitive materials (e.g., documents, hard drives).</p>
+                    <p className="text-xs text-muted-foreground">Focus: Enforcing the Privacy & Dignity Standard for all sensitive materials (e.g., documents, hard drives).<br/><b>Action:</b> Covering the cost of mandatory human review for AI-flagged items and certified, secure destruction when recovery is not possible.</p>
                 </div>
                  <div className="p-4 rounded-lg bg-background/50">
                     <h3 className="font-bold">A: Auction Support</h3>
-                    <p className="text-xs text-muted-foreground">Providing rapid, compassionate support to individuals facing urgent situations related to storage unit loss.</p>
+                    <p className="text-xs text-muted-foreground">Focus: Providing rapid, compassionate support to individuals facing urgent situations related to storage unit loss.<br/><b>Action:</b> Funding the "LEAN on ReFURRM" program, which offers emergency assistance, micro-loan options, and direct coordination with our Ambassador network.</p>
                 </div>
             </div>
         </CardContent>
@@ -128,7 +127,7 @@ export default function DonationPage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl">
               <DollarSign className="w-6 h-6" />
-              Invest in Integrity
+              Invest in Integrity: Fuel L.E.A.N. Action
             </CardTitle>
             <CardDescription>
               Your financial support funds the specific tools and personnel required to execute the Legacy, Ethics, and Auction Support protocols.
@@ -190,14 +189,13 @@ export default function DonationPage() {
                   ReFurrbish an Item
                 </CardTitle>
                 <CardDescription>
-                  ReFurrbish means to donate an item for ethical resale.
+                  Donate an item for ethical resale. All proceeds support the L.E.A.N. mission. <Button variant="link" asChild className="p-0 h-auto"><Link href="/refurrbish-guide">Learn More</Link></Button>
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-grow flex flex-col justify-between">
                   <ul className="space-y-2 text-sm text-muted-foreground mb-4 list-disc pl-5">
                     <li>Use our AI tools to submit your item.</li>
-                    <li>We handle the assessment and ethical resale to maximize the contribution.</li>
-                    <li>All net proceeds from the sale are directed to the LEAN Foundation.</li>
+                    <li>We handle assessment, resale, and direct all net proceeds to the L.E.A.N. Foundation.</li>
                   </ul>
                   <Button onClick={handleItemDonate} className="w-full mt-auto">
                     ReFurrbish an Item <ArrowRight className="w-4 h-4 ml-2" />
@@ -212,7 +210,7 @@ export default function DonationPage() {
                   Become an Ambassador
                 </CardTitle>
                 <CardDescription>
-                  Lead local efforts, coordinate pickups, and be a core part of our mission. <Button variant="link" asChild className="p-0 h-auto"><Link href="/ambassadors/details">Learn More</Link></Button>
+                  Lead local efforts, coordinate pickups, and be a core part of our mission. <Button variant="link" asChild className="p-0 h-auto"><Link href="/ambassadors/how-it-works">Learn More</Link></Button>
                 </CardDescription>
               </CardHeader>
               <CardContent>
