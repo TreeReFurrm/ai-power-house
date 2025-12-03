@@ -1,86 +1,66 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BadgePercent, LayoutGrid, Handshake } from "lucide-react";
+import { ArrowRight, Zap } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <div className="flex flex-col gap-8">
       
-      <Card className="md:col-span-2 flex flex-col w-full rounded-lg shadow-lg bg-primary/10 border-primary/20 hover:shadow-xl transition-shadow">
-          <CardHeader>
-            <CardTitle className="text-2xl text-primary">Ready to declutter and sell?</CardTitle>
-            <CardDescription>
-              Upload a photo — our AI creates an SEO-optimized title, description, and a fair price in seconds.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex-grow space-y-4">
-             <Button asChild size="lg">
-                <Link href="/list">Create Your First Listing</Link>
-             </Button>
-             <div className="text-sm">
-                <Button asChild variant="link">
-                    <Link href="/verify">Try the Pricing Tool</Link>
-                </Button>
-             </div>
-             <p className="text-xs text-muted-foreground pt-2">Trusted by hundreds of sellers • Average time to sale: 4 days</p>
-          </CardContent>
+      {/* Hero Block */}
+      <Card className="text-center bg-primary/5 border-primary/10">
+        <CardHeader className="p-8 md:p-12">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary">
+            Ethics. Change. ReFURRM.
+          </h1>
+          <p className="mt-4 text-lg md:text-xl text-muted-foreground font-mono tracking-wide">
+            The Dual Mission: Ethical Profit Meets Human Compassion.
+          </p>
+        </CardHeader>
+        <CardContent className="px-8 md:px-12 pb-10">
+          <p className="max-w-3xl mx-auto text-base text-foreground/90">
+            ReFURRM transforms the resale industry by giving power back to the consumer. We provide industry-leading SmartScan tools for maximum ROI, while funding the L.E.A.N. Foundation to protect legacies and prevent auction loss.
+          </p>
+        </CardContent>
       </Card>
       
+      {/* Action Columns */}
       <div className="grid gap-6 md:grid-cols-2">
+        {/* Profit Column */}
         <Card className="flex flex-col w-full rounded-lg shadow-sm hover:shadow-lg transition-shadow hover:bg-card/95">
           <CardHeader>
-            <CardTitle className="flex items-center justify-between text-primary">
-              <span>Pricing Tool</span>
-              <BadgePercent className="h-5 w-5 text-muted-foreground" />
-            </CardTitle>
-             <CardDescription>Get a fair price range based on real sales data so you list competitively and sell faster.</CardDescription>
+            <CardTitle className="text-2xl font-bold tracking-tight">SCAN SMARTER, NOT HARDER</CardTitle>
+            <CardDescription className="text-base">Unlock unlimited data, ROI analytics, and priority alerts. Turn every item into certain profit.</CardDescription>
           </CardHeader>
           <CardContent className="flex-grow flex flex-col justify-end">
-            <Button asChild variant="secondary">
-                <Link href="/verify">Check a Price</Link>
+            <Button asChild>
+                <Link href="/subscription">
+                    Unlock SmartScan Pro <Zap className="ml-2 size-4" />
+                </Link>
             </Button>
-            <p className="text-xs text-muted-foreground mt-2">See the comparables used to calculate each suggestion.</p>
           </CardContent>
         </Card>
 
+        {/* Mission Column */}
         <Card className="flex flex-col w-full rounded-lg shadow-sm hover:shadow-lg transition-shadow hover:bg-card/95">
           <CardHeader>
-            <CardTitle className="flex items-center justify-between text-primary">
-              <span>Marketplace</span>
-               <LayoutGrid className="h-5 w-5 text-muted-foreground" />
-            </CardTitle>
-            <CardDescription>Browse curated community listings that meet our ethical standards—buy or sell with confidence.</CardDescription>
+            <CardTitle className="text-2xl font-bold tracking-tight">PROTECT A LEGACY TODAY</CardTitle>
+            <CardDescription className="text-base">Donate items to fund the L.E.A.N. Foundation or request targeted hardship assistance to save belongings from auction.</CardDescription>
           </CardHeader>
           <CardContent className="flex-grow flex flex-col justify-end">
             <Button asChild variant="secondary">
-                 <Link href="/marketplace">Explore Listings</Link>
+                 <Link href="/donate">
+                    Go to L.E.A.N. Foundation <ArrowRight className="ml-2 size-4" />
+                 </Link>
             </Button>
-             <p className="text-xs text-muted-foreground mt-2">Items with an Ethical Badge meet our resale and sourcing guidelines.</p>
           </CardContent>
         </Card>
       </div>
-
-       <Card className="flex flex-col w-full rounded-lg shadow-sm hover:shadow-lg transition-shadow hover:bg-card/95">
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between text-primary">
-              <span>Ambassador Services</span>
-              <Handshake className="h-5 w-5 text-muted-foreground" />
-            </CardTitle>
-            <CardDescription>Need help with a large clean-out or inventory project? Book an Ambassador for hands-on support.</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-grow flex flex-col justify-end">
-             <Button asChild variant="secondary">
-                <Link href="/services">Book a Consult</Link>
-            </Button>
-            <p className="text-xs text-muted-foreground mt-2">Pricing starts at $75/hr. Custom quotes available.</p>
-          </CardContent>
-        </Card>
         
-        <footer className="text-center text-xs text-muted-foreground py-4">
-            <p>We only use your photos to create listings. We do not use your images to train models without your permission. <Link href="/privacy" className="underline">Privacy Policy</Link>.</p>
-        </footer>
+      <footer className="text-center text-xs text-muted-foreground py-4">
+          <p>We only use your photos to create listings. We do not use your images to train models without your permission. <Link href="/privacy" className="underline">Privacy Policy</Link>.</p>
+      </footer>
     </div>
   );
 }

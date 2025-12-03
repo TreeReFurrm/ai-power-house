@@ -8,14 +8,17 @@ export default function AmbassadorHowItWorksPage() {
   return (
     <div className="container mx-auto max-w-3xl py-8 space-y-8">
       <header className="text-center space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight mt-2">ReFURRM Ambassador Program</h1>
-        <p className="text-xl text-muted-foreground">Get help with the projects you cannot face alone.</p>
+        <h1 className="text-4xl font-bold tracking-tight mt-2">Be the Change. Join Us.</h1>
+        <p className="text-xl text-muted-foreground font-mono">Leadership. Ethics. Impact.</p>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          Join the exclusive network of leaders enforcing dignity, preventing loss, and powering the L.E.A.N. mission.
+        </p>
         <div className="flex justify-center gap-4">
             <Button asChild>
-                <Link href="/services">Request Ambassador Service</Link>
+                <Link href="/ambassadors/apply">Apply to be an Ambassador</Link>
             </Button>
             <Button asChild variant="outline">
-                <Link href="/services">View Available Services</Link>
+                <Link href="/services">Request Ambassador Service</Link>
             </Button>
         </div>
       </header>
