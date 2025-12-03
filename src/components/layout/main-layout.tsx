@@ -1,7 +1,7 @@
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar';
-import { Home, ScanLine, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes, Gavel, HelpCircle, Building, BookOpen, LayoutDashboard, ShoppingBag } from 'lucide-react';
+import { Home, ScanLine, ShoppingCart, User, Wrench, Barcode, Heart, Scan, LifeBuoy, Star, Briefcase, Boxes, Gavel, HelpCircle, Building, BookOpen, LayoutDashboard, ShoppingBag, MessageSquare, FileQuestion, ShieldCheck, HeartHandshake, Wand2 } from 'lucide-react';
 import Link from 'next/link';
 import { Header } from './header';
 
@@ -112,6 +112,15 @@ export function MainLayout({ children }: { children: ReactNode }) {
                     </SidebarMenuSubButton>
                   </SidebarMenuSubItem>
               </SidebarMenuSub>
+            </SidebarMenuItem>
+
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild tooltip="Prompt Studio">
+                <Link href="/prompt-studio">
+                  <Wand2 />
+                  <span>Prompt Studio</span>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
             
           </SidebarMenu>
