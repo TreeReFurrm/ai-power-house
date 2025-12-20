@@ -18,6 +18,8 @@ import { MarkdownDisplay } from '@/components/markdown-display';
 import { Loader2, Camera, RefreshCcw } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 const formSchema = z.object({
   documentText: z.string().min(100, 'Please paste at least 100 characters to summarize.'),
@@ -27,6 +29,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function SummarizerPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isCameraOn, setIsCameraOn] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
@@ -35,7 +38,7 @@ export default function SummarizerPage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const getCameraPermission = async () => {
+    const enableCamera = async () => {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         setHasCameraPermission(false);
         return;
@@ -50,23 +53,34 @@ export default function SummarizerPage() {
       } catch (error) {
         console.error('Error accessing camera:', error);
         setHasCameraPermission(false);
-        toast({
-          variant: 'destructive',
-          title: 'Camera Access Denied',
-          description: 'Please enable camera permissions in your browser settings to use this feature.',
-        });
+        if (isCameraOn) {
+            toast({
+              variant: 'destructive',
+              title: 'Camera Access Denied',
+              description: 'Please enable camera permissions in your browser settings.',
+            });
+        }
       }
     };
 
-    getCameraPermission();
-
-    return () => {
+    const disableCamera = () => {
         if (videoRef.current && videoRef.current.srcObject) {
             const stream = videoRef.current.srcObject as MediaStream;
             stream.getTracks().forEach(track => track.stop());
+            videoRef.current.srcObject = null;
         }
     }
-  }, [toast]);
+
+    if (isCameraOn) {
+      enableCamera();
+    } else {
+      disableCamera();
+    }
+
+    return () => {
+      disableCamera();
+    }
+  }, [isCameraOn, toast]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -176,7 +190,12 @@ export default function SummarizerPage() {
                     <CardDescription>Position your document in the camera view and capture the image to extract text.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    {hasCameraPermission === false && (
+                    <div className="flex items-center space-x-2">
+                        <Switch id="camera-toggle" checked={isCameraOn} onCheckedChange={setIsCameraOn} />
+                        <Label htmlFor="camera-toggle">Turn Camera On</Label>
+                    </div>
+
+                    {isCameraOn && hasCameraPermission === false && (
                         <Alert variant="destructive">
                             <AlertTitle>Camera Access Required</AlertTitle>
                             <AlertDescription>
@@ -186,8 +205,14 @@ export default function SummarizerPage() {
                     )}
                     <div className="grid md:grid-cols-2 gap-4">
                         <div className="relative aspect-video bg-muted rounded-md flex items-center justify-center">
-                            {hasCameraPermission === null && <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />}
-                            <video ref={videoRef} className="w-full aspect-video rounded-md" autoPlay muted playsInline />
+                            {!isCameraOn && (
+                                <div className="text-muted-foreground text-center">
+                                    <Camera className="h-10 w-10 mx-auto mb-2" />
+                                    <p>Camera is off</p>
+                                </div>
+                            )}
+                            {isCameraOn && hasCameraPermission === null && <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />}
+                            <video ref={videoRef} className={cn("w-full aspect-video rounded-md", !isCameraOn && "hidden")} autoPlay muted playsInline />
                             <canvas ref={canvasRef} className="hidden" />
                             {capturedImage && (
                                 <div className='absolute inset-0 flex items-center justify-center bg-background/80'>
@@ -205,7 +230,7 @@ export default function SummarizerPage() {
                     </div>
                 </CardContent>
                 <CardFooter className="gap-4">
-                    <Button onClick={handleCapture} disabled={!hasCameraPermission || isLoading}>
+                    <Button onClick={handleCapture} disabled={!isCameraOn || !hasCameraPermission || isLoading}>
                         <Camera className="mr-2 h-4 w-4" />
                         Capture
                     </Button>
