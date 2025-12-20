@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { ArrowRight, BookText, Briefcase, FileText, GraduationCap, Mail, MessageSquare, Palette, SwatchBook, Languages, BookOpen } from 'lucide-react';
+import { ArrowRight, BookText, Briefcase, FileText, GraduationCap, Mail, MessageSquare, Palette, SwatchBook, Languages, BookOpen, PenSquare } from 'lucide-react';
 
 export default function DashboardPage() {
   const features = [
@@ -13,6 +13,13 @@ export default function DashboardPage() {
       href: '/writer/letter',
       icon: Mail,
       imageId: 'letter-writer',
+    },
+    {
+      title: 'Novel Co-writer',
+      description: 'Your creative partner for writing fiction. Generate ideas, continue chapters, and refine your prose.',
+      href: '/writer/novel',
+      icon: PenSquare,
+      imageId: 'novel-writer',
     },
     {
       title: 'Fine-Print Summarizer',
