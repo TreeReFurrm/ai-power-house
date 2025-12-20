@@ -11,4 +11,4 @@ import '@/ai/flows/generate-business-form.ts';
 import '@/ai/flows/novel-co-writer-flow.ts';
 import '@/ai/flows/generate-business-idea.ts';
 import '@/ai/flows/generate-image-flow.ts';
-import '@/ai/flows/extract-text-from-image.ts';
+import '@/ai/flows/generate-prompt-suggestion.ts';

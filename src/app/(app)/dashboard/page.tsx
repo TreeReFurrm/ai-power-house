@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { ArrowRight, BookOpen, Briefcase, FileText, GraduationCap, Languages, Lightbulb, Mail, MessageSquare, Palette, PenSquare, SwatchBook } from 'lucide-react';
+import { ArrowRight, BookOpen, Briefcase, FileText, GraduationCap, Languages, Lightbulb, Mail, MessageSquare, Palette, PenSquare, Search, SwatchBook, Wand2 } from 'lucide-react';
 
 export default function DashboardPage() {
   const features = [
@@ -48,6 +48,13 @@ export default function DashboardPage() {
       href: '/courses/designer',
       icon: GraduationCap,
       imageId: 'course-designer',
+    },
+    {
+      title: 'Prompt Enhancer',
+      description: 'Learn how to write better AI prompts. Turn your simple goal into a detailed, effective instruction for any AI.',
+      href: '/tools/prompt-enhancer',
+      icon: Wand2,
+      imageId: 'prompt-enhancer',
     },
     {
       title: 'PDF & Image Tools',
