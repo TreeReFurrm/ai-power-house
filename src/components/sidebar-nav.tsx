@@ -12,7 +12,7 @@ import {
   SidebarGroupLabel,
 } from '@/components/ui/sidebar';
 import { AppLogo } from '@/components/app-logo';
-import { BookText, Briefcase, FileText, GraduationCap, LayoutDashboard, Mail, PenTool, SwatchBook, Languages, MessageSquare, Palette } from 'lucide-react';
+import { BookText, Briefcase, FileText, GraduationCap, LayoutDashboard, Mail, SwatchBook, Languages, MessageSquare, Palette } from 'lucide-react';
 
 export function SidebarNav() {
   const pathname = usePathname();
@@ -29,7 +29,6 @@ export function SidebarNav() {
       items: [
         { href: '/writer/novel', label: 'Novel Co-writer', icon: BookText },
         { href: '/writer/letter', label: 'Letter Writer', icon: Mail },
-        { href: '/writer/refurr-ink', label: 'ReFURRMed Ink', icon: PenTool },
       ],
     },
     {

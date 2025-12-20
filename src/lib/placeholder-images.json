@@ -55,12 +55,6 @@
       "imageHint": "ai art"
     },
     {
-      "id": "writing-assistant",
-      "description": "A fountain pen magically writing on a piece of paper.",
-      "imageUrl": "https://images.unsplash.com/photo-1586943759341-be5595944989?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhaSUyMHdyaXRpbmd8ZW58MHx8fHwxNzY2MjUwNzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "ai writing"
-    },
-    {
       "id": "reading-assistant",
       "description": "A book with highlighted text and summary notes appearing.",
       "imageUrl": "https://images.unsplash.com/photo-1646617747609-45b466ace9a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxib29rJTIwc3VtbWFyeXxlbnwwfHx8fDE3NjYyNTA3OTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
