@@ -34,7 +34,7 @@ const GenerateBusinessFormInputSchema = z.object({
 export type GenerateBusinessFormInput = z.infer<typeof GenerateBusinessFormInputSchema>;
 
 const GenerateBusinessFormOutputSchema = z.object({
-  formContent: z.string().describe('The generated business form content.'),
+  formContent: z.string().describe('The generated business form content in Markdown format.'),
 });
 export type GenerateBusinessFormOutput = z.infer<typeof GenerateBusinessFormOutputSchema>;
 
@@ -48,27 +48,25 @@ const generateBusinessFormPrompt = ai.definePrompt({
   name: 'generateBusinessFormPrompt',
   input: {schema: GenerateBusinessFormInputSchema},
   output: {schema: GenerateBusinessFormOutputSchema},
-  prompt: `You are an AI assistant specialized in generating professional business forms in markdown format.
+  prompt: `You are an AI assistant that creates professional business forms in Markdown format.
 
-  **Form Description:**
-  {{{formDescription}}}
+**Form Description:**
+{{{formDescription}}}
 
-  {{#if businessInformation}}
-  **Task:** Generate a COMPLETED business form. Use the following information to fill in all relevant fields. The form should look like a finished document.
+{{#if businessInformation}}
+**Task:** Generate a COMPLETED business form. Use the following information to fill in all relevant fields. The form should look like a finished document.
 
-  **Business Information:**
-  {{{businessInformation}}}
+**Business Information:**
+{{{businessInformation}}}
 
-  **Recipient Information:**
-  {{{recipientInformation}}}
-  {{else}}
-  **Task:** Generate a BLANK, FILL-IN-THE-BLANK business form that can be printed or filled out later. Use underscores, brackets, or blank lines (e.g., "Name: __________") for fields that need to be completed. DO NOT use the business or recipient information, even if it is provided.
-  {{/if}}
+**Recipient Information:**
+{{{recipientInformation}}}
+{{else}}
+**Task:** Generate a BLANK, FILL-IN-THE-BLANK business form that can be printed or filled out later. Use underscores or blank lines (e.g., "Name: __________") for fields that need to be completed. DO NOT use the business or recipient information, even if it is provided.
+{{/if}}
 
-  Ensure the generated markdown form is clear, well-formatted, and suitable for its intended purpose.
-  If the description is vague, use your best judgement to create a logical and common business form.
-  Do not use HTML.
-  `,
+The output must be only the markdown content for the form.
+`,
 });
 
 const generateBusinessFormFlow = ai.defineFlow(
