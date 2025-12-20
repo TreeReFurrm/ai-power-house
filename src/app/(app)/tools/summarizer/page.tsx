@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
   documentText: z.string().min(100, 'Please paste at least 100 characters to summarize.'),
@@ -44,7 +45,7 @@ export default function SummarizerPage() {
         return;
       }
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         setHasCameraPermission(true);
 
         if (videoRef.current) {
@@ -139,10 +140,6 @@ export default function SummarizerPage() {
       setIsLoading(false);
     }
   };
-
-  function cn(arg0: string, arg1: string | boolean): string | undefined {
-    throw new Error('Function not implemented.');
-  }
 
   return (
     <div className="space-y-6">
