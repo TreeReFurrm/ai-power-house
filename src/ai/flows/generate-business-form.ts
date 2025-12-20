@@ -23,6 +23,12 @@ const GenerateBusinessFormInputSchema = z.object({
     .describe(
       'Optional information about the business, such as name, address, and contact details, to be pre-filled in the form.'
     ),
+  recipientInformation: z
+    .string()
+    .optional()
+    .describe(
+      'Optional information about who the form is going to, such as their name and address.'
+    ),
 });
 export type GenerateBusinessFormInput = z.infer<typeof GenerateBusinessFormInputSchema>;
 
@@ -47,6 +53,7 @@ const generateBusinessFormPrompt = ai.definePrompt({
 
   Description: {{{formDescription}}}
   Business Information: {{{businessInformation}}}
+  Recipient Information: {{{recipientInformation}}}
 
   Ensure the generated form is clear, concise, and suitable for its intended purpose.
   The form should be in a plain text format with proper sections and spacing.

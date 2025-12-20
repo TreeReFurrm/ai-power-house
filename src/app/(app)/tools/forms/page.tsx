@@ -19,6 +19,7 @@ import { Loader2, Clipboard } from 'lucide-react';
 const formSchema = z.object({
   formDescription: z.string().min(10, 'Please provide a more detailed description of the form.'),
   businessInformation: z.string().optional(),
+  recipientInformation: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -33,6 +34,7 @@ export default function FormCreatorPage() {
     defaultValues: {
       formDescription: '',
       businessInformation: '',
+      recipientInformation: '',
     },
   });
 
@@ -98,6 +100,19 @@ export default function FormCreatorPage() {
                       <FormLabel>Business Information (Optional)</FormLabel>
                       <FormControl>
                         <Textarea placeholder="e.g., My Company LLC, 123 Main St, Anytown, USA" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="recipientInformation"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Who the form is going to (Optional)</FormLabel>
+                      <FormControl>
+                        <Textarea placeholder="e.g., John Doe, 456 Oak Ave, Otherville, USA" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
