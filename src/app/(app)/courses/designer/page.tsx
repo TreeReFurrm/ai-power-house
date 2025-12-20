@@ -32,8 +32,22 @@ const outlineSchema = z.object({
 });
 
 type OutlineValues = z.infer<typeof outlineSchema>;
-type GenerateCourseOutlineInput = z.infer<typeof outlineSchema>;
-type EditCourseContentInput = { content: string; instruction: string };
+
+type GenerateCourseOutlineInput = {
+  content: string;
+  numModules: number;
+  targetAudience: string;
+};
+
+type EditCourseContentInput = {
+    content: string;
+    instruction: string;
+};
+
+type GenerateRelevantMultimediaInput = {
+    lessonContent: string;
+};
+
 type GenerateRelevantMultimediaOutput = {
     suggestedImages: { url: string; description: string; }[];
     suggestedVideos: { url: string; title: string; }[];
@@ -57,11 +71,15 @@ export default function CourseDesignerPage() {
     },
   });
 
-  const onOutlineSubmit = async (values: GenerateCourseOutlineInput) => {
+  const onOutlineSubmit = async (values: OutlineValues) => {
     setIsLoading(true);
     setCourseOutline(null);
     try {
-      const result = await generateCourseOutline(values);
+      const result = await generateCourseOutline({
+          content: values.content,
+          numModules: values.numModules,
+          targetAudience: values.targetAudience,
+      });
       setCourseOutline(result.outline);
     } catch (error) {
       console.error(error);

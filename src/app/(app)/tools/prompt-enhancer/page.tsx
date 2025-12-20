@@ -20,7 +20,11 @@ const formSchema = z.object({
 });
 
 type FormValues = z.infer<typeof formSchema>;
-type GeneratePromptSuggestionInput = z.infer<typeof formSchema>;
+
+type GeneratePromptSuggestionInput = {
+  goal: string;
+};
+
 
 export default function PromptEnhancerPage() {
   const [isLoading, setIsLoading] = useState(false);

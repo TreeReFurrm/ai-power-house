@@ -22,6 +22,10 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+type GenerateBusinessIdeaInput = {
+  interests: string;
+};
+
 type GenerateBusinessIdeaOutput = {
   ideas: {
     title: string;

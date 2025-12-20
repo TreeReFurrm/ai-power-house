@@ -38,7 +38,14 @@ const formSchema = z.object({
 
 
 type FormValues = z.infer<typeof formSchema>;
-type GenerateBusinessFormInput = z.infer<typeof formSchema>;
+
+type GenerateBusinessFormInput = {
+  formDescription: string;
+  formStyle: 'fill-in' | 'completed';
+  businessInformation?: string;
+  recipientInformation?: string;
+};
+
 
 const formTemplates = [
   {
@@ -81,7 +88,7 @@ export default function FormCreatorPage() {
   
   const formStyle = form.watch('formStyle');
 
-  const onSubmit = async (values: GenerateBusinessFormInput) => {
+  const onSubmit = async (values: FormValues) => {
     setIsLoading(true);
     setGeneratedForm(null);
     try {
