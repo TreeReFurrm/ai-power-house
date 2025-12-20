@@ -52,7 +52,8 @@ const prompt = ai.definePrompt({
   Tone: {{{tone}}}
   Letter Body: {{{letterBody}}}
 
-  Personalized Letter:`,
+  Generate a JSON object containing the complete, personalized letter in a field called 'personalizedLetter'.
+  `,
 });
 
 const writePersonalizedLetterFlow = ai.defineFlow(
