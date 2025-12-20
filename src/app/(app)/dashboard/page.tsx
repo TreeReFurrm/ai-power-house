@@ -36,8 +36,8 @@ export default function DashboardPage() {
       imageId: 'form-creator',
     },
     {
-      title: 'Business Idea Generator',
-      description: 'Turn your passions into a plan. Get logical, practical business ideas based on your interests.',
+      title: 'Start-up Idea Mentor',
+      description: 'Generate innovative startup ideas tailored to your skills and capabilities with our AI-powered business concept mentor.',
       href: '/tools/business-idea-generator',
       icon: Lightbulb,
       imageId: 'business-idea-generator',

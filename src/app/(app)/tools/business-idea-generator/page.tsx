@@ -55,8 +55,8 @@ export default function BusinessIdeaGeneratorPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-headline text-3xl font-bold">Business Idea Generator</h1>
-        <p className="text-muted-foreground">Turn your passions into a practical business plan. Describe what you love to do.</p>
+        <h1 className="font-headline text-3xl font-bold">Start-up Idea Mentor</h1>
+        <p className="text-muted-foreground">Generate innovative startup ideas tailored to your skills and capabilities.</p>
       </div>
 
       <Card>
@@ -109,6 +109,7 @@ export default function BusinessIdeaGeneratorPage() {
                 {generatedIdeas.ideas.map((idea, index) => (
                   <AccordionItem value={`item-${index}`} key={index}>
                     <AccordionTrigger className='text-lg'>{idea.title}</AccordionTrigger>
+
                     <AccordionContent className="space-y-4 pt-2">
                         <p className="text-muted-foreground">{idea.description}</p>
                         <div>
