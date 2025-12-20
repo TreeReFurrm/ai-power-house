@@ -12,7 +12,7 @@ import {
   SidebarGroupLabel,
 } from '@/components/ui/sidebar';
 import { AppLogo } from '@/components/app-logo';
-import { BookText, Briefcase, FileText, GraduationCap, LayoutDashboard, Mail, SwatchBook, Languages, MessageSquare, Palette, PenSquare } from 'lucide-react';
+import { Briefcase, FileText, GraduationCap, Languages, LayoutDashboard, Lightbulb, Mail, MessageSquare, Palette, PenSquare, SwatchBook } from 'lucide-react';
 
 export function SidebarNav() {
   const pathname = usePathname();
@@ -36,6 +36,7 @@ export function SidebarNav() {
       items: [
         { href: '/tools/summarizer', label: 'Summarizer', icon: FileText },
         { href: '/tools/forms', label: 'Form Creator', icon: Briefcase },
+        { href: '/tools/business-idea-generator', label: 'Idea Generator', icon: Lightbulb },
         { href: '/tools/pdf', label: 'PDF & Image Tools', icon: SwatchBook },
         { href: '/tools/translator', label: 'Translator', icon: Languages },
         { href: '/tools/chat-pdf', label: 'Chat with PDF', icon: MessageSquare },

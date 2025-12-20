@@ -59,6 +59,12 @@
       "description": "A book with highlighted text and summary notes appearing.",
       "imageUrl": "https://images.unsplash.com/photo-1646617747609-45b466ace9a6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxib29rJTIwc3VtbWFyeXxlbnwwfHx8fDE3NjYyNTA3OTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "book summary"
+    },
+    {
+      "id": "business-idea-generator",
+      "description": "A lightbulb made of interconnected network nodes, symbolizing ideas and innovation.",
+      "imageUrl": "https://images.unsplash.com/photo-1545464402-993708213693?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxpZGVhJTIwZ2VuZXJhdGlvbnxlbnwwfHx8fDE3NjYyNTIyOTd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "idea generation"
     }
   ]
 }

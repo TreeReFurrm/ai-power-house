@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { ArrowRight, BookText, Briefcase, FileText, GraduationCap, Mail, MessageSquare, Palette, SwatchBook, Languages, BookOpen, PenSquare } from 'lucide-react';
+import { ArrowRight, BookOpen, Briefcase, FileText, GraduationCap, Languages, Lightbulb, Mail, MessageSquare, Palette, PenSquare, SwatchBook } from 'lucide-react';
 
 export default function DashboardPage() {
   const features = [
@@ -34,6 +34,13 @@ export default function DashboardPage() {
       href: '/tools/forms',
       icon: Briefcase,
       imageId: 'form-creator',
+    },
+    {
+      title: 'Business Idea Generator',
+      description: 'Turn your passions into a plan. Get logical, practical business ideas based on your interests.',
+      href: '/tools/business-idea-generator',
+      icon: Lightbulb,
+      imageId: 'business-idea-generator',
     },
     {
       title: 'SME Course Designer',
