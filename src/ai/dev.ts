@@ -7,3 +7,4 @@ import '@/ai/flows/edit-course-content.ts';
 import '@/ai/flows/write-personalized-letter.ts';
 import '@/ai/flows/summarize-document.ts';
 import '@/ai/flows/generate-business-form.ts';
+import '@/ai/flows/refurr-ink-flow.ts';

@@ -13,6 +13,8 @@ export default {
         body: ['Inter', 'sans-serif'],
         headline: ['Space Grotesk', 'sans-serif'],
         code: ['monospace'],
+        logo: ['Montserrat', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -65,6 +67,13 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        'obsidian-black': '#0a0a0a',
+        'aqua-pulse': '#00f0ff',
+        'deep-teal-byte': '#008080',
+        'off-white': '#f5f5f5',
+        'canvas-black': '#0f0f11',
+        'input-black': '#151518',
+        'modal-black': '#1a1a1e',
       },
       borderRadius: {
         lg: 'var(--radius)',
