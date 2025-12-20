@@ -7,11 +7,12 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth, useUser } from '@/firebase';
-import { initiateEmailSignIn } from '@/firebase/non-blocking-login';
+import { initiateEmailSignIn, initiateAnonymousSignIn } from '@/firebase/non-blocking-login';
 import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email address.' }),
@@ -45,6 +46,16 @@ export default function LoginPage() {
             setAuthError("An unexpected error occurred. Please try again later.");
         }
         console.error("Login Error:", error);
+    }
+  };
+
+  const handleAnonymousSignIn = () => {
+    setAuthError(null);
+    try {
+      initiateAnonymousSignIn(auth);
+    } catch (error: any) {
+      setAuthError("Could not sign in as guest. Please try again.");
+      console.error("Anonymous Sign In Error:", error);
     }
   };
 
@@ -101,6 +112,21 @@ export default function LoginPage() {
               Sign up
             </Link>
           </div>
+          
+          <div className="relative my-4">
+            <Separator />
+            <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+            </div>
+          </div>
+
+          <Button variant="outline" className="w-full" onClick={handleAnonymousSignIn}>
+            Sign in as Guest
+          </Button>
+
         </CardContent>
       </Card>
     </div>
