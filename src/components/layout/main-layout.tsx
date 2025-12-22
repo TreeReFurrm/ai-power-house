@@ -78,7 +78,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
-                    <Link href="/ambassadors/how-it-works">Ambassador</Link>
+                    <Link href="/ambassadors/how-it-works">Ambassadors</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
