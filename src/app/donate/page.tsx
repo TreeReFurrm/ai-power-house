@@ -1,139 +1,130 @@
 
-'use client';
-
-import { DollarSign, LifeBuoy, FileText, SearchCheck, ShieldCheck, HandHeart, Target, AlertCircle, Users, Network } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
 
-const contributionTiers = [
-    {
-        amount: 25,
-        title: 'Ethical Review',
-        impact: 'Supports the full labor cost of an Agent Supervisor performing the mandatory compliance review for one AI-flagged sensitive item.',
-        pillar: 'Ethics',
-        icon: ShieldCheck,
-    },
-    {
-        amount: 50,
-        title: 'Legacy Outreach',
-        impact: 'Funds the certified search, identity verification, and initial outreach attempts to contact a former owner for item recovery.',
-        pillar: 'Legacy',
-        icon: SearchCheck,
-    },
-    {
-        amount: 100,
-        title: 'Auction Relief',
-        impact: 'Contributes directly to the "LEAN on ReFURRM" micro-fund for providing emergency assistance to individuals facing unit loss.',
-        pillar: 'Auction Support',
-        icon: LifeBuoy,
-    },
-];
-
-export default function DonationPage() {
+export default function DonatePage() {
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-12">
+    <div className="container mx-auto max-w-3xl py-8 space-y-8">
       <header className="text-center space-y-4">
-        <HandHeart className="w-12 h-12 text-primary mx-auto" />
-        <h1 className="text-4xl font-extrabold tracking-tight text-primary">
-          The Legacy & Ethics Action Network (L.E.A.N.)
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-          ReFURRM's core mission is to uphold the L.E.A.N. Protocol across every step of the reverse logistics chain, ensuring that profit is balanced with responsibility.
-        </p>
-      </header>
-      
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
-          <Card className="flex flex-col">
-              <CardHeader>
-                  <FileText className="size-10 mx-auto text-primary" />
-                  <CardTitle className="text-2xl font-bold">Legacy</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow text-sm text-muted-foreground">
-                  <p><span className="font-semibold text-foreground">Focus:</span> Protecting items of personal significance flagged during the Chain-of-Custody process.</p>
-                   <p className="mt-2"><span className="font-semibold text-foreground">Action:</span> Funding secure, 30-day archival storage and the specialized outreach needed for former owner recovery.</p>
-              </CardContent>
-          </Card>
-          <Card className="flex flex-col">
-              <CardHeader>
-                  <ShieldCheck className="size-10 mx-auto text-primary" />
-                  <CardTitle className="text-2xl font-bold">Ethics</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow text-sm text-muted-foreground">
-                  <p><span className="font-semibold text-foreground">Focus:</span> Enforcing the Privacy & Dignity Standard for all sensitive materials (e.g., documents, hard drives).</p>
-                   <p className="mt-2"><span className="font-semibold text-foreground">Action:</span> Covering the cost of mandatory human review for AI-flagged items and certified, secure destruction when recovery is not possible.</p>
-              </CardContent>
-          </Card>
-           <Card className="flex flex-col">
-              <CardHeader>
-                  <Users className="size-10 mx-auto text-primary" />
-                  <CardTitle className="text-2xl font-bold">Action</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow text-sm text-muted-foreground">
-                  <p><span className="font-semibold text-foreground">Focus:</span> Providing rapid, compassionate support to individuals facing urgent situations related to storage unit loss.</p>
-                   <p className="mt-2"><span className="font-semibold text-foreground">Action:</span> Funding the "LEAN on ReFURRM" program, which offers emergency assistance, micro-loan options, and direct coordination with our Ambassador network.</p>
-              </CardContent>
-          </Card>
-           <Card className="flex flex-col">
-              <CardHeader>
-                  <Network className="size-10 mx-auto text-primary" />
-                  <CardTitle className="text-2xl font-bold">Network</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow text-sm text-muted-foreground">
-                  <p><span className="font-semibold text-foreground">Focus:</span> Funding and coordinating the Ambassadors who perform ethical intake and outreach services.</p>
-              </CardContent>
-          </Card>
-      </div>
-
-       <Separator />
-
-       <div className="space-y-6 text-center">
-            <h2 className="text-3xl font-bold tracking-tight">Invest in Integrity: Your Contribution Fuels L.E.A.N. Action</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">Your financial support funds the specific tools and personnel required to execute the Legacy, Ethics, and Auction Support protocols.</p>
-        </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {contributionTiers.map(tier => (
-          <Card key={tier.amount} className="flex flex-col text-center">
-            <CardHeader>
-              <div className="flex items-center justify-center gap-2">
-                <tier.icon className="size-6 text-primary" />
-                <CardTitle className="text-xl">{tier.title}</CardTitle>
-              </div>
-              <p className="text-4xl font-bold">${tier.amount}</p>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">{tier.pillar}</p>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <p className="text-sm text-muted-foreground">{tier.impact}</p>
-            </CardContent>
-            <CardFooter>
-              <Button variant="secondary" className="w-full">Contribute ${tier.amount}</Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
-      
-       <Alert>
-          <Target className="h-4 w-4"/>
-          <AlertTitle>Financial Disclosure</AlertTitle>
-          <AlertDescription>
-             All "LEAN on ReFURRM" applications are reviewed according to strict ethical guidelines. Any unused funds are strictly reserved for future, approved needs within the same mission.
-          </AlertDescription>
-       </Alert>
-
-       <div className="bg-white text-destructive p-6 rounded-lg border-2 border-destructive shadow-2xl mt-8">
-            <div className="flex items-center">
-                <AlertCircle className="h-8 w-8 mr-4" />
-                <h2 className="text-2xl font-bold">Facing an Imminent Auction?</h2>
-            </div>
-            <p className="mt-2 text-destructive/90">
-                If your situation is time-sensitive, do not use the standard forms. Contact our crisis team directly for the fastest response.
-            </p>
-            <Button asChild variant="link" className="p-0 h-auto mt-2 font-bold text-lg text-destructive hover:text-destructive/80">
-                <a href="mailto:lean@refurrm.org">Request Hardship Review</a>
+        <h1 className="text-4xl font-bold tracking-tight mt-2">ReFURRBISH An Item</h1>
+        <p className="text-xl text-muted-foreground">Turn unused items into hardship relief, ethical resale, and second chances.</p>
+        <div className="flex justify-center gap-4">
+            <Button asChild>
+                <Link href="/list">Start A Donation</Link>
             </Button>
-       </div>
+            <Button asChild variant="outline">
+                <Link href="/mission">Learn About LEAN Foundation</Link>
+            </Button>
+        </div>
+      </header>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>What ReFURRBISH Means</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 text-muted-foreground">
+          <p>
+            ReFURRBISH is our ethical resale process. When you donate an item, we clean it, evaluate it using SmartScan AI, prepare it for resale, and list it in the Marketplace.
+          </p>
+          <p className="font-semibold text-foreground">
+            Proceeds directly support the LEAN Foundation hardship fund.
+          </p>
+        </CardContent>
+      </Card>
+
+       <Card>
+        <CardHeader>
+          <CardTitle>Choose How Your Item Helps</CardTitle>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-6">
+            <div>
+                <h3 className="font-semibold text-lg">Donation</h3>
+                <ul className="list-disc list-inside space-y-2 text-muted-foreground mt-2">
+                    <li>You give the item to ReFURRM.</li>
+                    <li>100% of net proceeds support the LEAN hardship fund and mission costs.</li>
+                    <li>You may receive a tax receipt when nonprofit status is active.</li>
+                </ul>
+            </div>
+             <div>
+                <h3 className="font-semibold text-lg">Quiet Consignment</h3>
+                 <ul className="list-disc list-inside space-y-2 text-muted-foreground mt-2">
+                    <li>Item is valuable and you prefer to earn from it.</li>
+                    <li>ReFURRM handles intake, photography, listing, and sale.</li>
+                    <li>You receive a percentage of the final sale.</li>
+                    <li>Great for higher value or specialty items.</li>
+                </ul>
+            </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>How Donations Work</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div>
+            <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">1</Badge> Start A Donation</h3>
+            <p className="text-muted-foreground border-l-2 ml-4 pl-6 mt-2">
+              Select “Donate” in the app or through an Ambassador visit. Add notes if an item is emotionally significant or tied to a specific story.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">2</Badge> Intake and Processing</h3>
+            <p className="text-muted-foreground border-l-2 ml-4 pl-6 mt-2">Items are checked for safety and condition. We perform light cleaning and minor repairs. Items needing major restoration may be declined.</p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">3</Badge> SmartScan Valuation</h3>
+            <p className="text-muted-foreground border-l-2 ml-4 pl-6 mt-2">
+              Market data is used to estimate a fair resale price. Items are tagged as ReFURRBISHED and assigned to the Marketplace.
+            </p>
+          </div>
+          <div>
+            <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">4</Badge> Listing And Sale</h3>
+            <p className="text-muted-foreground border-l-2 ml-4 pl-6 mt-2">
+              Items are photographed and listed in the Marketplace. Most donations are listed within 72 hours of processing.
+            </p>
+          </div>
+           <div>
+            <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">5</Badge> Proceeds Allocation</h3>
+             <div className="text-muted-foreground border-l-2 ml-4 pl-6 mt-2">
+                <p>Net proceeds support:</p>
+                <ul className="list-disc list-inside space-y-1 mt-1">
+                    <li>LEAN Foundation hardship grants</li>
+                    <li>Item return costs for original owners</li>
+                    <li>Supplies and tools for Ambassador projects</li>
+                </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
+      <div className="grid md:grid-cols-2 gap-6">
+        <Card>
+            <CardHeader><CardTitle>How Your Donation Moves Money</CardTitle></CardHeader>
+            <CardContent>
+                <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+                    <li>Auction prevention assistance for users facing loss.</li>
+                    <li>Support with fees that stand between a family and their belongings.</li>
+                    <li>Operational costs for finding and returning items never meant to be sold.</li>
+                </ul>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader><CardTitle>Respect For Sentimental Items</CardTitle></CardHeader>
+            <CardContent className="text-muted-foreground">
+                <p>If staff or Ambassadors believe an item may be sentimental, they pause processing, flag it, and confirm with you before resale. Your story and your boundaries come first.</p>
+            </CardContent>
+        </Card>
+        <Card className="md:col-span-2">
+            <CardHeader><CardTitle>Donation Receipts</CardTitle></CardHeader>
+            <CardContent className="text-muted-foreground">
+                <p>When LEAN Foundation nonprofit status is active, tax receipts will be available in your account under “Donation History”. Until then, donations still support the same hardship work, just without formal tax documentation.</p>
+            </CardContent>
+        </Card>
+      </div>
+
     </div>
   );
 }
