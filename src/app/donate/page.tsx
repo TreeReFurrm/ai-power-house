@@ -37,54 +37,50 @@ export default function DonationPage() {
       <header className="text-center space-y-4">
         <HandHeart className="w-12 h-12 text-primary mx-auto" />
         <h1 className="text-4xl font-extrabold tracking-tight text-primary">
-          Our Mission: The Legacy & Ethics Action Network (L.E.A.N.)
+          The Legacy & Ethics Action Network (L.E.A.N.)
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           ReFURRM's core mission is to uphold the L.E.A.N. Protocol across every step of the reverse logistics chain, ensuring that profit is balanced with responsibility.
         </p>
       </header>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
           <Card className="flex flex-col">
               <CardHeader>
                   <FileText className="size-10 mx-auto text-primary" />
                   <CardTitle className="text-2xl font-bold">Legacy</CardTitle>
-                  <p className="font-semibold text-muted-foreground">Preservation</p>
               </CardHeader>
-              <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
+              <CardContent className="flex-grow text-sm text-muted-foreground">
                   <p><span className="font-semibold text-foreground">Focus:</span> Protecting items of personal significance flagged during the Chain-of-Custody process.</p>
-                   <p><span className="font-semibold text-foreground">Action:</span> Funding secure, 30-day archival storage and the specialized outreach needed for former owner recovery.</p>
+                   <p className="mt-2"><span className="font-semibold text-foreground">Action:</span> Funding secure, 30-day archival storage and the specialized outreach needed for former owner recovery.</p>
               </CardContent>
           </Card>
           <Card className="flex flex-col">
               <CardHeader>
                   <ShieldCheck className="size-10 mx-auto text-primary" />
                   <CardTitle className="text-2xl font-bold">Ethics</CardTitle>
-                   <p className="font-semibold text-muted-foreground">Standards</p>
               </CardHeader>
-              <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
+              <CardContent className="flex-grow text-sm text-muted-foreground">
                   <p><span className="font-semibold text-foreground">Focus:</span> Enforcing the Privacy & Dignity Standard for all sensitive materials (e.g., documents, hard drives).</p>
-                   <p><span className="font-semibold text-foreground">Action:</span> Covering the cost of mandatory human review for AI-flagged items and certified, secure destruction when recovery is not possible.</p>
+                   <p className="mt-2"><span className="font-semibold text-foreground">Action:</span> Covering the cost of mandatory human review for AI-flagged items and certified, secure destruction when recovery is not possible.</p>
               </CardContent>
           </Card>
            <Card className="flex flex-col">
               <CardHeader>
                   <Users className="size-10 mx-auto text-primary" />
                   <CardTitle className="text-2xl font-bold">Action</CardTitle>
-                   <p className="font-semibold text-muted-foreground">Support</p>
               </CardHeader>
-              <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
+              <CardContent className="flex-grow text-sm text-muted-foreground">
                   <p><span className="font-semibold text-foreground">Focus:</span> Providing rapid, compassionate support to individuals facing urgent situations related to storage unit loss.</p>
-                   <p><span className="font-semibold text-foreground">Action:</span> Funding the "LEAN on ReFURRM" program, which offers emergency assistance, micro-loan options, and direct coordination with our Ambassador network.</p>
+                   <p className="mt-2"><span className="font-semibold text-foreground">Action:</span> Funding the "LEAN on ReFURRM" program, which offers emergency assistance, micro-loan options, and direct coordination with our Ambassador network.</p>
               </CardContent>
           </Card>
            <Card className="flex flex-col">
               <CardHeader>
                   <Network className="size-10 mx-auto text-primary" />
                   <CardTitle className="text-2xl font-bold">Network</CardTitle>
-                   <p className="font-semibold text-muted-foreground">Coordination</p>
               </CardHeader>
-              <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
+              <CardContent className="flex-grow text-sm text-muted-foreground">
                   <p><span className="font-semibold text-foreground">Focus:</span> Funding and coordinating the Ambassadors who perform ethical intake and outreach services.</p>
               </CardContent>
           </Card>
