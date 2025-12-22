@@ -36,6 +36,11 @@ export function MainLayout({ children }: { children: ReactNode }) {
                     <Link href="/marketplace">Marketplace</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
+                 <SidebarMenuSubItem>
+                  <SidebarMenuSubButton asChild>
+                    <Link href="/services">Services</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
               </SidebarMenuSub>
             </SidebarMenuItem>
 
@@ -64,18 +69,13 @@ export function MainLayout({ children }: { children: ReactNode }) {
               </SidebarMenuSub>
             </SidebarMenuItem>
 
-             {/* Services & Leadership */}
+             {/* Service HUB */}
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Services">
+              <SidebarMenuButton tooltip="Service HUB">
                 <GitFork />
-                <span>Services & Leadership</span>
+                <span>Service HUB</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href="/services">Services</Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
                     <Link href="/ambassadors/how-it-works">Ambassador Hub</Link>
