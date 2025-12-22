@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -61,9 +60,9 @@ export default function SignupPage() {
       
       toast({
         title: 'Account Created',
-        description: 'You have been successfully signed up!',
+        description: 'Welcome! Let\'s get you set up.',
       });
-      router.push('/account');
+      router.push('/welcome');
 
     } catch (error: any) {
       console.error(error);
