@@ -8,7 +8,7 @@ export default function DonatePage() {
   return (
     <div className="container mx-auto max-w-3xl py-8 space-y-8">
       <header className="text-center space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight mt-2">ReFURRBISH An Item</h1>
+        <h1 className="text-4xl font-bold tracking-tight mt-2">Donate An Item</h1>
         <p className="text-xl text-muted-foreground">Turn unused items into hardship relief, ethical resale, and second chances.</p>
         <div className="flex justify-center gap-4">
             <Button asChild>
@@ -22,11 +22,11 @@ export default function DonatePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>What ReFURRBISH Means</CardTitle>
+          <CardTitle>How Donations Support the Mission</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-muted-foreground">
           <p>
-            ReFURRBISH is our ethical resale process. When you donate an item, we clean it, evaluate it using SmartScan AI, prepare it for resale, and list it in the Marketplace.
+            When you donate an item, we evaluate it using SmartScan AI, prepare it for resale, and list it in the Marketplace.
           </p>
           <p className="font-semibold text-foreground">
             Proceeds directly support the LEAN Foundation hardship fund.
@@ -42,7 +42,7 @@ export default function DonatePage() {
             <div>
                 <h3 className="font-semibold text-lg">Donation</h3>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground mt-2">
-                    <li>You give the item to ReFURRM.</li>
+                    <li>You give the item to ReFurrm.</li>
                     <li>100% of net proceeds support the LEAN hardship fund and mission costs.</li>
                     <li>You may receive a tax receipt when nonprofit status is active.</li>
                 </ul>
@@ -51,7 +51,7 @@ export default function DonatePage() {
                 <h3 className="font-semibold text-lg">Quiet Consignment</h3>
                  <ul className="list-disc list-inside space-y-2 text-muted-foreground mt-2">
                     <li>Item is valuable and you prefer to earn from it.</li>
-                    <li>ReFURRM handles intake, photography, listing, and sale.</li>
+                    <li>ReFurrm handles intake, photography, listing, and sale.</li>
                     <li>You receive a percentage of the final sale.</li>
                     <li>Great for higher value or specialty items.</li>
                 </ul>
@@ -77,7 +77,7 @@ export default function DonatePage() {
           <div>
             <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">3</Badge> SmartScan Valuation</h3>
             <p className="text-muted-foreground border-l-2 ml-4 pl-6 mt-2">
-              Market data is used to estimate a fair resale price. Items are tagged as ReFURRBISHED and assigned to the Marketplace.
+              Market data is used to estimate a fair resale price. Items are tagged and assigned to the Marketplace.
             </p>
           </div>
           <div>

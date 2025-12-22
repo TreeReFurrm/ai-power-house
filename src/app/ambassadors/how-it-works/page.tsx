@@ -31,7 +31,7 @@ export default function AmbassadorHowItWorksPage() {
         <CardContent className="space-y-2 text-muted-foreground">
            <ul className="list-disc list-inside space-y-1">
               <li>Help with storage units, garages, homes, and inherited spaces</li>
-              <li>Sort items into Keep / ReFURRBISH / Donate</li>
+              <li>Sort items into Keep / Sell / Donate</li>
               <li>Flag sentimental or “never meant to be sold” items</li>
               <li>Use SmartScan to verify value and log important items</li>
             </ul>
@@ -108,7 +108,7 @@ export default function AmbassadorHowItWorksPage() {
             <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">3</Badge> On Site Visit</h3>
              <div className="border-l-2 ml-4 pl-6 mt-2 space-y-2 text-muted-foreground">
                 <p>Ambassador walks through the space with you.</p>
-                <p>Items are sorted into Keep / ReFURRBISH / Donate.</p>
+                <p>Items are sorted into Keep / Sell / Donate.</p>
                 <p>Nothing is removed or discarded without your permission.</p>
             </div>
           </div>
@@ -119,7 +119,7 @@ export default function AmbassadorHowItWorksPage() {
                 <ul className="list-disc list-inside space-y-1">
                     <li>Total items processed</li>
                     <li>Items flagged as sentimental</li>
-                    <li>Items added to ReFURRBISH</li>
+                    <li>Items added for resale</li>
                     <li>Items donated to support the LEAN Foundation</li>
                 </ul>
             </div>
