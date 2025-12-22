@@ -122,16 +122,18 @@ export default function DonationPage() {
           </AlertDescription>
        </Alert>
 
-       <Alert variant="destructive" className="mt-8">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Facing an Imminent Auction?</AlertTitle>
-            <AlertDescription>
+       <div className="bg-white text-destructive p-6 rounded-lg border-2 border-destructive shadow-2xl mt-8">
+            <div className="flex items-center">
+                <AlertCircle className="h-8 w-8 mr-4" />
+                <h2 className="text-2xl font-bold">Facing an Imminent Auction?</h2>
+            </div>
+            <p className="mt-2 text-foreground/80">
                 If your situation is time-sensitive, do not use the standard forms. Contact our crisis team directly for the fastest response.
-                 <Button asChild variant="link" className="p-0 h-auto ml-1 font-semibold text-destructive">
-                    <a href="mailto:lean@refurrm.org">Request Hardship Review</a>
-                </Button>
-            </AlertDescription>
-       </Alert>
+            </p>
+            <Button asChild variant="link" className="p-0 h-auto mt-2 font-bold text-lg text-destructive hover:text-destructive/80">
+                <a href="mailto:lean@refurrm.org">Request Hardship Review</a>
+            </Button>
+       </div>
     </div>
   );
 }
