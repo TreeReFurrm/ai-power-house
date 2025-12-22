@@ -36,7 +36,7 @@ export default function DonationPage() {
     <div className="max-w-4xl mx-auto p-4 space-y-12">
       <header className="text-center space-y-4">
         <HandHeart className="w-12 h-12 text-primary mx-auto" />
-        <h1 className="text-4xl font-extrabold tracking-tight">
+        <h1 className="text-4xl font-extrabold tracking-tight text-primary">
           Our Mission: The L.E.A.N. Protocol
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
