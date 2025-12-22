@@ -76,7 +76,7 @@ export default function DonationFaqPage() {
         </header>
 
         {Object.keys(faqSections).map(section => (
-        <Card key={section}>
+        <Card key={section} className="border-primary/20">
             <CardHeader>
                 <CardTitle>{section}</CardTitle>
             </CardHeader>
