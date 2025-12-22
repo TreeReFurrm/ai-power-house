@@ -115,7 +115,7 @@ export function DirectDonationForm() {
                         disabled={!!isProcessing || !customAmount || parseFloat(customAmount) <= 0}
                         className={cn(isProcessing === 'other' && "bg-primary/80")}
                      >
-                         {isProcessing === 'other' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Go"}
+                         {isProcessing === 'other' ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Donate'}
                      </Button>
                   </div>
               </div>
