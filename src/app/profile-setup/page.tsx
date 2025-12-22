@@ -7,7 +7,7 @@ export default function ProfileSetupPage() {
     <div className="container mx-auto max-w-2xl py-8">
       <Card className="border-none shadow-none bg-transparent mb-6">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold tracking-tight">Calibrate Your AI</CardTitle>
+          <CardTitle className="text-3xl font-bold tracking-tight text-primary">Calibrate Your AI</CardTitle>
           <CardDescription className="text-lg text-muted-foreground">
             Answer a few questions to personalize your ReFurrm Scan experience.
           </CardDescription>

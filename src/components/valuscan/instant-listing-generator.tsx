@@ -381,7 +381,7 @@ export function InstantListingGenerator() {
   return (
     <div className="container mx-auto max-w-2xl py-8">
       <header className="text-center mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Instant Listing Generator</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-primary">Instant Listing Generator</h1>
         <p className="text-lg text-muted-foreground">
           Upload a photo — get an SEO title, description, and a fair price in seconds.
         </p>

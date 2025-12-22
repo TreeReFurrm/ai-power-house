@@ -114,7 +114,7 @@ export default function BiddingToolPage() {
         <>
             <Card className="border-none shadow-none bg-transparent mb-6">
                 <CardHeader className="text-center">
-                <CardTitle className="text-3xl font-bold tracking-tight">Bidding Tool</CardTitle>
+                <CardTitle className="text-3xl font-bold tracking-tight text-primary">Bidding Tool</CardTitle>
                 <CardDescription className="text-lg text-muted-foreground">
                     Upload photos of a storage unit to get an AI-powered valuation.
                 </CardDescription>
@@ -132,7 +132,7 @@ export default function BiddingToolPage() {
         <div className="space-y-6">
             <Card>
                 <CardHeader className="text-center">
-                    <CardTitle className="text-3xl font-bold tracking-tight">Appraisal Complete</CardTitle>
+                    <CardTitle className="text-3xl font-bold tracking-tight text-primary">Appraisal Complete</CardTitle>
                     <CardDescription>
                         Based on the photos provided, here is the estimated resale value.
                     </CardDescription>

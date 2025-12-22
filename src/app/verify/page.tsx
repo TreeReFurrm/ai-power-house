@@ -7,7 +7,7 @@ export default function VerifyPage() {
     <div className="container mx-auto max-w-2xl py-8">
       <Card className="border-none shadow-none bg-transparent">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold tracking-tight">Pricing Tool</CardTitle>
+          <CardTitle className="text-3xl font-bold tracking-tight text-primary">Pricing Tool</CardTitle>
           <CardDescription className="text-lg text-muted-foreground">
             Snap an item to get an instant, data-driven market valuation and start a listing.
           </CardDescription>
