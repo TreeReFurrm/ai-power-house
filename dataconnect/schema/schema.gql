@@ -1,0 +1,34 @@
+type User @table {
+  displayName: String!
+  email: String
+  photoUrl: String
+  createdAt: Timestamp!
+}
+
+type Category @table {
+  name: String!
+  description: String
+  createdAt: Timestamp!
+  user: User!
+}
+
+type Task @table {
+  title: String!
+  description: String
+  status: String!
+  dueDate: Timestamp
+  createdAt: Timestamp!
+  user: User!
+  category: Category
+}
+
+type SubscriptionType @table {
+  name: String!
+  description: String
+  cost: Float!
+  billingPeriod: String!
+  nextBillingDate: Timestamp
+  createdAt: Timestamp!
+  user: User!
+  task: Task
+}

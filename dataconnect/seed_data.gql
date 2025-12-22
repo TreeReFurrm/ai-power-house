@@ -1,0 +1,76 @@
+mutation SeedDatabase @auth(level: USER, insecureReason: "This operation is safe to expose to all logged in users.") {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      createdAt: "2024-04-27T12:00:00Z",
+      displayName: "Demo User 1",
+      email: "demo1@example.com",
+      photoUrl: "https://example.com/photo1.jpg"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      createdAt: "2024-04-27T13:00:00Z",
+      displayName: "Demo User 2",
+      email: "demo2@example.com",
+      photoUrl: "https://example.com/photo2.jpg"
+    }
+  ])
+  category_insertMany(data: [
+    {
+      id: "650e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      createdAt: "2024-04-27T14:00:00Z",
+      name: "Category 1",
+      description: "Description 1"
+    },
+    {
+      id: "650e8400-e29b-41d4-a716-446655440001",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      createdAt: "2024-04-27T15:00:00Z",
+      name: "Category 2",
+      description: "Description 2"
+    }
+  ])
+  task_insertMany(data: [
+    {
+      id: "750e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      categoryId: "650e8400-e29b-41d4-a716-446655440000",
+      createdAt: "2024-04-27T16:00:00Z",
+      title: "Task 1",
+      description: "Task description 1",
+      status: "Open"
+    },
+    {
+      id: "750e8400-e29b-41d4-a716-446655440001",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      categoryId: "650e8400-e29b-41d4-a716-446655440001",
+      createdAt: "2024-04-27T17:00:00Z",
+      title: "Task 2",
+      description: "Task description 2",
+      status: "In Progress"
+    }
+  ])
+  subscriptionType_insertMany(data: [
+    {
+      id: "850e8400-e29b-41d4-a716-446655440000",
+      userId: "550e8400-e29b-41d4-a716-446655440000",
+      taskId: "750e8400-e29b-41d4-a716-446655440000",
+      createdAt: "2024-04-27T18:00:00Z",
+      name: "Subscription 1",
+      description: "Subscription description 1",
+      cost: 9.99,
+      billingPeriod: "Monthly"
+    },
+    {
+      id: "850e8400-e29b-41d4-a716-446655440001",
+      userId: "550e8400-e29b-41d4-a716-446655440001",
+      taskId: "750e8400-e29b-41d4-a716-446655440001",
+      createdAt: "2024-04-27T19:00:00Z",
+      name: "Subscription 2",
+      description: "Subscription description 2",
+      cost: 19.99,
+      billingPeriod: "Yearly"
+    }
+  ])
+}

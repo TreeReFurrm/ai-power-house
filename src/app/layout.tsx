@@ -8,6 +8,7 @@ import { FirebaseClientProvider } from '@/firebase';
 export const metadata: Metadata = {
   title: 'SmartScan',
   description: 'The AI De-Clutter & Ethical Marketplace',
+  manifest: '/manifest.json',
 };
 
 export default function RootLayout({
