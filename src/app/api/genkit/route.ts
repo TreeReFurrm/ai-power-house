@@ -8,5 +8,6 @@ import '@/ai/flows/select-ambassador';
 import '@/ai/flows/verify-item-value';
 import '@/ai/flows/upc-deal-checker';
 import '@/ai/flows/appraise-lot-flow';
+import '@/ai/flows/generate-chat-response';
 
 export const POST = nextHandler();

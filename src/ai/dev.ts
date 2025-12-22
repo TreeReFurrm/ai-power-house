@@ -10,3 +10,4 @@ import '@/ai/flows/request-secondary-service.ts';
 import '@/ai/flows/scout-fakes.ts';
 import '@/ai/flows/upc-deal-checker.ts';
 import '@/ai/flows/appraise-lot-flow.ts';
+import '@/ai/flows/generate-chat-response.ts';

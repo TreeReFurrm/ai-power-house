@@ -3,288 +3,119 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Cpu, User, LogIn, UserPlus } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
-import { useUser } from '@/firebase';
-import { useRouter } from 'next/navigation';
-
-const botIntents = {
-  initial: {
-    id: 'initial',
-    message: "Hi, I am here to help you use ReFURRM without stress. You can type a question or tap one of the options below.",
-    options: [
-      { text: "I need help with donations", next: 'donation_help' },
-      { text: "I need help from an Ambassador", next: 'ambassador_help' },
-      { text: "I need help stopping a storage auction", next: 'hardship_help' },
-      { text: "I have questions about SmartScan or item value", next: 'smartscan_help' },
-      { text: "I have questions about the marketplace", next: 'marketplace_help' },
-      { text: "I am having account or technical issues", next: 'account_tech_help' },
-    ]
-  },
-  auth_required: {
-    id: 'auth_required',
-    message: "This action requires an account. Please sign up or log in to continue.",
-    options: [
-        { text: "Log In", next: '/login', isExternal: true },
-        { text: "Sign Up", next: '/signup', isExternal: true },
-        { text: "Go back", next: 'initial' },
-    ]
-  },
-  donation_help: {
-    id: 'donation_help',
-    message: "ReFURRM uses donations to fund the LEAN hardship fund and support item returns. You can donate through the app or an Ambassador visit.",
-    options: [
-      { text: "How do donations work?", next: 'donation_how_it_works' },
-      { text: "What items do you accept?", next: 'donation_items' },
-      { text: "Where does the money go?", next: 'donation_money' },
-      { text: 'Go back to the main menu', next: 'initial' },
-    ]
-  },
-  donation_how_it_works: {
-    id: 'donation_how_it_works',
-    message: "Here is how donations work:\n\n1. You start a donation from the Donate tab or with an Ambassador.\n2. We intake and lightly clean or repair your items.\n3. SmartScan sets a fair resale value.\n4. Items are listed in the ReFURRM Ethical Resale.\n5. Net proceeds support hardship assistance and item returns.",
-    options: [{ text: 'Go back to donation help', next: 'donation_help' }]
-  },
-  donation_items: {
-    id: 'donation_items',
-    message: "You can donate most household goods, furniture, electronics, and clothing. We cannot accept hazardous materials or items that are broken beyond repair.",
-    options: [{ text: 'Go back to donation help', next: 'donation_help' }]
-  },
-  donation_money: {
-    id: 'donation_money',
-    message: "Net proceeds from donation sales are used to:\n\n- Fund LEAN hardship assistance for users facing auctions.\n- Cover shipping and costs to return items never meant to be sold.\n- Provide supplies for Ambassadors and ethical intake work.",
-    options: [{ text: 'Go back to donation help', next: 'donation_help' }]
-  },
-  ambassador_help: {
-    id: 'ambassador_help',
-    message: "Ambassadors help with storage units, cluttered spaces, and donation projects. They are trained to protect sentimental items and follow ethical sorting practices.",
-    options: [
-      { text: "How do I request an Ambassador?", next: 'ambassador_request' },
-      { text: "What do Ambassadors do?", next: 'ambassador_what_they_do' },
-      { text: "How much do services cost?", next: 'ambassador_cost' },
-      { text: 'Go back to the main menu', next: 'initial' },
-    ]
-  },
-  ambassador_request: {
-    id: 'ambassador_request',
-    message: "To request an Ambassador:\n\n1. Go to Services → Request an Ambassador Service.\n2. Pick a service type, like clean-out or organization.\n3. Enter your ZIP code and project notes.\n4. Confirm the estimate when it becomes available.",
-    options: [{ text: 'Go back to Ambassador help', next: 'ambassador_help' }]
-  },
-  ambassador_what_they_do: {
-    id: 'ambassador_what_they_do',
-    message: "Ambassadors perform the following actions:\n\n- Walk through the space with you.\n- Sort items into Keep, ReFURRBISH, and Donate categories.\n- Flag sentimental items in SmartScan.\n- They will never remove or discard anything without your permission.",
-    options: [{ text: 'Go back to Ambassador help', next: 'ambassador_help' }]
-  },
-  ambassador_cost: {
-    id: 'ambassador_cost',
-    message: "The costs for Ambassador services depend on the project size and your location. You will always see a clear estimate before you confirm your booking.",
-    options: [{ text: 'Go back to Ambassador help', next: 'ambassador_help' }]
-  },
-  hardship_help: {
-    id: 'hardship_help',
-    message: "If your situation is time-sensitive, I can immediately forward your case to the LEAN Foundation team at lean@refurrm.org.",
-    options: [
-        { text: "Send My Case to LEAN", next: 'escalate_lean' },
-        { text: "Open Hardship Request Form", next: 'hardship_request_form' },
-        { text: "Learn more about the LEAN Foundation", next: 'lean_foundation_info' },
-        { text: 'Go back to the main menu', next: 'initial' },
-    ]
-  },
-  lean_foundation_info: {
-    id: 'lean_foundation_info',
-    message: "The LEAN Foundation is our hardship branch. It offers small, targeted help in some cases where users are at real risk of losing a unit to auction. Potentially eligible users are active ReFURRM users at real risk of a storage auction or loss of key belongings, who are able to provide basic proof of their situation. Funding is limited and not guaranteed, but every request is reviewed.",
-    options: [ { text: "Send My Case to LEAN", next: 'escalate_lean' }, { text: 'Go back to the main menu', next: 'initial' } ]
-  },
-  hardship_request_form: {
-    id: 'hardship_request_form',
-    message: "To request hardship help, please fill out the form which you can access via the Help Center page. Go to Help Center -> Hardship Assistance -> Request Hardship Review.",
-    options: [{ text: 'Go back to hardship help', next: 'hardship_help' }]
-  },
-  smartscan_help: {
-    id: 'smartscan_help',
-    message: "SmartScan helps you check item value and UPC deals using live resale data. It is a strong guide, not a guarantee.",
-    options: [
-        { text: "How do I use the Ethical Pricing Tool?", next: 'smartscan_verify' },
-        { text: "How do I use the UPC Checker?", next: 'smartscan_upc' },
-        { text: "Why might a value seem incorrect?", next: 'smartscan_value_off' },
-        { text: 'Go back to the main menu', next: 'initial' },
-    ]
-  },
-  smartscan_verify: {
-    id: 'smartscan_verify',
-    message: "To use the Ethical Pricing Tool:\n\n1. Open Ethical Pricing Tool from the menu.\n2. Upload a photo or enter the item name and condition.\n3. Choose the context, like a yard sale or storage unit.\n4. Submit to see the estimated resale range.",
-    options: [{ text: 'Go back to SmartScan help', next: 'smartscan_help' }]
-  },
-  smartscan_upc: {
-    id: 'smartscan_upc',
-    message: "To use the UPC Checker:\n\n1. Open UPC Checker from the main menu.\n2. Enter the barcode numbers and the asking price.\n3. The AI will analyze the deal and show you the potential profit.",
-    options: [{ text: 'Go back to SmartScan help', next: 'smartscan_help' }]
-  },
-  smartscan_value_off: {
-    id: 'smartscan_value_off',
-    message: "Values can seem incorrect if:\n\n- The photo is blurry or unclear.\n- The item is very rare and has little public sales data.\n- The market for the item has changed very recently.",
-    options: [{ text: 'Go back to SmartScan help', next: 'smartscan_help' }]
-  },
-  marketplace_help: {
-    id: 'marketplace_help',
-    message: "The ReFURRM Ethical Resale is our marketplace for your items and ReFURRBISHED inventory.",
-    options: [
-        { text: "How do I list an item?", next: 'marketplace_list' },
-        { text: "How can I edit or update a listing?", next: 'marketplace_edit' },
-        { text: "What does 'Sentimental Hold' mean?", next: 'marketplace_hold' },
-        { text: 'Go back to the main menu', next: 'initial' },
-    ]
-  },
-  marketplace_list: {
-    id: 'marketplace_list',
-    message: "To list an item:\n\n1. Tap “List an Item” on the dashboard.\n2. Upload a photo and confirm the condition.\n3. The AI will generate a title and description for you to review.\n4. Set your price and publish to the Ethical Resale.",
-    options: [{ text: 'Go back to Marketplace help', next: 'marketplace_help' }]
-  },
-  marketplace_edit: {
-    id: 'marketplace_edit',
-    message: "You can edit your listing's price, description, and photos at any time from your Account page as long as the item has not been sold.",
-    options: [{ text: 'Go back to Marketplace help', next: 'marketplace_help' }]
-  },
-  marketplace_hold: {
-    id: 'marketplace_hold',
-    message: "A 'Sentimental Hold' means that an item might belong to an original owner. It is frozen from sale while we investigate and try to reconnect it.",
-    options: [{ text: 'Go back to Marketplace help', next: 'marketplace_help' }]
-  },
-  account_tech_help: {
-    id: 'account_tech_help',
-    message: "Let us see if we can fix this quickly.",
-    options: [
-        { text: "I'm having trouble logging in.", next: 'tech_login' },
-        { text: "I'm having photo or camera problems.", next: 'tech_camera' },
-        { text: "Something else is broken.", next: 'tech_other' },
-        { text: 'Go back to the main menu', next: 'initial' },
-    ]
-  },
-  tech_login: {
-    id: 'tech_login',
-    message: "Here are some first steps:\n\n1. Confirm your email and password are correct.\n2. Try a password reset from the login screen.\n\nIf that fails, I can help open a support ticket.",
-    options: [{ text: 'Open a support ticket', next: 'escalate' }, { text: 'Go back to technical help', next: 'account_tech_help' }]
-  },
-  tech_camera: {
-    id: 'tech_camera',
-    message: "If your camera is not working:\n\n1. Make sure you have given the app camera permissions in your device settings.\n2. Try restarting the app.\n3. Ensure your internet connection is stable for photo uploads.",
-    options: [{ text: 'Go back to technical help', next: 'account_tech_help' }]
-  },
-  tech_other: {
-    id: 'tech_other',
-    message: "It sounds like you need a human to step in. I can send this to our support team for review.",
-    options: [{ text: 'Create a support ticket', next: 'escalate' }]
-  },
-  escalate: {
-    id: 'escalate',
-    message: "Thank you. Your request has been sent to the support team. They will respond inside the app or by email as soon as they can.",
-    options: [{ text: 'Start over', next: 'initial' }]
-  },
-  escalate_lean: {
-    id: 'escalate_lean',
-    message: "Your request has been sent to the LEAN Foundation team at lean@refurrm.org. A human will review your case and respond as soon as possible.",
-    options: [{ text: 'Start over', next: 'initial' }]
-  }
-};
-
-const PROTECTED_INTENTS = ['escalate', 'escalate_lean'];
+import { Cpu, User, Send, Loader2 } from 'lucide-react';
+import { Textarea } from '../ui/textarea';
+import { generateChatResponse } from '@/ai/flows/generate-chat-response';
+import { ScrollArea } from '../ui/scroll-area';
 
 type ConversationTurn = {
   speaker: 'bot' | 'user';
   text: string;
 };
 
+const WELCOME_MESSAGE = "Hi, I am ReFURRM Assist. You can ask me anything about the app, such as 'How do I use the pricing tool?' or 'What is the LEAN Foundation?'";
+
 export function Chatbot() {
-  const [currentIntent, setCurrentIntent] = useState('initial');
   const [history, setHistory] = useState<ConversationTurn[]>([]);
-  const { user } = useUser();
-  const router = useRouter();
+  const [currentQuery, setCurrentQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleOptionClick = (nextIntent: string, userText: string, isExternal?: boolean) => {
-    if (isExternal) {
-        router.push(nextIntent);
-        return;
-    }
-    
-    // Check for protected intents if user is not logged in
-    if (!user && PROTECTED_INTENTS.includes(nextIntent)) {
-      setHistory([...history, { speaker: 'user', text: userText }]);
-      setCurrentIntent('auth_required');
-      return;
-    }
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!currentQuery.trim() || isLoading) return;
 
-    setHistory([...history, { speaker: 'user', text: userText }]);
-    setCurrentIntent(nextIntent);
+    const userMessage = currentQuery;
+    const newHistory = [...history, { speaker: 'user' as const, text: userMessage }];
+    setHistory(newHistory);
+    setCurrentQuery('');
+    setIsLoading(true);
+
+    try {
+      const response = await generateChatResponse({
+        history: newHistory,
+        question: userMessage,
+      });
+      setHistory(prev => [...prev, { speaker: 'bot', text: response }]);
+    } catch (error) {
+      console.error("Chatbot Error:", error);
+      setHistory(prev => [...prev, { speaker: 'bot', text: "Sorry, I encountered an error. Please try again." }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const intent = botIntents[currentIntent as keyof typeof botIntents] || botIntents.initial;
-
-  const getButtonIcon = (text: string) => {
-    if (text.toLowerCase().includes('log in')) return <LogIn className="mr-2 h-4 w-4" />;
-    if (text.toLowerCase().includes('sign up')) return <UserPlus className="mr-2 h-4 w-4" />;
-    return null;
-  }
-
   return (
-    <Card className="w-full shadow-2xl">
-      <CardContent className="p-6 space-y-6">
-        <div className="space-y-4">
-          {/* Welcome Message */}
-          <div className="flex items-start gap-3">
-            <Avatar>
-              <AvatarFallback><Cpu /></AvatarFallback>
-            </Avatar>
-            <div className="bg-muted rounded-lg p-3 max-w-[85%]">
-              <p className="text-sm whitespace-pre-wrap">{botIntents.initial.message}</p>
-            </div>
-          </div>
-          {/* Conversation History */}
-          {history.map((turn, index) => (
-            <div key={index} className={`flex items-start gap-3 ${turn.speaker === 'user' ? 'justify-end' : ''}`}>
-              {turn.speaker === 'bot' && (
+    <Card className="w-full shadow-2xl flex flex-col h-[70vh]">
+      <CardContent className="p-6 flex-grow overflow-hidden">
+        <ScrollArea className="h-full">
+            <div className="space-y-4 pr-4">
+            {/* Welcome Message */}
+            <div className="flex items-start gap-3">
                 <Avatar>
-                  <AvatarFallback><Cpu /></AvatarFallback>
-                </Avatar>
-              )}
-              <div className={`${turn.speaker === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-lg p-3 max-w-[85%]`}>
-                 <p className="text-sm whitespace-pre-wrap">{turn.text}</p>
-              </div>
-               {turn.speaker === 'user' && (
-                <Avatar>
-                  <AvatarFallback><User /></AvatarFallback>
-                </Avatar>
-              )}
-            </div>
-          ))}
-           {/* Current Bot Message */}
-          {currentIntent !== 'initial' && (
-             <div className="flex items-start gap-3">
-                <Avatar>
-                  <AvatarFallback><Cpu /></AvatarFallback>
+                <AvatarFallback><Cpu /></AvatarFallback>
                 </Avatar>
                 <div className="bg-muted rounded-lg p-3 max-w-[85%]">
-                  <p className="text-sm whitespace-pre-wrap">{intent.message}</p>
+                <p className="text-sm whitespace-pre-wrap">{WELCOME_MESSAGE}</p>
                 </div>
-              </div>
-          )}
-        </div>
+            </div>
+            {/* Conversation History */}
+            {history.map((turn, index) => (
+                <div key={index} className={`flex items-start gap-3 ${turn.speaker === 'user' ? 'justify-end' : ''}`}>
+                {turn.speaker === 'bot' && (
+                    <Avatar>
+                    <AvatarFallback><Cpu /></AvatarFallback>
+                    </Avatar>
+                )}
+                <div className={`${turn.speaker === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-lg p-3 max-w-[85%]`}>
+                    <p className="text-sm whitespace-pre-wrap">{turn.text}</p>
+                </div>
+                {turn.speaker === 'user' && (
+                    <Avatar>
+                    <AvatarFallback><User /></AvatarFallback>
+                    </Avatar>
+                )}
+                </div>
+            ))}
+            {isLoading && (
+                 <div className="flex items-start gap-3">
+                    <Avatar>
+                        <AvatarFallback><Cpu /></AvatarFallback>
+                    </Avatar>
+                     <div className="bg-muted rounded-lg p-3 max-w-[85%]">
+                        <div className="flex items-center gap-2">
+                           <Loader2 className="h-4 w-4 animate-spin" />
+                           <p className="text-sm">Thinking...</p>
+                        </div>
+                    </div>
+                 </div>
+            )}
+            </div>
+        </ScrollArea>
       </CardContent>
-      <Separator />
-      <CardFooter className="p-4">
-        <div className="flex flex-wrap gap-2 w-full justify-center">
-          {intent.options.map((option) => (
-            <Button
-              key={option.next}
-              variant="outline"
-              onClick={() => handleOptionClick(option.next, option.text, (option as any).isExternal)}
-            >
-              {getButtonIcon(option.text)}
-              {option.text}
+      
+      <CardFooter className="p-4 border-t">
+        <form onSubmit={handleSendMessage} className="flex w-full items-center gap-2">
+            <Textarea
+                placeholder="Ask me a question..."
+                value={currentQuery}
+                onChange={(e) => setCurrentQuery(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        handleSendMessage(e);
+                    }
+                }}
+                className="min-h-0 h-10 resize-none"
+                rows={1}
+                disabled={isLoading}
+            />
+            <Button type="submit" disabled={isLoading || !currentQuery.trim()}>
+                <Send className="mr-2 h-4 w-4" />
+                Send
             </Button>
-          ))}
-        </div>
+        </form>
       </CardFooter>
     </Card>
   );
