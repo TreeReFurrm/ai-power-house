@@ -12,14 +12,14 @@ export function MainLayout({ children }: { children: ReactNode }) {
         <SidebarHeader>
           <div className="flex items-center gap-2 p-2">
             <Scan className="size-8 text-primary" />
-            <h1 className="text-xl font-semibold">SmartScan</h1>
+            <h1 className="text-xl font-semibold">ValuScan</h1>
           </div>
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
             {/* Main Hub */}
              <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Dashboard">
+              <SidebarMenuButton asChild tooltip="Dashboard" className="text-primary">
                 <Link href="/">
                   <LayoutDashboard />
                   <span>Main Hub</span>
@@ -46,7 +46,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
 
             {/* Pro Tools */}
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Pro Tools">
+              <SidebarMenuButton tooltip="Pro Tools" className="text-primary">
                 <Wrench />
                 <span>Pro Tools</span>
               </SidebarMenuButton>
@@ -71,7 +71,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
 
              {/* Service Hub */}
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Service Hub">
+              <SidebarMenuButton tooltip="Service Hub" className="text-primary">
                 <GitFork />
                 <span>Service Hub</span>
               </SidebarMenuButton>
@@ -91,7 +91,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
 
             {/* Support & Mission */}
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Support">
+              <SidebarMenuButton tooltip="Support" className="text-primary">
                 <LifeBuoy />
                 <span>Support & Mission</span>
               </SidebarMenuButton>
