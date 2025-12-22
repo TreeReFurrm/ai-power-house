@@ -54,6 +54,7 @@ const scanItemPrompt = ai.definePrompt({
 4.  **CRITICAL: Write a great listing.**
     - Generate a **suggestedTitle** that is clear, descriptive, and includes keywords a buyer would search for.
     - Write a **suggestedDescription** that is compelling and informative, mentioning key features and condition from an expert's perspective.
+5.  **Use Human-Like Reasoning for Justification (CRITICAL):** In the \`appraisalNote\`, explain your pricing. If it's a resale item, mention that the price is based on market data. If it's a non-resale item, state that clearly and explain that the price is the estimated retail value.
 
 **CRITICAL PRICING RULE (The "Real Human Logic"):**
 -   If the item is suitable for resale (i.e., not a hygiene, safety, or opened consumable risk), set **priceType** to **RESALE**. The price must be based on what the item actually sells for.
