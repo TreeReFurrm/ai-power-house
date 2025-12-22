@@ -69,21 +69,21 @@ export function MainLayout({ children }: { children: ReactNode }) {
               </SidebarMenuSub>
             </SidebarMenuItem>
 
-             {/* Service HUB */}
+             {/* Service Hub */}
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Service HUB">
+              <SidebarMenuButton tooltip="Service Hub">
                 <GitFork />
-                <span>Service HUB</span>
+                <span>Service Hub</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
-                    <Link href="/ambassadors/how-it-works">Ambassador Hub</Link>
+                    <Link href="/ambassadors/how-it-works">Ambassador</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
-                    <Link href="/facilities">Facilities Hub</Link>
+                    <Link href="/facilities">Facilities</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
