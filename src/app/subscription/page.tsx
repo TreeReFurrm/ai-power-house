@@ -79,7 +79,7 @@ export default function SubscriptionPage() {
                     <div className="mx-auto w-fit rounded-full bg-primary/10 p-3 mb-4">
                         <Star className="size-8 text-primary" />
                     </div>
-                    <CardTitle className="text-3xl font-bold tracking-tight">SmartScan Pro Tier: Supporting the L.E.A.N. Foundation</CardTitle>
+                    <CardTitle className="text-3xl font-bold tracking-tight">SmartScan Pro Tier</CardTitle>
                     <CardDescription className="text-lg text-muted-foreground">
                         Your subscription directly funds our mission.
                     </CardDescription>
