@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, ScanLine, Sparkles, Users } from "lucide-react";
+import { ArrowRight, ScanLine, Sparkles, Users, HandHeart } from "lucide-react";
 import Link from "next/link";
 
 const tools = [
@@ -26,6 +26,13 @@ const tools = [
     icon: Users,
     cta: "Request a Service",
   },
+  {
+    title: "Donate to the Mission",
+    description: "Support the L.E.A.N. Foundation. Your contribution makes a direct impact in preventing hardship.",
+    link: "/donate",
+    icon: HandHeart,
+    cta: "Make a Donation",
+  }
 ]
 
 export default function Home() {
@@ -35,7 +42,7 @@ export default function Home() {
       {/* Header */}
       <div className="text-center">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary">
-          SmartScan Hub
+          SmartScan
         </h1>
         <p className="mt-3 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
           The AI-powered toolkit for ethical resale, donations, and profit.
@@ -43,7 +50,7 @@ export default function Home() {
       </div>
       
       {/* Action Grid */}
-      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
         {tools.map((tool) => (
           <Card key={tool.title} className="flex flex-col rounded-lg shadow-sm hover:shadow-lg transition-shadow">
             <CardHeader>
