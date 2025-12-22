@@ -154,41 +154,7 @@ export default function MissionPage() {
       </div>
 
        <Separator />
-
-       <div className="space-y-6 text-center">
-            <h2 className="text-3xl font-bold tracking-tight">Invest in Integrity: Your Contribution Fuels L.E.A.N. Action</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">Your financial support funds the specific tools and personnel required to execute the Legacy, Ethics, and Auction Support protocols.</p>
-        </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {contributionTiers.map(tier => (
-          <Card key={tier.amount} className="flex flex-col text-center">
-            <CardHeader>
-              <div className="flex items-center justify-center gap-2">
-                <tier.icon className="size-6 text-primary" />
-                <CardTitle className="text-xl">{tier.title}</CardTitle>
-              </div>
-              <p className="text-4xl font-bold">${tier.amount}</p>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">{tier.pillar}</p>
-            </CardHeader>
-            <CardContent className="flex-grow">
-              <p className="text-sm text-muted-foreground">{tier.impact}</p>
-            </CardContent>
-            <CardFooter>
-              <Button 
-                variant="secondary" 
-                className="w-full"
-                onClick={() => handleDonate(tier.amount, tier.priceId)}
-                disabled={isProcessing !== null}
-               >
-                 {isProcessing === tier.amount ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Contribute ${tier.amount}
-              </Button>
-            </CardFooter>
-          </Card>
-        ))}
-      </div>
-      
+       
        <Alert>
           <Target className="h-4 w-4"/>
           <AlertTitle>Financial Disclosure</AlertTitle>
