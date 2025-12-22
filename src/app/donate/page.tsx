@@ -127,7 +127,7 @@ export default function DonationPage() {
                 <AlertCircle className="h-8 w-8 mr-4" />
                 <h2 className="text-2xl font-bold">Facing an Imminent Auction?</h2>
             </div>
-            <p className="mt-2 text-foreground/80">
+            <p className="mt-2 text-destructive/90">
                 If your situation is time-sensitive, do not use the standard forms. Contact our crisis team directly for the fastest response.
             </p>
             <Button asChild variant="link" className="p-0 h-auto mt-2 font-bold text-lg text-destructive hover:text-destructive/80">
