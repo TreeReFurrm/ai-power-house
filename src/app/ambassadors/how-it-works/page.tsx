@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Check, Star } from 'lucide-react';
 
 export default function AmbassadorHowItWorksPage() {
   return (
@@ -36,6 +37,38 @@ export default function AmbassadorHowItWorksPage() {
             </ul>
         </CardContent>
       </Card>
+
+      <Card>
+          <CardHeader>
+              <CardTitle>Service Tiers</CardTitle>
+          </CardHeader>
+          <CardContent className="grid md:grid-cols-2 gap-6">
+              <Card className="p-0">
+                  <CardHeader>
+                      <CardTitle className="text-lg">Tier 1: Core Logistics</CardTitle>
+                      <CardDescription>Available to all users.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                          <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" />Logistics/Pickup Request</li>
+                      </ul>
+                  </CardContent>
+              </Card>
+              <Card className="p-0 border-primary/50 bg-primary/5">
+                  <CardHeader>
+                      <CardTitle className="text-lg flex items-center"><Star className="mr-2 h-5 w-5 text-primary fill-primary" />Tier 2: Pro Services</CardTitle>
+                      <CardDescription>Requires a SmartScan Pro subscription.</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                      <ul className="space-y-2 text-sm text-muted-foreground">
+                          <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" />Full-Service Inventory Clean-out</li>
+                          <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" />Organizational/Staging Support</li>
+                          <li className="flex items-center"><Check className="mr-2 h-4 w-4 text-primary" />DIY Fulfillment Consultation</li>
+                      </ul>
+                  </CardContent>
+              </Card>
+          </CardContent>
+      </Card>
       
       <Card>
         <CardHeader>
@@ -60,7 +93,7 @@ export default function AmbassadorHowItWorksPage() {
             <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">1</Badge> Request</h3>
             <div className="border-l-2 ml-4 pl-6 mt-2 space-y-2 text-muted-foreground">
                 <p>Select “Request an Ambassador Service” inside the app.</p>
-                <p>Choose service type: clean-out, organization, downsizing, donation support, storage unit assistance.</p>
+                <p>Choose service type: clean-out, organization, downsizing, donation support.</p>
                 <p>Enter ZIP code and project notes.</p>
             </div>
           </div>
