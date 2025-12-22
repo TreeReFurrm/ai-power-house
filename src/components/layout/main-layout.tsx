@@ -73,7 +73,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
-                    <Link href="/services">Services Offered</Link>
+                    <Link href="/services">Services</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
@@ -83,7 +83,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
-                    <Link href="/agent-hub">Agent Hub</Link>
+                    <Link href="/facilities">Facilities Hub</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                  <SidebarMenuSubItem>

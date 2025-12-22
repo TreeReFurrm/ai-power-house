@@ -40,15 +40,15 @@ const mockItems = [
 ];
 
 
-export default function AgentHubPage() {
+export default function FacilitiesHubPage() {
     const sensitiveItemsCount = mockItems.filter(item => item.is_sensitive && !item.agent_decision).length;
 
   return (
     <div className="container mx-auto py-8">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Agent Hub</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Facilities Hub</h1>
         <p className="text-muted-foreground">
-          Manage unit intake, chain-of-custody, and item disposition.
+          Manage unit intake, chain-of-custody, and item disposition for facilities.
         </p>
       </header>
 
