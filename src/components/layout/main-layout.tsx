@@ -116,6 +116,11 @@ export function MainLayout({ children }: { children: ReactNode }) {
                     <Link href="/donate/faq">Donation FAQ</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
+                <SidebarMenuSubItem>
+                  <SidebarMenuSubButton asChild>
+                    <Link href="/help">Help</Link>
+                  </SidebarMenuSubButton>
+                </SidebarMenuSubItem>
               </SidebarMenuSub>
             </SidebarMenuItem>
             
