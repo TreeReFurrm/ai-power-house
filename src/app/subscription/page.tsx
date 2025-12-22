@@ -137,7 +137,7 @@ export default function SubscriptionPage() {
                             <Star className="text-primary fill-primary" />
                         </div>
                         <CardDescription>For professionals and small businesses.</CardDescription>
-                        <p className="text-4xl font-bold">$29<span className="text-lg font-normal text-muted-foreground">/mo</span></p>
+                        <p className="text-4xl font-bold">$28.99<span className="text-lg font-normal text-muted-foreground">/mo</span></p>
                     </CardHeader>
                     <CardContent className="space-y-4">
                          <ul className="space-y-3 text-sm">
