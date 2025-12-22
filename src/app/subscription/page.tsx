@@ -87,7 +87,6 @@ export default function SubscriptionPage() {
                 <CardContent className="space-y-6">
                     <div className="text-center">
                         <p className="text-4xl font-bold">$29<span className="text-lg font-normal text-muted-foreground">/month</span></p>
-                        <p className="text-sm text-muted-foreground mt-2">All Pro Tier fees are directed to the ReFURRM Legacy Preservation Fund.</p>
                     </div>
                     <ul className="space-y-3 text-sm">
                         {proFeatures.map((feature, index) => (
