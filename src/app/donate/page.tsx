@@ -1,99 +1,120 @@
 
 'use client';
 
-import { DollarSign, Gift, ArrowRight, UserPlus, Heart, Info, Loader2, BookCheck, ShieldCheck, LifeBuoy, Package, Box, Sparkles, AlertCircle, HardHat } from 'lucide-react';
+import { DollarSign, LifeBuoy, FileText, SearchCheck, ShieldCheck, HandHeart, Target, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Separator } from '@/components/ui/separator';
+
+const contributionTiers = [
+    {
+        amount: 25,
+        title: 'Ethical Review',
+        impact: 'Supports the full labor cost of an Agent Supervisor performing the mandatory compliance review for one AI-flagged sensitive item.',
+        pillar: 'Ethics',
+        icon: ShieldCheck,
+    },
+    {
+        amount: 50,
+        title: 'Legacy Outreach',
+        impact: 'Funds the certified search, identity verification, and initial outreach attempts to contact a former owner for item recovery.',
+        pillar: 'Legacy',
+        icon: SearchCheck,
+    },
+    {
+        amount: 100,
+        title: 'Auction Relief',
+        impact: 'Contributes directly to the "LEAN on ReFURRM" micro-fund for providing emergency assistance to individuals facing unit loss.',
+        pillar: 'Auction Support',
+        icon: LifeBuoy,
+    },
+];
 
 export default function DonationPage() {
-  const router = useRouter();
-
   return (
-    <div className="max-w-4xl mx-auto p-4 space-y-10">
-      <header className="text-center space-y-3">
-        <Heart className="w-12 h-12 text-primary mx-auto" />
+    <div className="max-w-4xl mx-auto p-4 space-y-12">
+      <header className="text-center space-y-4">
+        <HandHeart className="w-12 h-12 text-primary mx-auto" />
         <h1 className="text-4xl font-extrabold tracking-tight">
-          L.E.A.N. Foundation
+          Our Mission: The L.E.A.N. Protocol
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-mono tracking-widest">
-          Legacy • Ethics • Assistance • Network
-        </p>
-        <p className="text-lg text-muted-foreground max-w-3xl mx-auto pt-2">
-          The L.E.A.N. Foundation provides auction prevention, sentimental item return services, and direct hardship support. 100% of net proceeds from donated items fund this mission.
+        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+          ReFURRM SmartScan's core mission is to uphold the L.E.A.N. Protocol across every step of the reverse logistics chain, ensuring that profit is balanced with responsibility.
         </p>
       </header>
       
-      <Card>
-        <CardHeader>
-            <CardTitle className="text-2xl text-center">How You Can Help</CardTitle>
-            <CardDescription className="text-center">Choose the option that best fits your situation.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
-            <Card className="flex flex-col">
-                <CardHeader>
-                    <Gift className="size-10 mx-auto text-primary" />
-                    <CardTitle className="text-xl">Donate Items</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                    <p className="text-sm text-muted-foreground">Donate items to be ReFURBISHED and sold. Proceeds directly fund the L.E.A.N. mission.</p>
-                </CardContent>
-                <CardFooter>
-                    <Button onClick={() => router.push('/refurrbish-guide')} className="w-full">
-                        Start a Donation
-                    </Button>
-                </CardFooter>
-            </Card>
-            <Card className="flex flex-col">
-                <CardHeader>
-                    <DollarSign className="size-10 mx-auto text-primary" />
-                    <CardTitle className="text-xl">Support the Fund</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                   <p className="text-sm text-muted-foreground">Make a direct financial contribution to support users facing hardship and operational costs for item returns.</p>
-                </CardContent>
-                 <CardFooter>
-                    <Button variant="secondary" className="w-full">
-                        Contribute Now
-                    </Button>
-                </CardFooter>
-            </Card>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <Card className="flex flex-col">
+              <CardHeader>
+                  <FileText className="size-10 mx-auto text-primary" />
+                  <CardTitle className="text-2xl font-bold">L: Legacy</CardTitle>
+                  <p className="font-semibold">Preservation</p>
+              </CardHeader>
+              <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
+                  <p><span className="font-semibold text-foreground">Focus:</span> Protecting items of significance and personal value flagged during the Chain-of-Custody process.</p>
+                  <p><span className="font-semibold text-foreground">Action:</span> Funding secure, 30-day archival storage and the specialized outreach needed for former owner recovery.</p>
+              </CardContent>
+          </Card>
+          <Card className="flex flex-col">
+              <CardHeader>
+                  <ShieldCheck className="size-10 mx-auto text-primary" />
+                  <CardTitle className="text-2xl font-bold">E: Ethical</CardTitle>
+                   <p className="font-semibold">Standards</p>
+              </CardHeader>
+              <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
+                  <p><span className="font-semibold text-foreground">Focus:</span> Enforcing the Privacy & Dignity Standard for all sensitive materials (e.g., documents, hard drives).</p>
+                  <p><span className="font-semibold text-foreground">Action:</span> Covering the cost of mandatory human review for AI-flagged items and certified, secure destruction when recovery is not possible.</p>
+              </CardContent>
+          </Card>
+           <Card className="flex flex-col">
+              <CardHeader>
+                  <LifeBuoy className="size-10 mx-auto text-primary" />
+                  <CardTitle className="text-2xl font-bold">A: Auction</CardTitle>
+                   <p className="font-semibold">Support</p>
+              </CardHeader>
+              <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
+                  <p><span className="font-semibold text-foreground">Focus:</span> Providing rapid, compassionate support to individuals facing urgent situations related to storage unit loss.</p>
+                  <p><span className="font-semibold text-foreground">Action:</span> Funding the "LEAN on ReFURRM" program, which offers emergency assistance and direct coordination with our Ambassador network.</p>
+              </CardContent>
+          </Card>
+      </div>
 
-      <Card>
-          <CardHeader>
-              <CardTitle className="text-2xl">What We Do</CardTitle>
-              <CardDescription>
-                  Our core services are designed to provide a safety net for the most vulnerable situations in the resale and storage economy.
-              </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-              <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="item-1">
-                      <AccordionTrigger>Auction Prevention</AccordionTrigger>
-                      <AccordionContent>
-                         We provide small, targeted grants to help users pay off storage unit debt and prevent their belongings from being auctioned off. This is our primary mission.
-                      </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-2">
-                      <AccordionTrigger>Sentimental Item Return</AccordionTrigger>
-                      <AccordionContent>
-                          If we identify an item with high sentimental value (e.g., family photos, personal documents) in our intake process, we use our resources to find and return it to the original owner, free of charge.
-                      </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-3">
-                      <AccordionTrigger>Hardship Support</AccordionTrigger>
-                      <AccordionContent>
-                          For users in extreme circumstances, we offer support that goes beyond just funds, including connecting them with local resources and Ambassador-led assistance for sorting and decision-making.
-                      </AccordionContent>
-                  </AccordionItem>
-              </Accordion>
-          </CardContent>
-      </Card>
+       <Separator />
+
+       <div className="space-y-6 text-center">
+            <h2 className="text-3xl font-bold tracking-tight">Invest in Integrity: Your Contribution Fuels L.E.A.N. Action</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">Your financial support funds the specific tools and personnel required to execute the Legacy, Ethics, and Auction Support protocols.</p>
+        </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {contributionTiers.map(tier => (
+          <Card key={tier.amount} className="flex flex-col text-center">
+            <CardHeader>
+              <div className="flex items-center justify-center gap-2">
+                <tier.icon className="size-6 text-primary" />
+                <CardTitle className="text-xl">{tier.title}</CardTitle>
+              </div>
+              <p className="text-4xl font-bold">${tier.amount}</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">{tier.pillar}</p>
+            </CardHeader>
+            <CardContent className="flex-grow">
+              <p className="text-sm text-muted-foreground">{tier.impact}</p>
+            </CardContent>
+            <CardFooter>
+              <Button variant="secondary" className="w-full">Contribute ${tier.amount}</Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+      
+       <Alert>
+          <Target className="h-4 w-4"/>
+          <AlertTitle>Financial Disclosure</AlertTitle>
+          <AlertDescription>
+             All "LEAN on ReFURRM" applications are reviewed according to strict ethical guidelines. Any unused funds are strictly reserved for future, approved needs within the same mission.
+          </AlertDescription>
+       </Alert>
 
        <Alert variant="destructive" className="mt-8">
             <AlertCircle className="h-4 w-4" />
