@@ -1,11 +1,15 @@
 
 'use client';
 
-import { DollarSign, LifeBuoy, FileText, SearchCheck, ShieldCheck, HandHeart, Target, AlertCircle, Users, Network } from 'lucide-react';
+import { DollarSign, LifeBuoy, FileText, SearchCheck, ShieldCheck, HandHeart, Target, AlertCircle, Users, Network, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
+import { useUser } from '@/firebase';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const contributionTiers = [
     {
@@ -14,6 +18,7 @@ const contributionTiers = [
         impact: 'Supports the full labor cost of an Agent Supervisor performing the mandatory compliance review for one AI-flagged sensitive item.',
         pillar: 'Ethics',
         icon: ShieldCheck,
+        priceId: process.env.NEXT_PUBLIC_STRIPE_ETHICAL_REVIEW_PRICE_ID,
     },
     {
         amount: 50,
@@ -21,6 +26,7 @@ const contributionTiers = [
         impact: 'Funds the certified search, identity verification, and initial outreach attempts to contact a former owner for item recovery.',
         pillar: 'Legacy',
         icon: SearchCheck,
+        priceId: process.env.NEXT_PUBLIC_STRIPE_LEGACY_OUTREACH_PRICE_ID,
     },
     {
         amount: 100,
@@ -28,10 +34,71 @@ const contributionTiers = [
         impact: 'Contributes directly to the "LEAN on ReFURRM" micro-fund for providing emergency assistance to individuals facing unit loss.',
         pillar: 'Auction Support',
         icon: LifeBuoy,
+        priceId: process.env.NEXT_PUBLIC_STRIPE_AUCTION_RELIEF_PRICE_ID,
     },
 ];
 
 export default function MissionPage() {
+    const { user } = useUser();
+    const { toast } = useToast();
+    const router = useRouter();
+    const [isProcessing, setIsProcessing] = useState<number | null>(null);
+
+    const handleDonate = async (amount: number, priceId: string | undefined) => {
+        if (!user) {
+            toast({
+                title: 'Please log in',
+                description: 'You need to be logged in to make a donation.',
+                variant: 'destructive',
+            });
+            router.push('/login');
+            return;
+        }
+        
+        if (!priceId) {
+            toast({
+                title: 'Configuration Error',
+                description: 'This donation tier is not configured for payments yet. Please contact support.',
+                variant: 'destructive',
+            });
+            return;
+        }
+
+        setIsProcessing(amount);
+        toast({
+            title: 'Redirecting to checkout...',
+            description: 'You will be securely redirected to Stripe to complete your donation.',
+        });
+
+        try {
+            const response = await fetch('/api/stripe/create-donation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    priceId,
+                    userEmail: user.email,
+                    amount: amount,
+                }),
+            });
+
+            const { url, error } = await response.json();
+
+            if (error) throw new Error(error);
+            if (url) window.location.href = url;
+            else throw new Error('Could not initiate donation. Please try again.');
+
+        } catch (err: any) {
+            console.error(err);
+            toast({
+                variant: 'destructive',
+                title: 'Donation Failed',
+                description: err.message || 'An unexpected error occurred. Please contact support.',
+            });
+            setIsProcessing(null);
+        }
+    };
+
+
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-12">
       <header className="text-center space-y-4">
@@ -108,7 +175,15 @@ export default function MissionPage() {
               <p className="text-sm text-muted-foreground">{tier.impact}</p>
             </CardContent>
             <CardFooter>
-              <Button variant="secondary" className="w-full">Contribute ${tier.amount}</Button>
+              <Button 
+                variant="secondary" 
+                className="w-full"
+                onClick={() => handleDonate(tier.amount, tier.priceId)}
+                disabled={isProcessing !== null}
+               >
+                 {isProcessing === tier.amount ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                Contribute ${tier.amount}
+              </Button>
             </CardFooter>
           </Card>
         ))}

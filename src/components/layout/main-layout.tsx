@@ -97,13 +97,18 @@ export function MainLayout({ children }: { children: ReactNode }) {
               </SidebarMenuButton>
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                        <Link href="/donate">Donate / ReFURRBISH</Link>
+                    </SidebarMenuSubButton>
+                 </SidebarMenuSubItem>
+                 <SidebarMenuSubItem>
+                    <SidebarMenuSubButton asChild>
+                        <Link href="/mission">Our Mission</Link>
+                    </SidebarMenuSubButton>
+                 </SidebarMenuSubItem>
+                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
                     <Link href="/faq">General FAQs</Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href="/donate/faq">Donation FAQ</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
