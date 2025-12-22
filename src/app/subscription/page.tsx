@@ -16,7 +16,7 @@ const features = [
     { name: 'Advanced Listing Generation', community: false, scanner: false, pro: true },
     { name: 'Profitability & Sales Analytics', community: false, scanner: false, pro: true },
     { name: 'Tier 1 Ambassador Services', community: true, scanner: true, pro: true },
-    { name: 'Tier 2 Ambassador Services', community: false, scanner: false, pro: true },
+    { name: 'Tier 2 Ambassador Services', community: false, scanner: true, pro: true },
 ];
 
 export default function SubscriptionPage() {
