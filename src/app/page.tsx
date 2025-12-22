@@ -1,8 +1,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, ScanLine, Sparkles, Users, HandHeart } from "lucide-react";
+import { ArrowRight, ScanLine, Sparkles, Users } from "lucide-react";
 import Link from "next/link";
+import { DirectDonationForm } from "@/components/valuscan/direct-donation-form";
 
 const tools = [
   {
@@ -26,13 +27,6 @@ const tools = [
     icon: Users,
     cta: "Request a Service",
   },
-  {
-    title: "Donate to the Mission",
-    description: "Support the L.E.A.N. Foundation. Your contribution makes a direct impact in preventing hardship.",
-    link: "/donate",
-    icon: HandHeart,
-    cta: "Make a Donation",
-  }
 ]
 
 export default function Home() {
@@ -73,6 +67,7 @@ export default function Home() {
             </CardContent>
           </Card>
         ))}
+         <DirectDonationForm />
       </div>
         
       <footer className="text-center text-xs text-muted-foreground py-4 border-t">
