@@ -48,7 +48,7 @@ export default function DonationPage() {
           <Card className="flex flex-col">
               <CardHeader>
                   <FileText className="size-10 mx-auto text-primary" />
-                  <CardTitle className="text-2xl font-bold">L: Legacy</CardTitle>
+                  <CardTitle className="text-2xl font-bold">Legacy</CardTitle>
                   <p className="font-semibold">Preservation</p>
               </CardHeader>
               <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
@@ -58,7 +58,7 @@ export default function DonationPage() {
           <Card className="flex flex-col">
               <CardHeader>
                   <ShieldCheck className="size-10 mx-auto text-primary" />
-                  <CardTitle className="text-2xl font-bold">E: Ethics</CardTitle>
+                  <CardTitle className="text-2xl font-bold">Ethics</CardTitle>
                    <p className="font-semibold">Standards</p>
               </CardHeader>
               <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
@@ -68,7 +68,7 @@ export default function DonationPage() {
            <Card className="flex flex-col">
               <CardHeader>
                   <Users className="size-10 mx-auto text-primary" />
-                  <CardTitle className="text-2xl font-bold">A: Action</CardTitle>
+                  <CardTitle className="text-2xl font-bold">Action</CardTitle>
                    <p className="font-semibold">Support</p>
               </CardHeader>
               <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
@@ -78,7 +78,7 @@ export default function DonationPage() {
            <Card className="flex flex-col">
               <CardHeader>
                   <Network className="size-10 mx-auto text-primary" />
-                  <CardTitle className="text-2xl font-bold">N: Network</CardTitle>
+                  <CardTitle className="text-2xl font-bold">Network</CardTitle>
                    <p className="font-semibold">Coordination</p>
               </CardHeader>
               <CardContent className="flex-grow text-sm text-muted-foreground space-y-2">
