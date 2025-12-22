@@ -6,7 +6,7 @@ import { MainLayout } from '@/components/layout/main-layout';
 import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
-  title: 'SmartScan Hub',
+  title: 'SmartScan',
   description: 'The AI De-Clutter & Ethical Marketplace',
 };
 
