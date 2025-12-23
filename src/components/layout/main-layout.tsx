@@ -1,25 +1,7 @@
-
 'use client';
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar';
-import {
-    User,
-    Wrench,
-    Barcode,
-    Gavel,
-    HelpCircle,
-    LayoutDashboard,
-    ShoppingBag,
-    Briefcase,
-    LifeBuoy,
-    Star,
-    Scan,
-    ShieldHeart,
-    GitFork,
-    HeartHandshake,
-    FileQuestion
-} from '@/components/valuscan/icons';
 import Link from 'next/link';
 import { Header } from './header';
 import { usePathname } from 'next/navigation';
@@ -33,7 +15,6 @@ export function MainLayout({ children }: { children: ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2 p-2">
-            <Scan className="sidebar-icon" />
             <h1 className="text-xl font-semibold">SmartScan</h1>
           </div>
         </SidebarHeader>
@@ -47,17 +28,17 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/' && 'sidebar-link-active')}>
-                    <Link href="/"><LayoutDashboard className="sidebar-icon" />Dashboard</Link>
+                    <Link href="/">Dashboard</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/marketplace' && 'sidebar-link-active')}>
-                    <Link href="/marketplace"><ShoppingBag className="sidebar-icon" />Marketplace</Link>
+                    <Link href="/marketplace">Marketplace</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/services' && 'sidebar-link-active')}>
-                    <Link href="/services"><Briefcase className="sidebar-icon" />Services</Link>
+                    <Link href="/services">Services</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
@@ -71,17 +52,17 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/verify' && 'sidebar-link-active')}>
-                    <Link href="/verify"><Wrench className="sidebar-icon" />Pricing Tool</Link>
+                    <Link href="/verify">Pricing Tool</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/upc-checker' && 'sidebar-link-active')}>
-                    <Link href="/upc-checker"><Barcode className="sidebar-icon" />Barcode Scanner</Link>
+                    <Link href="/upc-checker">Barcode Scanner</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/appraise-lot' && 'sidebar-link-active')}>
-                    <Link href="/appraise-lot"><Gavel className="sidebar-icon" />Bidding Tool</Link>
+                    <Link href="/appraise-lot">Bidding Tool</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
@@ -95,12 +76,12 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname.startsWith('/ambassadors') && 'sidebar-link-active')}>
-                    <Link href="/ambassadors/how-it-works"><GitFork className="sidebar-icon" />Ambassadors</Link>
+                    <Link href="/ambassadors/how-it-works">Ambassadors</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/facilities' && 'sidebar-link-active')}>
-                    <Link href="/facilities"><ShieldHeart className="sidebar-icon" />Facilities</Link>
+                    <Link href="/facilities">Facilities</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
@@ -114,22 +95,22 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
                     <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname.startsWith('/donate') && 'sidebar-link-active')}>
-                        <Link href="/donate"><HeartHandshake className="sidebar-icon" />Donate</Link>
+                        <Link href="/donate">Donate</Link>
                     </SidebarMenuSubButton>
                  </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
                     <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/mission' && 'sidebar-link-active')}>
-                        <Link href="/mission"><LifeBuoy className="sidebar-icon" />Our Mission</Link>
+                        <Link href="/mission">Our Mission</Link>
                     </SidebarMenuSubButton>
                  </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/faq' && 'sidebar-link-active')}>
-                    <Link href="/faq"><FileQuestion className="sidebar-icon" />General FAQs</Link>
+                    <Link href="/faq">General FAQs</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/help' && 'sidebar-link-active')}>
-                    <Link href="/help"><HelpCircle className="sidebar-icon" />Help</Link>
+                    <Link href="/help">Help</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
@@ -142,7 +123,6 @@ export function MainLayout({ children }: { children: ReactNode }) {
              <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Upgrade" className={cn('sidebar-link', pathname === '/subscription' && 'sidebar-link-active')}>
                 <Link href="/subscription">
-                  <Star className="sidebar-icon" />
                   <span>Upgrade</span>
                 </Link>
               </SidebarMenuButton>
@@ -150,7 +130,6 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Account" className={cn('sidebar-link', pathname === '/account' && 'sidebar-link-active')}>
                 <Link href="/account">
-                  <User className="sidebar-icon" />
                   <span>Account</span>
                 </Link>
               </SidebarMenuButton>
