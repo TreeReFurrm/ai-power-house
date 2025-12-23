@@ -1,22 +1,25 @@
+
 'use client';
 
 import type { ReactNode } from 'react';
 import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton } from '@/components/ui/sidebar';
-import { User } from 'lucide-react';
-import { Wrench } from 'lucide-react';
-import { Barcode } from 'lucide-react';
-import { Gavel } from 'lucide-react';
-import { HelpCircle } from 'lucide-react';
-import { LayoutDashboard } from 'lucide-react';
-import { ShoppingBag } from 'lucide-react';
-import { Briefcase } from 'lucide-react';
-import { LifeBuoy } from 'lucide-react';
-import { Star } from 'lucide-react';
-import { Scan } from 'lucide-react';
-import { ShieldHeart } from 'lucide-react';
-import { GitFork } from 'lucide-react';
-import { HeartHandshake } from 'lucide-react';
-import { FileQuestion } from 'lucide-react';
+import {
+    User,
+    Wrench,
+    Barcode,
+    Gavel,
+    HelpCircle,
+    LayoutDashboard,
+    ShoppingBag,
+    Briefcase,
+    LifeBuoy,
+    Star,
+    Scan,
+    ShieldHeart,
+    GitFork,
+    HeartHandshake,
+    FileQuestion
+} from '@/components/valuscan/icons';
 import Link from 'next/link';
 import { Header } from './header';
 import { usePathname } from 'next/navigation';
