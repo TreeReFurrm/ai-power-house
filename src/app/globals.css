@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -115,15 +116,14 @@
       gap: 10px;
       padding: 10px 18px !important;
       border-left: 3px solid transparent !important;
-      color: rgba(192, 192, 192, 0.65) !important;
+      color: rgba(220, 220, 220, 0.78) !important;
       transition: 0.2s ease !important;
     }
 
     /* Hover State */
     .sidebar-link:hover {
       color: #00B5AD !important;
-      background: rgba(0, 181, 173, 0.07) !important;
-      border-left-color: transparent !important;
+      background: rgba(0,181,173,0.06) !important;
     }
     .sidebar-link:hover .sidebar-icon {
         color: rgba(192,192,192,0.75) !important;
