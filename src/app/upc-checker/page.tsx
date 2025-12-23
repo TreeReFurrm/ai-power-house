@@ -7,9 +7,9 @@ export default function UpcCheckerPage() {
     <div className="container mx-auto max-w-2xl py-8">
       <Card className="border-none shadow-none bg-transparent">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold tracking-tight text-primary">UPC Deal Checker</CardTitle>
+          <CardTitle className="text-3xl font-bold tracking-tight text-primary">Barcode Scanner</CardTitle>
           <CardDescription className="text-lg text-muted-foreground">
-            Enter a UPC and asking price to instantly evaluate profit and resale potential.
+            Enter a barcode and asking price to instantly evaluate profit and resale potential.
           </CardDescription>
         </CardHeader>
       </Card>

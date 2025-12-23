@@ -58,7 +58,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
-                    <Link href="/upc-checker">UPC Checker</Link>
+                    <Link href="/upc-checker">Barcode Scanner</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
