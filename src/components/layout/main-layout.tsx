@@ -1,3 +1,4 @@
+
 'use client';
 
 import type { ReactNode } from 'react';
@@ -20,8 +21,8 @@ import {
     LifeBuoy, 
     Star, 
     User,
-    Users as UsersIcon
-} from 'lucide-react';
+    UsersIcon
+} from '@/components/valuscan/icons';
 
 
 export function MainLayout({ children }: { children: ReactNode }) {
