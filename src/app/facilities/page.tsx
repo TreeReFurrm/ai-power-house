@@ -46,8 +46,8 @@ export default function FacilitiesHubPage() {
   return (
     <div className="container mx-auto py-8">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Facilities Hub</h1>
-        <p className="text-muted-foreground">
+        <h1 className="page-title">Facilities Hub</h1>
+        <p className="page-subtitle">
           Manage unit intake, chain-of-custody, and item disposition for facilities.
         </p>
       </header>
@@ -55,32 +55,32 @@ export default function FacilitiesHubPage() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
          <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Units</CardTitle>
+            <CardTitle className="text-sm font-medium opacity-60">Active Units</CardTitle>
             <Hourglass className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{mockUnits.filter(u => u.status === 'In Progress').length}</div>
+            <div className="text-3xl font-bold font-headline">{mockUnits.filter(u => u.status === 'In Progress').length}</div>
             <p className="text-xs text-muted-foreground">Units currently being processed.</p>
           </CardContent>
         </Card>
          <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg. Intake Time</CardTitle>
+            <CardTitle className="text-sm font-medium opacity-60">Avg. Intake Time</CardTitle>
             <Clock className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2.5 Hours</div>
+            <div className="text-3xl font-bold font-headline">2.5 Hours</div>
             <p className="text-xs text-muted-foreground">Average time from start to final sign-off.</p>
           </CardContent>
         </Card>
-        <Card className="lg:col-span-1 border-destructive/50 bg-destructive/10 text-destructive-foreground">
+        <Card style={{ background: '#3B0A0A', border: '1px solid #C1272D' }}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium text-destructive">Compliance Center</CardTitle>
+                <CardTitle className="text-sm font-medium text-destructive-foreground opacity-80">Compliance Center</CardTitle>
                 <AlertCircle className="h-4 w-4 text-destructive" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">{sensitiveItemsCount}</div>
-                <p className="text-xs text-destructive/80">Sensitive items awaiting mandatory review.</p>
+                <div className="text-3xl font-bold font-headline text-destructive-foreground">{sensitiveItemsCount}</div>
+                <p className="text-xs text-destructive-foreground/70">Sensitive items awaiting mandatory review.</p>
             </CardContent>
         </Card>
       </div>
@@ -118,7 +118,7 @@ export default function FacilitiesHubPage() {
                                     <TableCell>{unit.facility_ref}</TableCell>
                                     <TableCell><Badge>{unit.status}</Badge></TableCell>
                                     <TableCell className="text-right">
-                                        <Button size="sm">Continue Scan</Button>
+                                        <Button size="sm" className="btn-primary">Continue Scan</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}

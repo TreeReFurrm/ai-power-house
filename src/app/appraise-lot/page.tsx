@@ -48,8 +48,8 @@ function MultiImageUploader({ onUpload, disabled }: { onUpload: (dataUris: strin
     };
 
     return (
-        <Card className="p-4">
-            <div className="flex flex-col items-center justify-center p-6 text-center border-2 border-dashed rounded-lg">
+        <Card className="p-0">
+            <div className="flex flex-col items-center justify-center p-6 text-center border-2 border-dashed rounded-lg" style={{borderColor: '#3A3A3A'}}>
                 <input
                     type="file"
                     multiple
@@ -63,7 +63,7 @@ function MultiImageUploader({ onUpload, disabled }: { onUpload: (dataUris: strin
                 <p className="text-sm text-muted-foreground">Select up to 5 images</p>
             </div>
             {previews.length > 0 && (
-                <div className="mt-4 grid grid-cols-3 sm:grid-cols-5 gap-2">
+                <div className="mt-4 grid grid-cols-3 sm:grid-cols-5 gap-2 p-4 pt-0">
                     {previews.map((src, i) => (
                         <img key={i} src={src} alt={`Preview ${i + 1}`} className="aspect-square w-full object-cover rounded-md" />
                     ))}
@@ -112,17 +112,15 @@ export default function BiddingToolPage() {
     <div className="container mx-auto max-w-4xl py-8">
       {!result ? (
         <>
-            <Card className="border-none shadow-none bg-transparent mb-6">
-                <CardHeader className="text-center">
-                <CardTitle className="text-3xl font-bold tracking-tight text-primary">Bidding Tool</CardTitle>
-                <CardDescription className="text-lg text-muted-foreground">
+            <header className="text-center">
+                <h1 className="page-title">Bidding Tool</h1>
+                <p className="page-subtitle">
                     Upload photos of a storage unit to get an AI-powered valuation.
-                </CardDescription>
-                </CardHeader>
-            </Card>
+                </p>
+            </header>
             <MultiImageUploader onUpload={setPhotoDataUris} disabled={isLoading} />
             <div className="mt-6 flex justify-center">
-                <Button onClick={handleAppraise} disabled={isLoading || photoDataUris.length === 0} size="lg">
+                <Button onClick={handleAppraise} disabled={isLoading || photoDataUris.length === 0} size="lg" className="btn-primary">
                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
                     {isLoading ? 'Analyzing Lot...' : 'Appraise Lot'}
                 </Button>

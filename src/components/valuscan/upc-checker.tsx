@@ -136,9 +136,9 @@ export function UpcChecker() {
 
   return (
     <Card>
-      <CardContent className="p-6">
+      <CardContent>
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="upcCode"
@@ -148,7 +148,7 @@ export function UpcChecker() {
                   <FormControl>
                     <div className="relative">
                       <Barcode className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="e.g. 0123456789012" className="pl-8" {...field} />
+                      <Input placeholder="e.g. 0123456789012" className="pl-8 input-dark" {...field} />
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -164,14 +164,14 @@ export function UpcChecker() {
                   <FormControl>
                     <div className="relative">
                       <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input type="number" step="0.01" placeholder="e.g. 149.99" className="pl-8" {...field} />
+                      <Input type="number" step="0.01" placeholder="e.g. 149.99" className="pl-8 input-dark" {...field} />
                     </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={isLoading} className="w-full">
+            <Button type="submit" disabled={isLoading} className="w-full btn-primary">
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (

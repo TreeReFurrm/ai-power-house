@@ -35,18 +35,18 @@ export default function Home() {
       
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-primary">
+        <h1 className="page-title">
           SmartScan
         </h1>
-        <p className="mt-3 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+        <p className="page-subtitle max-w-2xl mx-auto">
           The AI-powered toolkit for ethical resale, donations, and profit.
         </p>
       </div>
       
       {/* Action Grid */}
-      <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {tools.map((tool) => (
-          <Card key={tool.title} className="flex flex-col rounded-lg shadow-sm hover:shadow-lg transition-shadow">
+          <Card key={tool.title} className="flex flex-col">
             <CardHeader>
               <div className="flex items-start gap-4">
                 <div className="bg-primary/10 p-3 rounded-full border border-primary/20">
@@ -59,7 +59,7 @@ export default function Home() {
               <CardDescription>{tool.description}</CardDescription>
             </CardContent>
             <CardContent>
-              <Button asChild className="w-full">
+              <Button asChild className="w-full btn-primary">
                   <Link href={tool.link}>
                       {tool.cta} <ArrowRight className="ml-2 size-4" />
                   </Link>

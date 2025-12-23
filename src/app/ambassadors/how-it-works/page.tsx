@@ -7,15 +7,15 @@ import { Check, Star } from 'lucide-react';
 
 export default function AmbassadorHowItWorksPage() {
   return (
-    <div className="container mx-auto max-w-3xl py-8 space-y-8">
+    <div className="container mx-auto max-w-4xl py-8 space-y-8">
       <header className="text-center space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight mt-2">Be the Change. Join Us.</h1>
+        <h1 className="page-title">Be the Change. Join Us.</h1>
         <p className="text-xl text-muted-foreground font-mono">Leadership. Ethics. Impact.</p>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <p className="page-subtitle max-w-2xl mx-auto">
           Join the exclusive network of leaders enforcing dignity, preventing loss, and powering the L.E.A.N. mission.
         </p>
         <div className="flex justify-center gap-4">
-            <Button asChild>
+            <Button asChild className="btn-primary">
                 <Link href="/ambassadors/apply">Apply to be an Ambassador</Link>
             </Button>
             <Button asChild variant="outline">
@@ -116,7 +116,7 @@ export default function AmbassadorHowItWorksPage() {
             <h3 className="font-semibold text-lg flex items-center gap-2"><Badge variant="secondary" className="rounded-full h-8 w-8 flex items-center justify-center">4</Badge> Report</h3>
              <div className="border-l-2 ml-4 pl-6 mt-2 space-y-2 text-muted-foreground">
                 <p>You receive a digital project summary in the app showing:</p>
-                <ul className="list-disc list-inside space-y-1">
+                <ul className="list-disc list-inside space-y-1 mt-1">
                     <li>Total items processed</li>
                     <li>Items flagged as sentimental</li>
                     <li>Items added for resale</li>
@@ -127,7 +127,7 @@ export default function AmbassadorHowItWorksPage() {
         </CardContent>
       </Card>
       
-      <div className="grid md:grid-cols-2 gap-6">
+       <div className="grid md:grid-cols-2 gap-6">
         <Card>
           <CardHeader><CardTitle>How Pricing Works</CardTitle></CardHeader>
           <CardContent className="text-muted-foreground">

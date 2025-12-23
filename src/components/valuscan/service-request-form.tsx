@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -5,7 +6,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { CardContent } from '../ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '../ui/form';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
@@ -16,6 +17,8 @@ import { useUser } from '@/firebase';
 import { requestSecondaryService, SecondaryServiceOutput } from '@/ai/flows/request-secondary-service';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { Checkbox } from '../ui/checkbox';
+import { Card, CardHeader, CardTitle, CardDescription } from '../ui/card';
+
 
 const serviceRequestSchema = z.object({
   serviceType: z.enum([
@@ -130,151 +133,150 @@ export function ServiceRequestForm() {
   }
 
   return (
-    <Card>
-      <CardContent className="p-6">
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
+    <CardContent className="p-0">
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="serviceType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>1. What service do you need?</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
+                  <FormControl>
+                    <SelectTrigger className="input-dark">
+                      <SelectValue placeholder="Select a service type" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Full-Service Inventory Clean-out">Full-Service Inventory Clean-out</SelectItem>
+                    <SelectItem value="Organizational/Staging Support">Organizational/Staging Support (Pro Tier Only)</SelectItem>
+                    <SelectItem value="Logistics/Pickup Request">Logistics/Pickup Request</SelectItem>
+                    <SelectItem value="DIY Fulfillment Consultation">DIY Fulfillment Consultation</SelectItem>
+                  </SelectContent>
+                </Select>
+                { (serviceType === 'Full-Service Inventory Clean-out' || serviceType === 'Organizational/Staging Support') &&
+                  <FormDescription className="text-xs text-primary/80">Note: This service requires a consultation. Commissions (10-15%) will apply to all items successfully listed and sold.</FormDescription>
+                }
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid md:grid-cols-2 gap-4">
+              <FormField
               control={form.control}
-              name="serviceType"
+              name="projectSize"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>1. What service do you need?</FormLabel>
+                  <FormItem>
+                  <FormLabel>2. Estimated Project Size</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a service type" />
+                      <FormControl>
+                      <SelectTrigger className="input-dark">
+                          <SelectValue placeholder="Estimate the project size" />
                       </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Full-Service Inventory Clean-out">Full-Service Inventory Clean-out</SelectItem>
-                      <SelectItem value="Organizational/Staging Support">Organizational/Staging Support (Pro Tier Only)</SelectItem>
-                      <SelectItem value="Logistics/Pickup Request">Logistics/Pickup Request</SelectItem>
-                      <SelectItem value="DIY Fulfillment Consultation">DIY Fulfillment Consultation</SelectItem>
-                    </SelectContent>
+                      </FormControl>
+                      <SelectContent>
+                      <SelectItem value="Small (1-5 items)">Small (1-5 items)</SelectItem>
+                      <SelectItem value="Medium (6-15 items)">Medium (6-15 items)</SelectItem>
+                      <SelectItem value="Large (15+ items)">Large (15+ items)</SelectItem>
+                      </SelectContent>
                   </Select>
-                  { (serviceType === 'Full-Service Inventory Clean-out' || serviceType === 'Organizational/Staging Support') &&
-                    <FormDescription className="text-xs text-primary/80">Note: This service requires a consultation. Commissions (10-15%) will apply to all items successfully listed and sold.</FormDescription>
-                  }
                   <FormMessage />
-                </FormItem>
+                  </FormItem>
               )}
-            />
+              />
 
-            <div className="grid md:grid-cols-2 gap-6">
-                <FormField
-                control={form.control}
-                name="projectSize"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>2. Estimated Project Size</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Estimate the project size" />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                        <SelectItem value="Small (1-5 items)">Small (1-5 items)</SelectItem>
-                        <SelectItem value="Medium (6-15 items)">Medium (6-15 items)</SelectItem>
-                        <SelectItem value="Large (15+ items)">Large (15+ items)</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-
-                <FormField
-                control={form.control}
-                name="urgency"
-                render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>3. Required Deadline</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder="Select a deadline" />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                        <SelectItem value="Within 48 hours">Within 48 hours</SelectItem>
-                        <SelectItem value="Within 1 week">Within 1 week</SelectItem>
-                        <SelectItem value="Flexible">Flexible</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <FormMessage />
-                    </FormItem>
-                )}
-                />
-            </div>
-            
-            <FormField
+              <FormField
               control={form.control}
-              name="zipCode"
+              name="urgency"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>4. Project ZIP Code</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Enter your 5-digit ZIP code" {...field} disabled={isSubmitting} />
-                  </FormControl>
+                  <FormItem>
+                  <FormLabel>3. Required Deadline</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isSubmitting}>
+                      <FormControl>
+                      <SelectTrigger className="input-dark">
+                          <SelectValue placeholder="Select a deadline" />
+                      </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                      <SelectItem value="Within 48 hours">Within 48 hours</SelectItem>
+                      <SelectItem value="Within 1 week">Within 1 week</SelectItem>
+                      <SelectItem value="Flexible">Flexible</SelectItem>
+                      </SelectContent>
+                  </Select>
                   <FormMessage />
-                </FormItem>
+                  </FormItem>
               )}
-            />
+              />
+          </div>
+          
+          <FormField
+            control={form.control}
+            name="zipCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>4. Project ZIP Code</FormLabel>
+                <FormControl>
+                  <Input placeholder="Enter your 5-digit ZIP code" {...field} disabled={isSubmitting} className="input-dark"/>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-             <FormField
-                control={form.control}
-                name="logisticsAcknowledged"
-                render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                        <FormControl>
-                        <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                            disabled={isSubmitting}
-                        />
-                        </FormControl>
-                        <div className="space-y-1 leading-none">
-                        <FormLabel>5. I confirm items are easily accessible.</FormLabel>
-                        <FormDescription>
-                            (e.g., ground floor, elevator access, or easy street parking).
-                        </FormDescription>
-                        <FormMessage />
-                        </div>
-                    </FormItem>
-                )}
-            />
-
-            <FormField
+           <FormField
               control={form.control}
-              name="notes"
+              name="logisticsAcknowledged"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>6. Project Notes (Optional)</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                        placeholder="Include urgency, size, or specific requirements. e.g., 'Cleaning out a 10x20 storage unit...'" 
-                        rows={3} 
-                        {...field} 
-                        disabled={isSubmitting}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormControl>
+                      <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          disabled={isSubmitting}
+                      />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                      <FormLabel>5. I confirm items are easily accessible.</FormLabel>
+                      <FormDescription>
+                          (e.g., ground floor, elevator access, or easy street parking).
+                      </FormDescription>
+                      <FormMessage />
+                      </div>
+                  </FormItem>
               )}
-            />
-            <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
-              {isSubmitting ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <Send className="mr-2 h-4 w-4" />
-              )}
-              Submit Request
-            </Button>
-          </form>
-        </FormProvider>
-      </CardContent>
-    </Card>
+          />
+
+          <FormField
+            control={form.control}
+            name="notes"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>6. Project Notes (Optional)</FormLabel>
+                <FormControl>
+                  <Textarea 
+                      placeholder="Include urgency, size, or specific requirements. e.g., 'Cleaning out a 10x20 storage unit...'" 
+                      rows={3} 
+                      {...field} 
+                      disabled={isSubmitting}
+                      className="input-dark"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" disabled={isSubmitting} className="w-full btn-primary" size="lg">
+            {isSubmitting ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="mr-2 h-4 w-4" />
+            )}
+            Submit Request
+          </Button>
+        </form>
+      </FormProvider>
+    </CardContent>
   );
 }

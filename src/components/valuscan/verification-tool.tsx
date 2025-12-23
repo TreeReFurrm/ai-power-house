@@ -219,7 +219,7 @@ export function VerificationTool() {
           </CardContent>
           {isViable && (
             <CardFooter className="flex-col gap-4">
-                <Button onClick={handleContinueToListing} size="lg" className="w-full">
+                <Button onClick={handleContinueToListing} size="lg" className="w-full btn-primary">
                     Create Listing from Appraisal <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
             </CardFooter>
@@ -272,7 +272,7 @@ export function VerificationTool() {
     <div>
       <Card>
         <CardHeader>
-            <Progress value={(currentStep/3) * 100} className="w-full"/>
+            <Progress value={(currentStep/3) * 100} className="w-full h-[8px]"/>
         </CardHeader>
         <CardContent className="p-6">
             <FormProvider {...form}>
@@ -314,6 +314,7 @@ export function VerificationTool() {
                                 placeholder="e.g., 'iPhone 13 Pro Max 256GB' or 'Vintage wooden rocking chair'"
                                 {...field}
                                 disabled={isLoading}
+                                className="input-dark"
                                 />
                             </FormControl>
                              <FormDescription className="text-xs">We use your photo only to generate valuations. We do not train models on private images without permission.</FormDescription>
@@ -335,7 +336,7 @@ export function VerificationTool() {
                                 <FormLabel>Item Condition</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
                                     <FormControl>
-                                    <SelectTrigger>
+                                    <SelectTrigger className="input-dark">
                                         <SelectValue placeholder="Select the item's condition" />
                                     </SelectTrigger>
                                     </FormControl>
@@ -358,7 +359,7 @@ export function VerificationTool() {
                             <FormLabel>Valuation Intent</FormLabel>
                             <Select onValueChange={field.onChange} defaultValue={field.value} disabled={isLoading}>
                                 <FormControl>
-                                <SelectTrigger>
+                                <SelectTrigger className="input-dark">
                                     <SelectValue placeholder="Where are you seeing this item?" />
                                 </SelectTrigger>
                                 </FormControl>
@@ -387,7 +388,7 @@ export function VerificationTool() {
                                 <FormControl>
                                     <div className="relative">
                                     <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                    <Input type="number" step="0.01" placeholder="Enter price to check profit" className="pl-8" {...field} value={field.value ?? ''} disabled={isLoading} />
+                                    <Input type="number" step="0.01" placeholder="Enter price to check profit" className="pl-8 input-dark" {...field} value={field.value ?? ''} disabled={isLoading} />
                                     </div>
                                 </FormControl>
                                 <FormDescription>Enter the price you would pay to see the potential ROI.</FormDescription>
@@ -404,7 +405,7 @@ export function VerificationTool() {
                             Back
                         </Button>
                     )}
-                    <Button type="button" onClick={handleNextStep} disabled={isLoading || (currentStep === 1 && !photoDataUri && !itemName)}>
+                    <Button type="button" onClick={handleNextStep} disabled={isLoading || (currentStep === 1 && !photoDataUri && !itemName)} className="btn-primary">
                     {isLoading ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -5,14 +5,12 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 export default function UpcCheckerPage() {
   return (
     <div className="container mx-auto max-w-2xl py-8">
-      <Card className="border-none shadow-none bg-transparent">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold tracking-tight text-primary">Barcode Scanner</CardTitle>
-          <CardDescription className="text-lg text-muted-foreground">
+      <header className="text-center">
+        <h1 className="page-title">Barcode Scanner</h1>
+        <p className="page-subtitle">
             Enter a barcode and asking price to instantly evaluate profit and resale potential.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+        </p>
+      </header>
       <UpcChecker />
     </div>
   );
