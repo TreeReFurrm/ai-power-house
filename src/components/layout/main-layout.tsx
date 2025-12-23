@@ -17,7 +17,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2 p-2">
-            <Scan className="size-8 text-primary" />
+            <Scan className="sidebar-icon" />
             <h1 className="text-xl font-semibold">SmartScan</h1>
           </div>
         </SidebarHeader>
@@ -26,23 +26,22 @@ export function MainLayout({ children }: { children: ReactNode }) {
             {/* Main Hub */}
              <SidebarMenuItem>
               <SidebarMenuButton tooltip="Main Hub" className="sidebar-section-title">
-                <LayoutDashboard className="sidebar-icon" />
                 <span>Main Hub</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/' && 'sidebar-link-active')}>
-                    <Link href="/">Dashboard</Link>
+                    <Link href="/"><LayoutDashboard className="sidebar-icon" />Dashboard</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/marketplace' && 'sidebar-link-active')}>
-                    <Link href="/marketplace">Marketplace</Link>
+                    <Link href="/marketplace"><ShoppingBag className="sidebar-icon" />Marketplace</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/services' && 'sidebar-link-active')}>
-                    <Link href="/services">Services</Link>
+                    <Link href="/services"><Briefcase className="sidebar-icon" />Services</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
@@ -51,23 +50,22 @@ export function MainLayout({ children }: { children: ReactNode }) {
             {/* Pro Tools */}
             <SidebarMenuItem>
               <SidebarMenuButton tooltip="Pro Tools" className="sidebar-section-title">
-                <Wrench className="sidebar-icon" />
                 <span>Pro Tools</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/verify' && 'sidebar-link-active')}>
-                    <Link href="/verify">Pricing Tool</Link>
+                    <Link href="/verify"><Wrench className="sidebar-icon" />Pricing Tool</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/upc-checker' && 'sidebar-link-active')}>
-                    <Link href="/upc-checker">Barcode Scanner</Link>
+                    <Link href="/upc-checker"><Barcode className="sidebar-icon" />Barcode Scanner</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/appraise-lot' && 'sidebar-link-active')}>
-                    <Link href="/appraise-lot">Bidding Tool</Link>
+                    <Link href="/appraise-lot"><Gavel className="sidebar-icon" />Bidding Tool</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
@@ -76,18 +74,17 @@ export function MainLayout({ children }: { children: ReactNode }) {
              {/* Service Hub */}
             <SidebarMenuItem>
               <SidebarMenuButton tooltip="Service Hub" className="sidebar-section-title">
-                <GitFork className="sidebar-icon" />
                 <span>Service Hub</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname.startsWith('/ambassadors') && 'sidebar-link-active')}>
-                    <Link href="/ambassadors/how-it-works">Ambassadors</Link>
+                    <Link href="/ambassadors/how-it-works"><GitFork className="sidebar-icon" />Ambassadors</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/facilities' && 'sidebar-link-active')}>
-                    <Link href="/facilities">Facilities</Link>
+                    <Link href="/facilities"><ShieldHeart className="sidebar-icon" />Facilities</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>
@@ -96,28 +93,27 @@ export function MainLayout({ children }: { children: ReactNode }) {
             {/* Support & Mission */}
             <SidebarMenuItem>
               <SidebarMenuButton tooltip="Support" className="sidebar-section-title">
-                <LifeBuoy className="sidebar-icon" />
                 <span>Support & Mission</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
                     <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname.startsWith('/donate') && 'sidebar-link-active')}>
-                        <Link href="/donate">Donate</Link>
+                        <Link href="/donate"><HeartHandshake className="sidebar-icon" />Donate</Link>
                     </SidebarMenuSubButton>
                  </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
                     <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/mission' && 'sidebar-link-active')}>
-                        <Link href="/mission">Our Mission</Link>
+                        <Link href="/mission"><LifeBuoy className="sidebar-icon" />Our Mission</Link>
                     </SidebarMenuSubButton>
                  </SidebarMenuSubItem>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/faq' && 'sidebar-link-active')}>
-                    <Link href="/faq">General FAQs</Link>
+                    <Link href="/faq"><FileQuestion className="sidebar-icon" />General FAQs</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname === '/help' && 'sidebar-link-active')}>
-                    <Link href="/help">Help</Link>
+                    <Link href="/help"><HelpCircle className="sidebar-icon" />Help</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               </SidebarMenuSub>

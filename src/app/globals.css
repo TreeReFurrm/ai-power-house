@@ -103,9 +103,13 @@
     
     /* Section Titles */
     .sidebar-section-title {
-      color: rgba(220,220,220,0.68) !important;
+      color: rgba(230, 230, 230, 0.88) !important;
       font-weight: 600 !important;
-      letter-spacing: 0.3px !important;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      margin-top: 14px !important;
+      margin-bottom: 6px !important;
       cursor: default !important;
       pointer-events: none !important;
     }
