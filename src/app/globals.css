@@ -77,10 +77,10 @@
 
 @layer components {
     .card {
-        @apply bg-card border border-border rounded-lg shadow-dark p-6;
+        @apply bg-[#111111] border border-[#1F1F1F] rounded-[14px] p-6 shadow-dark;
     }
     .btn-primary {
-      @apply bg-primary text-primary-foreground rounded-[10px] px-5 py-3 font-semibold transition-all duration-200 ease-in-out;
+      @apply bg-[#00B5AD] text-[#000] rounded-[10px] px-5 py-3 font-semibold transition-all duration-200 ease-in-out;
     }
     .btn-primary:hover {
         box-shadow: 0 0 14px rgba(0,181,173,0.4);
@@ -99,4 +99,35 @@
     .page-subtitle {
         @apply text-base text-foreground/75 mb-7;
     }
+    
+    /* Section Titles */
+    .sidebar-section-title {
+      color: rgba(192, 192, 192, 0.35) !important;
+      font-weight: 600 !important;
+      cursor: default !important;
+      pointer-events: none !important;
+    }
+
+    /* Sidebar Links (global) */
+    .sidebar-link {
+      color: rgba(192, 192, 192, 0.65) !important;
+      padding: 10px 18px !important;
+      border-left: 3px solid transparent !important;
+      transition: 0.2s ease !important;
+    }
+
+    /* Hover State */
+    .sidebar-link:hover {
+      color: #00B5AD !important;
+      background: rgba(0, 181, 173, 0.07) !important;
+    }
+
+    /* Active State */
+    .sidebar-link-active {
+      color: #00B5AD !important;
+      font-weight: 600 !important;
+      border-left-color: #00B5AD !important;
+      background: #0D0D0D !important;
+    }
+
 }
