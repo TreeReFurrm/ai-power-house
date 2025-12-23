@@ -19,7 +19,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
           <SidebarMenu>
             {/* Main Hub */}
              <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Dashboard" className="text-primary">
+              <SidebarMenuButton asChild tooltip="Dashboard" className="text-primary hover:text-primary data-[active=true]:text-primary data-[active=true]:border-l-4 data-[active=true]:border-primary data-[active=true]:font-semibold text-silver/65 p-[10px_18px] data-[active=true]:p-[10px_18px]">
                 <Link href="/">
                   <LayoutDashboard />
                   <span>Main Hub</span>
@@ -46,7 +46,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
 
             {/* Pro Tools */}
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Pro Tools" className="text-primary">
+              <SidebarMenuButton tooltip="Pro Tools" className="text-primary hover:text-primary data-[active=true]:text-primary data-[active=true]:border-l-4 data-[active=true]:border-primary data-[active=true]:font-semibold text-silver/65 p-[10px_18px] data-[active=true]:p-[10px_18px]">
                 <Wrench />
                 <span>Pro Tools</span>
               </SidebarMenuButton>
@@ -71,7 +71,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
 
              {/* Service Hub */}
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Service Hub" className="text-primary">
+              <SidebarMenuButton tooltip="Service Hub" className="text-primary hover:text-primary data-[active=true]:text-primary data-[active=true]:border-l-4 data-[active=true]:border-primary data-[active=true]:font-semibold text-silver/65 p-[10px_18px] data-[active=true]:p-[10px_18px]">
                 <GitFork />
                 <span>Service Hub</span>
               </SidebarMenuButton>
@@ -91,7 +91,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
 
             {/* Support & Mission */}
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Support" className="text-primary">
+              <SidebarMenuButton tooltip="Support" className="text-primary hover:text-primary data-[active=true]:text-primary data-[active=true]:border-l-4 data-[active=true]:border-primary data-[active=true]:font-semibold text-silver/65 p-[10px_18px] data-[active=true]:p-[10px_18px]">
                 <LifeBuoy />
                 <span>Support & Mission</span>
               </SidebarMenuButton>

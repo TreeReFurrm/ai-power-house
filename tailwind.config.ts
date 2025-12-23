@@ -15,6 +15,9 @@ export default {
         accent: ['"Architects Daughter"', 'cursive'],
         code: ['monospace'],
       },
+      boxShadow: {
+        'dark': '0px 4px 14px rgba(0,0,0,0.45)',
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

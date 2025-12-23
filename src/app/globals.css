@@ -7,10 +7,10 @@
     --background: 0 0% 0%; /* Black */
     --foreground: 0 0% 85.1%; /* #D9D9D9 */
 
-    --card: 0 0% 10.2%; /* #1A1A1A */
+    --card: 0 0% 6.7%; /* #111111 */
     --card-foreground: 0 0% 85.1%; /* #D9D9D9 */
 
-    --popover: 0 0% 10.2%; /* #1A1A1A */
+    --popover: 0 0% 6.7%; /* #111111 */
     --popover-foreground: 0 0% 85.1%; /* #D9D9D9 */
 
     --primary: 177 100% 35.1%; /* #00B5AD */
@@ -28,21 +28,21 @@
     --destructive: 357 65.5% 42.7%; /* #C1272D */
     --destructive-foreground: 0 0% 100%; /* White */
 
-    --border: 0 0% 16.5%; /* #2A2A2A */
-    --input: 0 0% 5.9%; /* #0F0F0F */
+    --border: 0 0% 12.2%; /* #1F1F1F */
+    --input: 0 0% 16.5%; /* #2A2A2A */
     --ring: 177 100% 35.1%; /* #00B5AD */
 
-    --radius: 0.75rem; /* 12px for buttons, can be adjusted */
+    --radius: 0.875rem; /* 14px */
   }
 
   .dark {
     --background: 0 0% 0%; /* Black */
     --foreground: 0 0% 85.1%; /* #D9D9D9 */
 
-    --card: 0 0% 10.2%; /* #1A1A1A */
+    --card: 0 0% 6.7%; /* #111111 */
     --card-foreground: 0 0% 85.1%; /* #D9D9D9 */
 
-    --popover: 0 0% 10.2%; /* #1A1A1A */
+    --popover: 0 0% 6.7%; /* #111111 */
     --popover-foreground: 0 0% 85.1%; /* #D9D9D9 */
 
     --primary: 177 100% 35.1%; /* #00B5AD */
@@ -60,8 +60,8 @@
     --destructive: 357 65.5% 42.7%; /* #C1272D */
     --destructive-foreground: 0 0% 100%; /* White */
 
-    --border: 0 0% 16.5%; /* #2A2A2A */
-    --input: 0 0% 5.9%; /* #0F0F0F */
+    --border: 0 0% 12.2%; /* #1F1F1F */
+    --input: 0 0% 16.5%; /* #2A2A2A */
     --ring: 177 100% 35.1%; /* #00B5AD */
   }
 }
@@ -73,4 +73,30 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer components {
+    .card {
+        @apply bg-card border border-border rounded-lg shadow-dark p-6;
+    }
+    .btn-primary {
+      @apply bg-primary text-primary-foreground rounded-[10px] px-5 py-3 font-semibold transition-all duration-200 ease-in-out;
+    }
+    .btn-primary:hover {
+        box-shadow: 0 0 14px rgba(0,181,173,0.4);
+        transform: translateY(-1px);
+    }
+    .input-dark {
+      @apply bg-[#0D0D0D] border border-[#2A2A2A] rounded-[10px] p-3 text-[#EAEAEA];
+    }
+    .input-dark:focus {
+        border-color: #00B5AD;
+        box-shadow: 0 0 6px rgba(0,181,173,0.3);
+    }
+    .page-title {
+        @apply font-headline text-3xl font-semibold text-[#C0C0C0] mb-2;
+    }
+    .page-subtitle {
+        @apply text-base text-foreground/75 mb-7;
+    }
 }
