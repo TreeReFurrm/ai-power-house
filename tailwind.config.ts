@@ -10,8 +10,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        body: ['Open Sans', 'sans-serif'],
+        headline: ['Poppins', 'sans-serif'],
+        accent: ['"Architects Daughter"', 'cursive'],
         code: ['monospace'],
       },
       colors: {
@@ -65,6 +66,7 @@ export default {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        silver: '#C0C0C0'
       },
       borderRadius: {
         lg: 'var(--radius)',
