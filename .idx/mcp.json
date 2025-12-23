@@ -1,4 +1,4 @@
-ininit{
+{
   "mcpServers": {
     "firebase": {
       "command": "npx",

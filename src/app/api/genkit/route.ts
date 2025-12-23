@@ -1,5 +1,4 @@
-
-import { nextHandler } from '@genkit-ai/next';
+import { appRoute } from '@genkit-ai/next'; // Change this line
 import '@/ai/flows/scan-item';
 import '@/ai/flows/initiate-consignment-flow';
 import '@/ai/flows/request-secondary-service';
@@ -10,4 +9,4 @@ import '@/ai/flows/upc-deal-checker';
 import '@/ai/flows/appraise-lot-flow';
 import '@/ai/flows/generate-chat-response';
 
-export const POST = nextHandler();
+export const POST = appRoute(); // Change this line
