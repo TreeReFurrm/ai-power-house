@@ -103,8 +103,9 @@
     
     /* Section Titles */
     .sidebar-section-title {
-      color: rgba(192, 192, 192, 0.35) !important;
+      color: rgba(220,220,220,0.68) !important;
       font-weight: 600 !important;
+      letter-spacing: 0.3px !important;
       cursor: default !important;
       pointer-events: none !important;
     }
