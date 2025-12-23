@@ -53,7 +53,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <SidebarMenuSub>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild>
-                    <Link href="/verify">SmartScan Pro</Link>
+                    <Link href="/verify">Pricing Tool</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
