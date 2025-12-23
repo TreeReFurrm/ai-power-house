@@ -26,7 +26,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             {/* Main Hub */}
              <SidebarMenuItem>
               <SidebarMenuButton tooltip="Main Hub" className="sidebar-section-title">
-                <LayoutDashboard />
+                <LayoutDashboard className="sidebar-icon" />
                 <span>Main Hub</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
@@ -51,7 +51,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             {/* Pro Tools */}
             <SidebarMenuItem>
               <SidebarMenuButton tooltip="Pro Tools" className="sidebar-section-title">
-                <Wrench />
+                <Wrench className="sidebar-icon" />
                 <span>Pro Tools</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
@@ -76,7 +76,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
              {/* Service Hub */}
             <SidebarMenuItem>
               <SidebarMenuButton tooltip="Service Hub" className="sidebar-section-title">
-                <GitFork />
+                <GitFork className="sidebar-icon" />
                 <span>Service Hub</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
@@ -96,7 +96,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             {/* Support & Mission */}
             <SidebarMenuItem>
               <SidebarMenuButton tooltip="Support" className="sidebar-section-title">
-                <LifeBuoy />
+                <LifeBuoy className="sidebar-icon" />
                 <span>Support & Mission</span>
               </SidebarMenuButton>
               <SidebarMenuSub>
@@ -130,7 +130,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
              <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Upgrade" className={cn('sidebar-link', pathname === '/subscription' && 'sidebar-link-active')}>
                 <Link href="/subscription">
-                  <Star />
+                  <Star className="sidebar-icon" />
                   <span>Upgrade</span>
                 </Link>
               </SidebarMenuButton>
@@ -138,7 +138,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Account" className={cn('sidebar-link', pathname === '/account' && 'sidebar-link-active')}>
                 <Link href="/account">
-                  <User />
+                  <User className="sidebar-icon" />
                   <span>Account</span>
                 </Link>
               </SidebarMenuButton>

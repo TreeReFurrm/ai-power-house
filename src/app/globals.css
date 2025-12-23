@@ -110,9 +110,12 @@
 
     /* Sidebar Links (global) */
     .sidebar-link {
-      color: rgba(192, 192, 192, 0.65) !important;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       padding: 10px 18px !important;
       border-left: 3px solid transparent !important;
+      color: rgba(192, 192, 192, 0.65) !important;
       transition: 0.2s ease !important;
     }
 
@@ -120,7 +123,12 @@
     .sidebar-link:hover {
       color: #00B5AD !important;
       background: rgba(0, 181, 173, 0.07) !important;
+      border-left-color: transparent !important;
     }
+    .sidebar-link:hover .sidebar-icon {
+        color: rgba(192,192,192,0.75) !important;
+    }
+
 
     /* Active State */
     .sidebar-link-active {
@@ -128,6 +136,10 @@
       font-weight: 600 !important;
       border-left-color: #00B5AD !important;
       background: #0D0D0D !important;
+    }
+    
+    .sidebar-link-active .sidebar-icon {
+        color: #00B5AD !important;
     }
 
 }
