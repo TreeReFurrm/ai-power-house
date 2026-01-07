@@ -3,8 +3,8 @@
     {
       "id": "letter-writer",
       "description": "A vintage typewriter with a piece of paper.",
-      "imageUrl": "https://images.unsplash.com/photo-1655856078476-6f2b6890edc5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxsZXR0ZXIlMjB0eXBld3JpdGVyfGVufDB8fHx8MTc2NjI1MDE4N3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "letter typewriter"
+      "imageUrl": "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxhYnN0cmFjdCUyMHBhc3RlbHxlbnwwfHx8fDE3MjE1ODk2NjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "letter writing"
     },
     {
       "id": "novel-writer",
@@ -21,13 +21,13 @@
     {
       "id": "form-creator",
       "description": "A person filling out a form on a clipboard.",
-      "imageUrl": "https://images.unsplash.com/photo-1579444741963-5ae219cfe27c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxidXNpbmVzcyUyMGZvcm18ZW58MHx8fHwxNzY2MjUwMTg4fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "business form"
+      "imageUrl": "https://images.unsplash.com/photo-1610484826922-2692d8520448?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxmaWxlJTIwY2FiaW5ldCUyMHBhc3RlbHxlbnwwfHx8fDE3MjE1ODk3OTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "form creation"
     },
     {
       "id": "course-designer",
       "description": "A digital screen showing a course structure or mind map.",
-      "imageUrl": "https://images.unsplash.com/photo-1697448524524-99416ed5dbba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb3Vyc2UlMjBkZXNpZ258ZW58MHx8fHwxNzY2MjE2MjIxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1599658880122-ba00d9385517?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxlJTIwbGVhcm5pbmclMjBhYnN0cmFjdHxlbnwwfHx8fDE3MjE1ODk4NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "course design"
     },
     {
@@ -45,7 +45,7 @@
     {
       "id": "chat-pdf",
       "description": "A document icon with a chat bubble over it.",
-      "imageUrl": "https://images.unsplash.com/photo-1758611972678-bc3b29b4718f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxkb2N1bWVudCUyMGNoYXR8ZW58MHx8fHwxNzY2MjUwNzkyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1684369175514-3c64f762a3f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkb2N1bWVudCUyMGNoYXR8ZW58MHx8fHwxNzIxNTkwMDEyfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "document chat"
     },
     {
