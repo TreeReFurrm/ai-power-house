@@ -1,27 +1,41 @@
-
 'use client';
 
 import type { ReactNode } from 'react';
-import { SidebarProvider, Sidebar, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarMenuSub, SidebarMenuSubItem, SidebarMenuSubButton, SidebarGroupLabel } from '@/components/ui/sidebar';
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarMenuButton,
+} from '@/components/ui/sidebar';
+
 import Link from 'next/link';
 import { Header } from './header';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { 
-    LayoutDashboard, 
-    ShoppingCart, 
-    Handshake, 
-    ScanLine, 
-    Barcode, 
-    HardHat, 
-    Building, 
-    HandHeart, 
-    CircleHelp, 
-    BookUser, 
-    LifeBuoy, 
-    Star, 
+import {
+    LayoutDashboard,
+    ShoppingCart,
+    Handshake,
+    ScanLine,
+    Barcode,
+    HardHat,
+    Users,
+    Building,
+    HandHeart,
+    CircleHelp,
+    BookUser,
+    LifeBuoy,
+    Star,
     User,
-    UsersIcon
 } from '@/components/valuscan/icons';
 
 
@@ -94,7 +108,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
               <SidebarMenuSub>
                  <SidebarMenuSubItem>
                   <SidebarMenuSubButton asChild className={cn('sidebar-link', pathname.startsWith('/ambassadors') && 'sidebar-link-active')}>
-                    <Link href="/ambassadors/how-it-works"><UsersIcon className="sidebar-icon" />Ambassadors</Link>
+                    <Link href="/ambassadors/how-it-works"><Users className="sidebar-icon" />Ambassadors</Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
                 <SidebarMenuSubItem>
@@ -155,10 +169,7 @@ export function MainLayout({ children }: { children: ReactNode }) {
           </SidebarMenu>
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset>
-        <Header />
-        <main className="p-4 lg:p-6">{children}</main>
-      </SidebarInset>
+      <main className="p-4 lg:p-6">{children}</main>
     </SidebarProvider>
   );
 }
