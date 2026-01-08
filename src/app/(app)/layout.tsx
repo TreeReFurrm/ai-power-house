@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
-import { useUser } from '@/firebase';
+import { useUser } from '@/hooks/use-auth';
 import { SidebarProvider, Sidebar, SidebarInset } from '@/components/ui/sidebar';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { Skeleton } from '@/components/ui/skeleton';

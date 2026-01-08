@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/sidebar';
 import { AppLogo } from '@/components/app-logo';
 import { Briefcase, FileText, GraduationCap, Languages, LayoutDashboard, Lightbulb, LogIn, LogOut, Mail, MessageSquare, Palette, PenSquare, Star, SwatchBook, UserPlus, Wand2 } from 'lucide-react';
-import { useAuth, useUser } from '@/firebase';
+import { useAuth, useUser } from '@/hooks/use-auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from './ui/button';
 
