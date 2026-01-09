@@ -1,29 +1,45 @@
-import { useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 
-// This is a dummy user object.
-// In a real application, this would come from an authentication provider.
-const dummyUser = {
-  uid: '12345',
-  email: 'testuser@example.com',
-  displayName: 'Test User',
+// Mock user type to replace Firebase User
+export interface MockUser {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+  emailVerified: boolean;
+}
+
+// Default mock user for development
+const defaultMockUser: MockUser = {
+  uid: 'demo-user-123',
+  email: 'demo@example.com',
+  displayName: 'Demo User',
   photoURL: null,
+  emailVerified: true,
 };
 
 export function useUser() {
-  const state = useMemo(() => ({
-    user: dummyUser,
-    isUserLoading: false,
-    userError: null
-  }), []);
-  return state;
+  const [user, setUser] = useState<MockUser | null>(defaultMockUser);
+  const [isUserLoading, setIsUserLoading] = useState(false);
+  const [userError, setUserError] = useState<Error | null>(null);
+
+  return useMemo(() => ({
+    user,
+    isUserLoading,
+    userError,
+    setUser,
+  }), [user, isUserLoading, userError]);
 }
 
 export function useAuth() {
-    const state = useMemo(() => ({
-        signOut: () => {
-          console.log('Dummy sign out');
-          return Promise.resolve();
-        },
-    }), []);
-    return state;
+  const { setUser } = useUser();
+  
+  const signOut = useCallback(() => {
+    setUser(null);
+    return Promise.resolve();
+  }, [setUser]);
+
+  return useMemo(() => ({
+    signOut,
+  }), [signOut]);
 }
