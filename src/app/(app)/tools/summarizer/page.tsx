@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
 import { MarkdownDisplay } from '@/components/markdown-display';
@@ -38,6 +39,7 @@ export default function SummarizerPage() {
   const { toast } = useToast();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const enableCamera = async () => {
@@ -107,6 +109,42 @@ export default function SummarizerPage() {
     }
   };
 
+  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: 'Unsupported file',
+        description: 'Please upload an image file (PNG or JPG).',
+        variant: 'destructive',
+      });
+      event.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUri = typeof reader.result === 'string' ? reader.result : null;
+      if (!dataUri) {
+        toast({
+          title: 'Upload failed',
+          description: 'Could not read that file. Please try another image.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      setCapturedImage(dataUri);
+      handleOcr(dataUri);
+    };
+    reader.onerror = () => {
+      toast({
+        title: 'Upload failed',
+        description: 'Could not read that file. Please try another image.',
+        variant: 'destructive',
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleOcr = async (imageUri: string) => {
     setIsLoading(true);
     setSummary(null);
@@ -146,7 +184,7 @@ export default function SummarizerPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-headline text-3xl font-bold">Fine-Print Summarizer</h1>
-        <p className="text-muted-foreground">Make sense of complex documents. Paste text or use your camera to get a clear, concise summary.</p>
+        <p className="text-muted-foreground">Make sense of complex documents. Paste text, use your camera, or upload an image to get a clear, concise summary.</p>
       </div>
       <Tabs defaultValue="text">
         <TabsList>
@@ -189,9 +227,20 @@ export default function SummarizerPage() {
             <Card>
                 <CardHeader>
                     <CardTitle>Capture Document</CardTitle>
-                    <CardDescription>Position your document in the camera view and capture the image to extract text.</CardDescription>
+                    <CardDescription>Position your document in the camera view and capture the image, or upload a photo to extract text.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="upload-input">Upload image</Label>
+                        <Input
+                          id="upload-input"
+                          ref={fileInputRef}
+                          type="file"
+                          accept="image/*"
+                          onChange={handleUpload}
+                        />
+                        <p className="text-xs text-muted-foreground">Supported: PNG or JPG.</p>
+                    </div>
                     <div className="flex items-center space-x-2">
                         <Switch id="camera-toggle" checked={isCameraOn} onCheckedChange={setIsCameraOn} />
                         <Label htmlFor="camera-toggle">Turn Camera On</Label>
