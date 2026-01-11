@@ -17,7 +17,7 @@
       "name": "Next.js: debug client-side (Firefox)",
       "type": "firefox",
       "request": "launch",
-      "url": "http://localhost:3000",
+      "url": "http://localhost:9002",
       "reAttach": true,
       "pathMappings": [
         {
