@@ -10,10 +10,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Space Grotesk', 'sans-serif'],
-        code: ['monospace'],
-        logo: ['Montserrat', 'sans-serif'],
+        body: ['Manrope', 'sans-serif'],
+        headline: ['Bebas Neue', 'sans-serif'],
+        code: ['JetBrains Mono', 'monospace'],
+        logo: ['Bebas Neue', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
