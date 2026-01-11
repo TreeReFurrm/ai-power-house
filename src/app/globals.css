@@ -93,11 +93,11 @@
     background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #333;
+    background: hsl(var(--accent) / 0.55);
     border-radius: 3px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: hsl(var(--accent) / 0.85);
   }
 
   .animate-pulse-slow {
