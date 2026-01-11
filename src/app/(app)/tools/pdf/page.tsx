@@ -17,8 +17,10 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useUser } from '@/firebase';
 
 export default function PdfToolsPage() {
+  const { isAdmin } = useUser();
   const tools = [
     { title: 'Merge PDF', icon: Combine, description: 'Combine multiple PDFs into a single document.' },
     { title: 'Compress PDF', icon: Package, description: 'Reduce file size by compressing text and images.' },
@@ -38,20 +40,22 @@ export default function PdfToolsPage() {
         <p className="text-muted-foreground">A complete suite of tools to manage and manipulate your documents.</p>
       </div>
 
-      <Alert className="bg-primary/10 border-primary/20 text-primary-foreground">
-        <Sparkles className="h-5 w-5 text-primary" />
-        <AlertTitle className="text-primary font-bold">Unlock All Tools</AlertTitle>
-        <AlertDescription className="flex items-center justify-between">
-          <span>These powerful PDF and Image tools are available on our Pro plan.</span>
-          <Button asChild size="sm">
-            <Link href="/pro">Upgrade to Pro</Link>
-          </Button>
-        </AlertDescription>
-      </Alert>
+      {!isAdmin && (
+        <Alert className="bg-primary/10 border-primary/20 text-primary-foreground">
+            <Sparkles className="h-5 w-5 text-primary" />
+            <AlertTitle className="text-primary font-bold">Unlock All Tools</AlertTitle>
+            <AlertDescription className="flex items-center justify-between">
+            <span>These powerful PDF and Image tools are available on our Pro plan.</span>
+            <Button asChild size="sm">
+                <Link href="/pro">Upgrade to Pro</Link>
+            </Button>
+            </AlertDescription>
+        </Alert>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {tools.map((tool) => (
-          <Card key={tool.title} className="flex flex-col transition-transform hover:scale-[1.02] hover:shadow-lg opacity-60">
+          <Card key={tool.title} className={`flex flex-col transition-transform hover:scale-[1.02] hover:shadow-lg ${!isAdmin && 'opacity-60'}`}>
             <CardHeader className="flex-row items-start gap-4">
               <div className="p-3 bg-primary/10 text-primary rounded-lg">
                 <tool.icon className="w-6 h-6" />
@@ -64,9 +68,9 @@ export default function PdfToolsPage() {
               <CardDescription>{tool.description}</CardDescription>
             </CardContent>
             <CardFooter>
-              <Button asChild className="w-full" variant="secondary" disabled>
+              <Button asChild className="w-full" variant={isAdmin ? "default" : "secondary"} disabled={!isAdmin}>
                 <Link href="#">
-                  Upgrade to Use
+                  {isAdmin ? "Open Tool" : "Upgrade to Use"}
                 </Link>
               </Button>
             </CardFooter>
