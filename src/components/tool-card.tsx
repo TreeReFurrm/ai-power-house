@@ -53,7 +53,7 @@ export function ToolCard({
         </div>
         <div className="flex-1">
           <div className="flex justify-between items-center">
-            <CardTitle className="font-headline text-lg uppercase tracking-[0.12em]">{title}</CardTitle>
+            <CardTitle className="font-headline text-lg uppercase tracking-[0.1em] leading-tight">{title}</CardTitle>
             {showProBadge && (
               <Badge variant="destructive" className="flex items-center gap-1 bg-accent/90 text-accent-foreground">
                 <Star className="w-3 h-3" /> Pro
@@ -80,7 +80,7 @@ export function ToolCard({
       <CardFooter>
         <Button
           asChild
-          className="w-full mt-auto h-11 uppercase tracking-[0.18em] text-xs"
+          className="w-full mt-auto h-11 rounded-lg text-sm font-semibold tracking-[0.04em]"
           onClick={onClick}
           disabled={showProBadge}
         >

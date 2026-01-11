@@ -139,7 +139,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="font-headline text-4xl font-bold tracking-[0.08em] uppercase animate-in fade-in slide-in-from-bottom-4 duration-700 md:text-5xl">
+        <h1 className="font-headline text-4xl font-bold tracking-[0.06em] uppercase animate-in fade-in slide-in-from-bottom-4 duration-700 md:text-5xl">
           Welcome to AI Powerhouse
         </h1>
         <p className="text-muted-foreground mt-3 max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-700 [animation-delay:120ms]">
@@ -159,7 +159,7 @@ export default function DashboardPage() {
       
       {recentlyUsedFeatures.length > 0 && (
         <div>
-          <h2 className="font-headline text-2xl font-bold tracking-[0.08em] uppercase mb-4 flex items-center gap-2">
+          <h2 className="font-headline text-2xl font-bold tracking-[0.06em] uppercase mb-4 flex items-center gap-2">
             <History className="h-6 w-6" /> Recently Used
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -177,7 +177,7 @@ export default function DashboardPage() {
       )}
 
       <div>
-        <h2 className="font-headline text-2xl font-bold tracking-[0.12em] uppercase mb-4">All Tools</h2>
+        <h2 className="font-headline text-2xl font-bold tracking-[0.08em] uppercase mb-4">All Tools</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredFeatures.map((feature, index) => (
             <ToolCard
