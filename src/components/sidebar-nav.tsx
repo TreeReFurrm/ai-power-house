@@ -72,12 +72,12 @@ export function SidebarNav() {
 
   return (
     <>
-      <SidebarHeader className="bg-sidebar-primary p-4 group-data-[state=expanded]:h-auto">
+      <SidebarHeader className="bg-sidebar-primary p-4 shadow-[0_8px_24px_rgba(0,0,0,0.35)] group-data-[state=expanded]:h-auto">
         <Link href="/dashboard">
           <AppLogo />
         </Link>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="custom-scrollbar">
         <SidebarMenu>
           {menuItems.map((group) => (
             <SidebarGroup key={group.group}>
