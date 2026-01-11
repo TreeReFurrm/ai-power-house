@@ -1,6 +1,7 @@
 'use server';
 import { config } from 'dotenv';
-config();
+config({ path: '.env.local' });
+config({ path: '.env' });
 
 import '@/ai/flows/generate-relevant-multimedia.ts';
 import '@/ai/flows/generate-course-outline.ts';
