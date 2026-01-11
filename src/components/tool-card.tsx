@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { ArrowRight, Star } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { useUser } from '@/firebase';
 
 interface ToolCardProps {
   title: string;
@@ -22,6 +23,8 @@ interface ToolCardProps {
 
 export function ToolCard({ title, description, href, icon: Icon, imageId, isPro, onClick }: ToolCardProps) {
   const placeholder = PlaceHolderImages.find(img => img.id === imageId);
+  const { isAdmin } = useUser();
+  const showProBadge = isPro && !isAdmin;
 
   return (
     <Card className="flex flex-col overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg">
@@ -32,7 +35,7 @@ export function ToolCard({ title, description, href, icon: Icon, imageId, isPro,
         <div className="flex-1">
           <div className="flex justify-between items-center">
             <CardTitle className="font-headline text-xl">{title}</CardTitle>
-            {isPro && (
+            {showProBadge && (
               <Badge variant="destructive" className="flex items-center gap-1 bg-accent text-accent-foreground">
                 <Star className="w-3 h-3" /> Pro
               </Badge>
@@ -56,9 +59,9 @@ export function ToolCard({ title, description, href, icon: Icon, imageId, isPro,
         <p className="text-sm text-muted-foreground leading-relaxed flex-grow">{description}</p>
       </CardContent>
       <CardFooter>
-        <Button asChild className="w-full mt-auto" onClick={onClick}>
-          <Link href={href}>
-            Open Tool <ArrowRight />
+        <Button asChild className="w-full mt-auto" onClick={onClick} disabled={showProBadge}>
+          <Link href={showProBadge ? '#' : href}>
+            {showProBadge ? 'Upgrade to Use' : 'Open Tool'} <ArrowRight />
           </Link>
         </Button>
       </CardFooter>
