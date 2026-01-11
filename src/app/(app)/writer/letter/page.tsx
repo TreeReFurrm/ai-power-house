@@ -21,6 +21,10 @@ const formSchema = z.object({
   recipientName: z.string().min(1, 'Recipient name is required.'),
   purpose: z.string().min(3, 'Purpose is required.'),
   tone: z.string(),
+  style: z.enum(['casual', 'warm', 'professional', 'heartfelt']),
+  length: z.enum(['short', 'medium', 'long']),
+  senderName: z.string().optional(),
+  relationship: z.string().optional(),
   letterBody: z.string().min(10, 'Please provide some content for the letter body.'),
 });
 
@@ -31,6 +35,10 @@ type WritePersonalizedLetterInput = {
     tone: string;
     purpose: string;
     recipientName: string;
+    senderName?: string;
+    relationship?: string;
+    style?: 'casual' | 'warm' | 'professional' | 'heartfelt';
+    length?: 'short' | 'medium' | 'long';
     letterBody: string;
 };
 type WritePersonalizedLetterOutput = {
@@ -49,6 +57,10 @@ export default function LetterWriterPage() {
       recipientName: '',
       purpose: '',
       tone: 'formal',
+      style: 'warm',
+      length: 'medium',
+      senderName: '',
+      relationship: '',
       letterBody: '',
     },
   });
@@ -56,8 +68,13 @@ export default function LetterWriterPage() {
   const onSubmit = async (values: WritePersonalizedLetterInput) => {
     setIsLoading(true);
     setGeneratedLetter(null);
+    const normalizeOptional = (value?: string) => value?.trim() || undefined;
     try {
-      const result = await writePersonalizedLetter(values);
+      const result = await writePersonalizedLetter({
+        ...values,
+        senderName: normalizeOptional(values.senderName),
+        relationship: normalizeOptional(values.relationship),
+      });
       setGeneratedLetter(result.personalizedLetter);
     } catch (error) {
       console.error(error);
@@ -100,27 +117,66 @@ export default function LetterWriterPage() {
                     <FormItem><FormLabel>Purpose of Letter</FormLabel><FormControl><Input placeholder="Thank you" {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
                 </div>
-                <FormField control={form.control} name="tone" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tone</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl><SelectTrigger><SelectValue placeholder="Select a tone" /></SelectTrigger></FormControl>
-                      <SelectContent>
-                        <SelectItem value="formal">Formal</SelectItem>
-                        <SelectItem value="informal">Informal</SelectItem>
-                        <SelectItem value="friendly">Friendly</SelectItem>
-                        <SelectItem value="persuasive">Persuasive</SelectItem>
-                        <SelectItem value="sympathetic">Sympathetic</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )} />
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <FormField control={form.control} name="senderName" render={({ field }) => (
+                    <FormItem><FormLabel>Your Name (optional)</FormLabel><FormControl><Input placeholder="Alex Smith" {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="relationship" render={({ field }) => (
+                    <FormItem><FormLabel>Relationship (optional)</FormLabel><FormControl><Input placeholder="Friend, coworker, aunt..." {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                </div>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  <FormField control={form.control} name="tone" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tone</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl><SelectTrigger><SelectValue placeholder="Select a tone" /></SelectTrigger></FormControl>
+                        <SelectContent>
+                          <SelectItem value="formal">Formal</SelectItem>
+                          <SelectItem value="informal">Informal</SelectItem>
+                          <SelectItem value="friendly">Friendly</SelectItem>
+                          <SelectItem value="persuasive">Persuasive</SelectItem>
+                          <SelectItem value="sympathetic">Sympathetic</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="style" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Style</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl><SelectTrigger><SelectValue placeholder="Select a style" /></SelectTrigger></FormControl>
+                        <SelectContent>
+                          <SelectItem value="casual">Casual</SelectItem>
+                          <SelectItem value="warm">Warm</SelectItem>
+                          <SelectItem value="professional">Professional</SelectItem>
+                          <SelectItem value="heartfelt">Heartfelt</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="length" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Length</FormLabel>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl><SelectTrigger><SelectValue placeholder="Select length" /></SelectTrigger></FormControl>
+                        <SelectContent>
+                          <SelectItem value="short">Short</SelectItem>
+                          <SelectItem value="medium">Medium</SelectItem>
+                          <SelectItem value="long">Long</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                </div>
                 <FormField control={form.control} name="letterBody" render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Key Points / Body</FormLabel>
+                    <FormLabel>Key Points / Notes</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="e.g., Thank you for the interview opportunity last Tuesday. I enjoyed learning about the role..." className="min-h-[150px]" {...field} />
+                      <Textarea placeholder="e.g., Thank you for the graduation gift. It meant a lot, and I'll use it as I figure out what's next..." className="min-h-[150px]" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
