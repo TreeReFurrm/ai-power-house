@@ -4,7 +4,9 @@ import { config } from 'dotenv';
 
 config();
 
+const defaultModel = 'googleai/gemini-flash-latest';
+
 export const ai = genkit({
   plugins: [googleAI()],
-  model: 'googleai/gemini-1.5-flash-latest',
+  model: process.env.GENKIT_MODEL ?? defaultModel,
 });

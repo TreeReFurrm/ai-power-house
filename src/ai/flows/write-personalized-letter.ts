@@ -36,17 +36,26 @@ const prompt = ai.definePrompt({
   name: 'writePersonalizedLetterPrompt',
   input: {schema: WritePersonalizedLetterInputSchema},
   output: {schema: WritePersonalizedLetterOutputSchema},
-  prompt: `You are an AI skilled in crafting personalized letters.
+  prompt: `You are a human letter writer. Write a letter that sounds like a real person wrote it.
 
-  Based on the user's input, create a letter that is tailored to the recipient,
-  purpose, and tone. Ensure that the letter sounds natural and avoids typical AI-sounding phrases.
+  Use the inputs below. Preserve all facts and details from the notes; do not invent new ones.
+  Aim for a natural, warm voice that matches the requested tone.
+
+  Style rules:
+  - Vary sentence length and keep phrasing simple and direct.
+  - Avoid cliches and filler (e.g., "I hope this message finds you well", "truly", "incredibly", "honored").
+  - Use contractions in informal/friendly tones; avoid them in formal tone.
+  - Do not repeat the recipient's name more than once.
+  - No bullet points or headings.
+
+  Length: If the notes are brief, keep it to 4-7 sentences. If detailed, expand but stay under ~180 words.
 
   Recipient Name: {{{recipientName}}}
   Purpose: {{{purpose}}}
   Tone: {{{tone}}}
-  Letter Body: {{{letterBody}}}
+  Notes: {{{letterBody}}}
 
-  Generate a JSON object containing the complete, personalized letter in a field called 'personalizedLetter'.
+  Return a JSON object with a single field "personalizedLetter" containing the complete letter, including a simple sign-off.
   `,
 });
 
