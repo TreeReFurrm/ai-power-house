@@ -129,7 +129,7 @@ export function SidebarNav() {
                             <p className="text-xs text-muted-foreground truncate">{user.email || 'No email'}</p>
                         </div>
                      </div>
-                    <SidebarMenuButton tooltip={{ children: 'Logout', side: 'right' }} onClick={() => auth.signOut()} size="icon" className="h-8 w-8 shrink-0">
+                    <SidebarMenuButton tooltip={{ children: 'Logout', side: 'right' }} onClick={() => auth.signOut()} className="h-8 w-8 shrink-0">
                         <LogOut />
                     </SidebarMenuButton>
                 </div>
